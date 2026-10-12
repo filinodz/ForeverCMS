@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use ForeverCMS, please credit the project and FilinoDZ."
+type: software
+title: "ForeverCMS"
+version: 1.0.0
+date-released: 2026-10-12
+authors:
+  - family-names: "FilinoDZ"
+    alias: "filinodz"
+repository-code: "https://github.com/filinodz/ForeverCMS"
+url: "https://github.com/filinodz/ForeverCMS"
+license: MIT
+keywords:
+  - World of Warcraft
+  - ForeverRepack
+  - CMS
+  - armory

@@ -1,0 +1,29 @@
+# Local configuration and secrets
+www/includes/config.secret.php
+*.secret.php
+.env
+.env.*
+!.env.example
+
+# Runtime data
+logs/
+tmp/
+www/logs/
+www/cache/
+setup/backups/
+*.log
+*.pid
+
+# Bundled release/runtime output
+php/
+payload/
+dist/
+releases/
+*.zip
+
+# Local tooling
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini

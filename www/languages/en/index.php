@@ -1,0 +1,32 @@
+<?php
+return [
+    'home_page_title' => ' - Home',
+    'home_meta_description' => 'Welcome to our World of Warcraft server. Join our Discord, YouTube, Instagram, create an account, or download the game now!',
+    'home_discord_title' => 'Join Our Discord',
+    'home_intro_title' => 'World of Warcraft ',
+    'home_intro_tagline' => 'Your story. Your realm. Forever.',
+    'home_eyebrow' => 'FOREVER COMMUNITY',
+    'home_intro_copy' => 'Create your account, install Forever Launcher and join the realm that fits how you play.',
+    'home_pillars_kicker' => 'START PLAYING',
+    'home_pillars_title' => 'Three steps to Azeroth',
+    'home_pillar_one_title' => 'Create an account',
+    'home_pillar_one_copy' => 'Register your email address and choose the credentials you will use to log in.',
+    'home_pillar_two_title' => 'Install the launcher',
+    'home_pillar_two_copy' => 'Download Forever Launcher to install the client and keep your game files current.',
+    'home_pillar_three_title' => 'Choose a realm',
+    'home_pillar_three_copy' => 'Normal, PvP, roleplay or Hardcore: select the game mode you want to play.',
+    'home_news_title' => 'Latest news',
+    'home_view_all' => 'View all',
+    'home_server_status' => 'Realm status',
+    'home_create_account' => 'Create Account',
+    'home_download' => 'Download',
+    'home_no_news' => 'No news available at this time.',
+    'home_tab_bugtracker' => 'Bugtracker',
+    'home_tab_youtube' => 'YouTube',
+    'home_youtube_title' => 'Featured Video',
+    'home_youtube_content' => 'Watch a featured video here. Replace it with your own channel or highlight later.',
+    'home_bugtracker_title' => 'Bugtracker',
+    'home_bugtracker_content' => 'View and report issues with the server to help us improve your experience.',
+    'home_realm_status_error' => 'Error: Realm status unavailable.'
+];
+?>

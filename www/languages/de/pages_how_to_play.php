@@ -1,0 +1,31 @@
+<?php
+return [
+    'how_to_play_title' => 'Wie man Spielt',
+    'how_to_play_subtitle' => 'Tritt unserem Server in 4 einfachen Schritten bei und starte noch heute dein Wrath of the Lich King Abenteuer!',
+    'step_1_title' => 'Account Erstellen',
+    'step_1_desc' => 'Registriere einen kostenlosen Account auf unserer Webseite:',
+    'create_account' => 'Account Erstellen',
+    'create_account_alt' => 'Account Erstellen',
+    'step_2_title' => 'Das Spiel Herunterladen',
+    'step_2_desc' => 'Du benötigst World of Warcraft: Wrath of the Lich King (3.3.5a). Wähle deine bevorzugte Download-Methode:',
+    'direct_download' => 'Direkter Download',
+    'torrent_download' => 'Torrent Download',
+    'download_game_alt' => 'Spiel Herunterladen',
+    'step_3_title' => 'Realmlist Einrichten',
+    'step_3_desc_1' => 'Öffne deinen World of Warcraft Ordner, gehe zu Data/enUS oder Data/enGB und suche realmlist.wtf.',
+    'step_3_desc_2' => 'Öffne es mit dem Editor und ersetze den gesamten Inhalt mit:',
+    'step_3_desc_3' => 'Speichere die Datei und schließe sie.',
+    'edit_realmlist_alt' => 'Realmlist Bearbeiten',
+    'step_4_title' => 'Los Spielen!',
+    'step_4_desc_1' => 'Öffne Wow.exe (nicht Launcher.exe) und melde dich mit deinen Account-Daten an.',
+    'step_4_desc_2' => 'Genieße dein Abenteuer auf unserem Server!',
+    'launch_wow_alt' => 'WoW Starten',
+    'cta_title' => 'Bereit für dein Abenteuer?',
+    'cta_desc' => 'Erstelle jetzt einen Account und starte dein Abenteuer in der Welt von Azeroth!',
+    'cta_button' => 'Jetzt Starten',
+    'quickstart_guide' => 'Schnellstart-Anleitung',
+    'copy' => 'Kopieren',
+    'copied' => 'Kopiert!',
+    'ready_to_play' => 'Bereit zum Spielen! Genieße dein Abenteuer.'
+];
+?>

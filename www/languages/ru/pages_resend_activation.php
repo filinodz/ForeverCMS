@@ -1,0 +1,27 @@
+<?php
+return [
+    'page_title' => ' - Повторная отправка письма активации',
+    'meta_description' => 'Повторно отправить письмо активации для вашей учетной записи на сервере World of Warcraft.',
+    'resend_title' => 'Повторная отправка письма активации',
+    'username_placeholder' => 'Имя пользователя',
+    'email_placeholder' => 'Email',
+    'resend_button' => 'Отправить письмо активации повторно',
+    'login_link' => 'Уже активировали?',
+    'login_link_text' => '<a href="%s">Войдите здесь</a>',
+    'login_link_text_simple' => 'Войти здесь',
+    'email_subject' => '[ПОВТОРНО] Активируйте свою учетную запись',
+    'email_greeting' => 'Добро пожаловать, {username}!',
+    'email_thanks' => 'Спасибо за регистрацию. Нажмите кнопку ниже, чтобы активировать свою учетную запись:',
+    'email_button' => 'Активировать учетную запись',
+    'email_ignore' => 'Если вы не запрашивали это, проигнорируйте это письмо.',
+    'error_username_required' => 'Требуется имя пользователя',
+    'error_email_required' => 'Требуется email',
+    'error_email_invalid' => 'Неверный email адрес',
+    'error_recaptcha_failed' => 'Проверка reCAPTCHA не удалась.',
+    'error_database' => 'Ошибка базы данных: ',
+    'error_no_account' => 'Не найдено соответствующей неактивированной учетной записи',
+    'error_update_failed' => 'Ошибка обновления: ',
+    'error_email_failed' => 'Ошибка отправки письма: ',
+    'success_email_sent' => 'Письмо активации успешно отправлено на %s',
+];
+?>

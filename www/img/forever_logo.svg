@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 128" role="img" aria-label="Forever">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff3cc"/>
+      <stop offset="0.55" stop-color="#e8c46a"/>
+      <stop offset="1" stop-color="#b07a26"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <g transform="translate(16 18)" filter="url(#glow)">
+    <path d="M46 0 92 46 46 92 0 46Z" fill="none" stroke="#e8c46a" stroke-width="4"/>
+    <path d="m46 22 24 24-24 24-24-24Z" fill="none" stroke="#e8c46a" stroke-width="4"/>
+    <circle cx="46" cy="46" r="5" fill="#e8c46a"/>
+  </g>
+  <text x="126" y="72" font-family="Palatino Linotype, Palatino, Georgia, serif" font-size="47" font-weight="700" letter-spacing="3.5" fill="url(#gold)">FOREVER</text>
+  <text x="129" y="99" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="6" fill="#9c9480">COMMUNITY</text>
+</svg>

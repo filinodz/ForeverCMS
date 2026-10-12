@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and support
+    url: https://github.com/filinodz/ForeverCMS/discussions
+    about: Ask installation and configuration questions in Discussions.
+  - name: Private security report
+    url: https://github.com/filinodz/ForeverCMS/security/advisories/new
+    about: Report vulnerabilities privately.

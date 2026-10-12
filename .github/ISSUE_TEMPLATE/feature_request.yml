@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest a focused improvement for ForeverCMS
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Explain the player or administrator need, not only the proposed implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed experience
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Database, launcher or security impact

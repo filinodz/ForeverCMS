@@ -1,0 +1,32 @@
+<?php
+return [
+    'home_page_title' => ' - Accueil',
+    'home_meta_description' => 'Bienvenue sur notre serveur World of Warcraft. Rejoignez notre Discord, YouTube, Instagram, créez un compte ou téléchargez le jeu maintenant !',
+    'home_discord_title' => 'Rejoignez notre Discord',
+    'home_intro_title' => 'World of Warcraft ',
+    'home_intro_tagline' => 'Votre histoire. Votre royaume. Pour toujours.',
+    'home_eyebrow' => 'FOREVER COMMUNITY',
+    'home_intro_copy' => 'Créez votre compte, installez Forever Launcher et rejoignez le royaume qui vous correspond.',
+    'home_pillars_kicker' => 'LANCER LE JEU',
+    'home_pillars_title' => 'Trois étapes, puis Azeroth',
+    'home_pillar_one_title' => 'Créer un compte',
+    'home_pillar_one_copy' => 'Inscrivez votre adresse e-mail et choisissez vos identifiants de connexion.',
+    'home_pillar_two_title' => 'Installer le launcher',
+    'home_pillar_two_copy' => 'Téléchargez Forever Launcher : il installe le client et maintient vos fichiers à jour.',
+    'home_pillar_three_title' => 'Choisir un royaume',
+    'home_pillar_three_copy' => 'Normal, JcJ, jeu de rôle ou Hardcore : sélectionnez votre mode de jeu.',
+    'home_news_title' => 'Dernières nouvelles',
+    'home_view_all' => 'Tout voir',
+    'home_server_status' => 'État des royaumes',
+    'home_create_account' => 'Créer un compte',
+    'home_download' => 'Télécharger',
+    'home_no_news' => 'Aucune nouvelle disponible pour le moment.',
+    'home_tab_bugtracker' => 'Suivi des bogues',
+    'home_tab_youtube' => 'YouTube',
+    'home_youtube_title' => 'Vidéo en vedette',
+    'home_youtube_content' => 'Regardez une vidéo mise en avant ici. Vous pourrez la remplacer plus tard par votre propre chaîne ou une autre mise en avant.',
+    'home_bugtracker_title' => 'Suivi des bogues',
+    'home_bugtracker_content' => 'Consultez et signalez les problèmes avec le serveur pour nous aider à améliorer votre expérience.',
+    'home_realm_status_error' => 'Erreur : Statut du royaume indisponible.'
+];
+?>

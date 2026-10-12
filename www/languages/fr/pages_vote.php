@@ -1,0 +1,32 @@
+<?php
+return [
+    'vote_title' => ' - Votez pour des récompenses épiques',
+    'vote_title_h1' => ' - Votez pour des récompenses épiques',
+    'vote_subtitle' => 'Soutenez notre serveur en votant sur les meilleurs sites et gagnez des récompenses exclusives en jeu !',
+    'vote_no_sites' => 'Aucun site de vote disponible pour le moment.',
+    'vote_points_label' => 'Points de vote',
+    'vote_button' => 'Voter',
+    'claim_button' => 'Réclamer',
+    'vote_cooldown_label' => 'h de recharge',
+    'vote_cooldown_timer' => 'Recharge : Calcul en cours...',
+    'vote_cooldown_ready' => 'Prêt à voter !',
+    'vote_rewards_title' => 'Récompenses de vote',
+    'vote_reward_gold' => 'Or',
+    'vote_reward_gold_desc' => 'Recevez jusqu\'à 40 pièces d\'or par vote pour augmenter votre richesse en jeu.',
+    'vote_reward_enchants' => 'Enchantements',
+    'vote_reward_enchants_desc' => 'Débloquez des enchantements puissants pour les armes et armures de vos personnages.',
+    'vote_reward_mounts' => 'Montures',
+    'vote_reward_mounts_desc' => 'Obtenez des montures exclusives disponibles uniquement par le vote.',
+    'vote_reward_vip_points' => 'Points VIP',
+    'vote_reward_vip_points_desc' => 'Gagnez des points à échanger contre des objets spéciaux et des avantages.',
+    'vote_modal_title' => 'Merci d\'avoir voté !',
+    'vote_modal_message' => 'Vous êtes redirigé vers <span class="site-name"></span> pour compléter votre vote.',
+    'vote_modal_button' => 'Continuer',
+    'site_logo_alt' => 'Logo du serveur Sahtout',
+    'vote_login_prompt' => 'Veuillez vous connecter pour voter et gagner des récompenses.',
+    'vote_unauthorized' => 'Impossible de voter pendant la période de recharge.',
+    'vote_claim_success' => 'Récompenses réclamées avec succès !',
+    'vote_claim_error' => 'Erreur lors de la réclamation des récompenses : ',
+    'vote_site_image_alt' => 'Site de vote'
+];
+?>

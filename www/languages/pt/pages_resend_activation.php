@@ -1,0 +1,27 @@
+<?php
+return [
+    'page_title' => ' - Reenviar e-mail de ativação',
+    'meta_description' => 'Reenviar o e-mail de ativação para sua conta do servidor World of Warcraft.',
+    'resend_title' => 'Reenviar e-mail de ativação',
+    'username_placeholder' => 'Nome de usuário',
+    'email_placeholder' => 'E-mail',
+    'resend_button' => 'Reenviar e-mail de ativação',
+    'login_link' => 'Já ativado?',
+    'login_link_text' => '<a href="%s">Faça login aqui</a>',
+    'login_link_text_simple' => 'Faça login aqui',
+    'email_subject' => '[REENVIAR] Ative sua conta',
+    'email_greeting' => 'Bem-vindo, {username}!',
+    'email_thanks' => 'Obrigado por se registrar. Clique no botão abaixo para ativar sua conta:',
+    'email_button' => 'Ativar conta',
+    'email_ignore' => 'Se você não solicitou isso, ignore este e-mail.',
+    'error_username_required' => 'O nome de usuário é obrigatório',
+    'error_email_required' => 'O e-mail é obrigatório',
+    'error_email_invalid' => 'E-mail inválido',
+    'error_recaptcha_failed' => 'A verificação do reCAPTCHA falhou.',
+    'error_database' => 'Erro no banco de dados: ',
+    'error_no_account' => 'Nenhuma conta não ativada correspondente encontrada',
+    'error_update_failed' => 'Falha ao atualizar: ',
+    'error_email_failed' => 'Falha ao enviar e-mail: ',
+    'success_email_sent' => 'E-mail de ativação enviado com sucesso para %s',
+];
+?>

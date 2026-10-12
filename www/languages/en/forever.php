@@ -1,0 +1,114 @@
+<?php
+if (!defined('ALLOWED_ACCESS')) { exit('Forbidden'); }
+
+// Forever: texts that differ from SahtoutCMS. This file wins over global.php and the page files of every
+// language; a language's own forever.php (languages/<code>/forever.php) wins over this one.
+return [
+    // header
+    'realm' => 'Realm',
+    'footer_logo_alt' => 'Forever logo',
+    'site_logo_alt' => 'Forever logo',
+    'realm_sahtout_name' => 'Forever',
+    'footer_tagline' => 'Your story. Your realm. Forever.',
+
+    // login, registration, password
+    'email_placeholder' => 'E-mail',
+    'username_placeholder' => 'E-mail',
+    'error_email_required' => 'E-mail is required.',
+    'error_username_required' => 'E-mail is required.',
+    'error_invalid_credentials' => 'Invalid e-mail or password.',
+    'error_account_banned' => 'This account is banned: %s',
+    'error_account_pending' => 'A registration with this e-mail is waiting for activation. Use the link in the e-mail we sent, or ask for a new one.',
+    'error_username_or_email_required' => 'E-mail is required.',
+    'username_or_email_placeholder' => 'E-mail',
+    'success_email_sent' => 'If an account has this e-mail, a password reset link has been sent to it.',
+    'success_account_created_no_email' => 'Account created! Log in here and in the game with your e-mail and password.',
+
+    // account page
+    'label_username' => 'Name',
+    'expansion_forever' => 'World of Warcraft Classic',
+    'city_stormwind' => 'Stormwind',
+    'city_ironforge' => 'Ironforge',
+    'city_darnassus' => 'Darnassus',
+    'city_orgrimmar' => 'Orgrimmar',
+    'city_thunderbluff' => 'Thunder Bluff',
+    'city_undercity' => 'Undercity',
+
+    // how to play
+    'how_to_play_subtitle' => 'Set up your access to Forever in four steps.',
+    'step_2_title' => 'Get the Game and the Launcher',
+    'step_2_desc' => 'Install the compatible client through Battle.net, then install Forever Launcher. The launcher prepares and starts the game for this server.',
+    'forever_launcher_download' => 'Download Forever Launcher',
+    'step_3_title' => 'Choose the Server',
+    'step_3_desc_1' => 'Start Forever Launcher and choose your World of Warcraft folder (the one with WowB.exe).',
+    'step_3_desc_2' => 'Pick this server in the launcher. If it is not in the list, add it to servers.json ("Edit servers") with this portal:',
+    'step_3_desc_3' => 'There is no realmlist file to edit: the launcher points the game at the server.',
+    'edit_realmlist_alt' => 'Choose the server',
+    'step_4_desc_1' => 'Press Play in the launcher and log in with the e-mail and password of your account.',
+    'download_file_name' => 'Forever Launcher',
+
+    // shop
+    'shop_error_realm_offline' => 'This realm is offline. Items are delivered by the game server: please try again when the realm is up.',
+    'shop_error_delivery_failed' => 'The game server could not deliver this purchase. You have not been charged.',
+    'shop_premium_kicker' => 'FOREVER COLLECTION',
+    'shop_premium_intro' => 'A curated selection of prestigious mounts and companions from Azeroth — cosmetic, rare and unmistakably Forever.',
+    'shop_premium_desc_heroic' => 'Signature cosmetic reward from the Forever Heroic collection.',
+    'shop_premium_desc_epic' => 'Exclusive cosmetic reward from the Forever Epic collection.',
+    'shop_premium_desc_legacy' => 'Prestige reward reserved for the most dedicated Forever collectors.',
+    'shop_premium_desc_skyborne' => 'Rare Skyborne collectible created for World of Warcraft: Forever.',
+    'home_discord_widget_title' => 'Forever Discord community',
+    'home_discord_join_button' => 'Join the Forever community',
+    'home_discord_not_configured' => 'Discord is not configured yet.',
+
+    // admin: users and characters
+    'admin_users_table_username' => 'Account',
+    'admin_users_label_username' => 'Account',
+    'admin_users_search_username_placeholder' => 'Search account (like 5#1)...',
+    'admin_users_email_readonly' => 'The e-mail is the game login. Only its owner can change it, on the Account page.',
+    'admin_chars_label_username' => 'Account or e-mail',
+    'admin_chars_placeholder_username' => 'Account (5#1) or e-mail',
+    'admin_chars_table_username' => 'Account',
+    'admin_dashboard_table_username' => 'Account',
+    'admin_dashboard_search_username_placeholder' => 'Search by account',
+
+    // admin: shop
+    'admin_shop_placeholder_itemset_id' => 'Enter the game item set ID',
+    'admin_shop_placeholder_entry' => 'Game item ID, for example 19019',
+    'admin_shop_select_entry' => 'Game item ID',
+    'label_discord_widget_id' => 'Discord Widget Server ID',
+    'help_discord_widget_id' => 'Optional override. Leave empty to resolve the widget automatically from the Discord invitation URL configured above.',
+    'error_discord_widget_id' => 'The Discord server ID must contain 17 to 20 digits.',
+
+    // admin: console (RA instead of SOAP)
+    'settings_nav_soap' => 'RA console',
+    'page_title_soap' => 'Game Console',
+    'soap_title' => 'Run a Console Command',
+    'gm_command_instructions' => 'The command runs on the worldserver console of the realm chosen at the top of the page. For example: <code>character level PlayerName 60</code>.',
+    'gm_command_docs' => 'For a full list of commands, type <code>help</code>, or see the <a href="https://trinitycore.info/en/server/GM-Commands" target="_blank" class="text-[#f2cf5b] hover:underline">TrinityCore GM commands</a>.',
+    'command_placeholder' => 'character level PlayerName 60',
+    'ra_no_output' => '(the command gave no output)',
+    'error_admin_only' => 'Only administrators can change this.',
+    'title_soap_settings' => 'RA Settings',
+    'page_description_soap' => 'RA console settings',
+    'header_soap_settings' => 'RA Settings (worldserver remote console)',
+    'status_soap_configured' => 'RA configured',
+    'status_soap_not_configured' => 'RA not configured',
+    'label_soap_url' => 'RA host',
+    'placeholder_soap_url' => '127.0.0.1',
+    'help_soap_url' => 'The address the worldservers listen on for RA (worldserver.conf Ra.IP). Each realm has its own port, in includes/realm_config.php.',
+    'label_soap_user' => 'Console account',
+    'placeholder_soap_user' => 'Empty = the launcher\'s console account',
+    'help_soap_user' => 'A game account name like 3#1 with GM level 3 on all realms. Leave it empty to use the console account the repack\'s Setup made (localservers.json).',
+    'label_soap_pass' => 'Console account password',
+    'placeholder_soap_pass' => 'Empty = keep the saved password',
+    'help_soap_pass' => 'The password of the console account above.',
+    'button_save_verify_soap' => 'Save',
+    'success_soap_settings_saved' => 'RA settings saved.',
+    'error_soap_url_required' => 'RA host is required (an IP address or host name).',
+    'error_soap_pass_required' => 'The console account password is required.',
+    'ra_verify_ok' => 'RA answers on realm %s.',
+    'ra_verify_failed' => 'Realm %s: %s',
+    'info_step_1' => 'The console account needs GM level 3 in <code>account_access</code> with <code>RealmID = -1</code>. The repack\'s Setup makes one and the launcher keeps it in <code>localservers.json</code>.',
+    'info_step_2' => 'Each realm\'s <code>worldserver.conf</code> needs <strong>Ra.Enable = 1</strong> (the repack ships with it on).',
+    'info_step_3' => 'The realm must be running: the shop, the console and the character services talk to it through RA.',
+];

@@ -1,0 +1,19 @@
+WoW character model cache
+=========================
+
+Public source inspected on 2026-10-11:
+https://armory.playastral.io/character/Astral/Aabattery
+
+The reference armory does not serve glTF files. It uses ZamModelViewer with a
+data-driven model format (MO3, bone data, metadata, and PNG textures). This
+directory contains only the resources observed while rendering the human male
+model used by /character?guid=2, plus its verified Squire's Shirt appearance.
+
+Viewer script source:
+https://armory.playastral.io/js/viewer.min.js
+
+jQuery source/version:
+https://code.jquery.com/jquery-3.7.1.min.js
+
+Do not rename the files or flatten the directory tree: the renderer resolves
+them by their numeric FileDataID and fixed relative paths.

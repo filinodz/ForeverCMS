@@ -1,0 +1,28 @@
+<?php
+return [
+    'arenateam_page_title' => ' - 英雄榜 - 竞技场战队详情',
+    'arenateam_suffix' => '竞技场战队',
+    'arenateam_team_summary' => '战队摘要',
+    'arenateam_rating' => '等级',
+    'arenateam_winrate' => '胜率',
+    'arenateam_season_games' => '赛季总场次',
+    'arenateam_season_wins' => '赛季胜场',
+    'arenateam_season_losses' => '赛季负场',
+    'arenateam_week_games' => '本周场次',
+    'arenateam_week_wins' => '本周胜场',
+    'arenateam_week_losses' => '本周负场',
+    'arenateam_team_members' => '战队成员',
+    'arenateam_name' => '名称',
+    'arenateam_faction' => '阵营',
+    'arenateam_race' => '种族',
+    'arenateam_class' => '职业',
+    'arenateam_personal_rating' => '个人评分',
+    'arenateam_no_team' => '未找到竞技场战队。',
+    'arenateam_no_members' => '未找到战队成员。',
+    'arenateam_type_2v2' => '2v2',
+    'arenateam_type_3v3' => '3v3',
+    'arenateam_type_5v5' => '5v5',
+    'arenateam_type_unknown' => '未知',
+    'arenateam_faction_alliance' => '联盟',
+    'arenateam_faction_horde' => '部落'
+];

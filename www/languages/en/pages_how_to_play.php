@@ -1,0 +1,31 @@
+<?php
+return [
+    'how_to_play_title' => 'How to Play',
+    'how_to_play_subtitle' => 'Set up your access to Forever in four steps.',
+    'step_1_title' => 'Create an Account',
+    'step_1_desc' => 'Register a free account using our website:',
+    'create_account' => 'Create Account',
+    'create_account_alt' => 'Create Account',
+    'step_2_title' => 'Download the Game',
+    'step_2_desc' => 'Install the compatible client and then Forever Launcher, which prepares and starts the game for this server.',
+    'direct_download' => 'Direct Download',
+    'torrent_download' => 'Torrent Download',
+    'download_game_alt' => 'Download Game',
+    'step_3_title' => 'Set the Realmlist',
+    'step_3_desc_1' => 'Open your World of Warcraft folder, go to Data/enUS or Data/enGB, and find realmlist.wtf.',
+    'step_3_desc_2' => 'Open it with Notepad and replace everything inside with:',
+    'step_3_desc_3' => 'Save the file and close it.',
+    'edit_realmlist_alt' => 'Edit Realmlist',
+    'step_4_title' => 'Start Playing!',
+    'step_4_desc_1' => 'Open Wow.exe (not Launcher.exe) and log in using your account credentials.',
+    'step_4_desc_2' => 'Enjoy your adventure on our server!',
+    'launch_wow_alt' => 'Launch WoW',
+    'cta_title' => 'Ready to Begin Your Journey?',
+    'cta_desc' => 'Create an account now and start your adventure in the world of Azeroth!',
+    'cta_button' => 'Get Started Now',
+    'quickstart_guide' => 'Quickstart Guide',
+    'copy' => 'Copy',
+    'copied' => 'Copied!',
+    'ready_to_play' => 'Ready to play! Enjoy your adventure.'
+];
+?>

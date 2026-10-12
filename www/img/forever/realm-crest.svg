@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Forever realm">
+  <defs><filter id="g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <rect x="5" y="5" width="118" height="118" rx="16" fill="#0b0c16" stroke="#e8c46a" stroke-opacity=".33"/>
+  <g filter="url(#g)">
+    <path d="m64 19 45 45-45 45-45-45Z" fill="none" stroke="#e8c46a" stroke-width="4"/>
+    <path d="m64 39 25 25-25 25-25-25Z" fill="none" stroke="#e8c46a" stroke-width="4"/>
+    <circle cx="64" cy="64" r="5" fill="#e8c46a"/>
+  </g>
+</svg>

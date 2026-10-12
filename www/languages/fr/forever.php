@@ -1,0 +1,113 @@
+<?php
+if (!defined('ALLOWED_ACCESS')) { exit('Forbidden'); }
+
+// Forever : textes qui diffèrent de SahtoutCMS (voir languages/en/forever.php).
+return [
+    // en-tête
+    'realm' => 'Royaume',
+    'footer_logo_alt' => 'Logo Forever',
+    'site_logo_alt' => 'Logo Forever',
+    'realm_sahtout_name' => 'Forever',
+    'footer_tagline' => 'Votre histoire. Votre royaume. Pour toujours.',
+
+    // connexion, inscription, mot de passe
+    'email_placeholder' => 'E-mail',
+    'username_placeholder' => 'E-mail',
+    'error_email_required' => 'L\'e-mail est obligatoire.',
+    'error_username_required' => 'L\'e-mail est obligatoire.',
+    'error_invalid_credentials' => 'E-mail ou mot de passe incorrect.',
+    'error_account_banned' => 'Ce compte est banni : %s',
+    'error_account_pending' => 'Une inscription avec cet e-mail attend son activation. Utilisez le lien reçu par e-mail ou demandez-en un nouveau.',
+    'error_username_or_email_required' => 'L\'e-mail est obligatoire.',
+    'username_or_email_placeholder' => 'E-mail',
+    'success_email_sent' => 'Si un compte utilise cet e-mail, un lien de réinitialisation du mot de passe lui a été envoyé.',
+    'success_account_created_no_email' => 'Compte créé ! Connectez-vous ici et en jeu avec votre e-mail et votre mot de passe.',
+
+    // page du compte
+    'label_username' => 'Nom',
+    'expansion_forever' => 'World of Warcraft Classic',
+    'city_stormwind' => 'Hurlevent',
+    'city_ironforge' => 'Forgefer',
+    'city_darnassus' => 'Darnassus',
+    'city_orgrimmar' => 'Orgrimmar',
+    'city_thunderbluff' => 'Les Pitons-du-Tonnerre',
+    'city_undercity' => 'Fossoyeuse',
+
+    // comment jouer
+    'how_to_play_subtitle' => 'Configurez votre accès à Forever en quatre étapes.',
+    'step_2_title' => 'Installer le jeu et le launcher',
+    'step_2_desc' => 'Installez le client compatible depuis Battle.net, puis Forever Launcher. Le launcher prépare et démarre le jeu pour ce serveur.',
+    'forever_launcher_download' => 'Télécharger Forever Launcher',
+    'step_3_title' => 'Choisir le serveur',
+    'step_3_desc_1' => 'Lancez Forever Launcher et choisissez votre dossier World of Warcraft (celui qui contient WowB.exe).',
+    'step_3_desc_2' => 'Sélectionnez ce serveur dans le launcher. S\'il n\'est pas dans la liste, ajoutez-le à servers.json (« Edit servers ») avec ce portail :',
+    'step_3_desc_3' => 'Il n\'y a pas de fichier realmlist à modifier : le launcher dirige le jeu vers le serveur.',
+    'edit_realmlist_alt' => 'Choisir le serveur',
+    'step_4_desc_1' => 'Cliquez sur Play dans le launcher et connectez-vous avec l\'e-mail et le mot de passe de votre compte.',
+    'download_file_name' => 'Forever Launcher',
+
+    // boutique
+    'shop_error_realm_offline' => 'Ce royaume est hors ligne. Les objets sont livrés par le serveur de jeu : réessayez quand le royaume sera en ligne.',
+    'shop_error_delivery_failed' => 'Le serveur de jeu n\'a pas pu livrer cet achat. Vous n\'avez pas été débité.',
+    'shop_premium_kicker' => 'COLLECTION FOREVER',
+    'shop_premium_intro' => 'Une sélection de montures et de compagnons prestigieux d’Azeroth — cosmétiques, rares et résolument Forever.',
+    'shop_premium_desc_heroic' => 'Récompense cosmétique emblématique de la collection héroïque Forever.',
+    'shop_premium_desc_epic' => 'Récompense cosmétique exclusive de la collection épique Forever.',
+    'shop_premium_desc_legacy' => 'Récompense de prestige réservée aux collectionneurs Forever les plus dévoués.',
+    'shop_premium_desc_skyborne' => 'Objet de collection Skyborne rare, créé pour World of Warcraft: Forever.',
+    'home_discord_widget_title' => 'Communauté Discord Forever',
+    'home_discord_join_button' => 'Rejoindre la communauté Forever',
+    'home_discord_not_configured' => 'Le Discord n’est pas encore configuré.',
+
+    // admin : utilisateurs et personnages
+    'admin_users_table_username' => 'Compte',
+    'admin_users_label_username' => 'Compte',
+    'admin_users_search_username_placeholder' => 'Chercher un compte (ex. 5#1)...',
+    'admin_users_email_readonly' => 'L\'e-mail est l\'identifiant de jeu. Seul son propriétaire peut le changer, sur la page Compte.',
+    'admin_chars_label_username' => 'Compte ou e-mail',
+    'admin_chars_placeholder_username' => 'Compte (5#1) ou e-mail',
+    'admin_chars_table_username' => 'Compte',
+    'admin_dashboard_table_username' => 'Compte',
+    'admin_dashboard_search_username_placeholder' => 'Chercher par compte',
+
+    // admin : boutique
+    'admin_shop_placeholder_itemset_id' => 'ID de l\'ensemble d\'objets en jeu',
+    'admin_shop_placeholder_entry' => 'ID de l\'objet en jeu, par exemple 19019',
+    'admin_shop_select_entry' => 'ID de l\'objet en jeu',
+    'label_discord_widget_id' => 'ID du serveur pour le widget Discord',
+    'help_discord_widget_id' => 'Remplacement facultatif. Laissez vide pour détecter automatiquement le serveur depuis l’URL d’invitation Discord configurée ci-dessus.',
+    'error_discord_widget_id' => 'L’ID du serveur Discord doit contenir entre 17 et 20 chiffres.',
+
+    // admin : console (RA à la place de SOAP)
+    'settings_nav_soap' => 'Console RA',
+    'page_title_soap' => 'Console du jeu',
+    'soap_title' => 'Lancer une commande console',
+    'gm_command_instructions' => 'La commande s\'exécute sur la console du worldserver du royaume choisi en haut de la page. Par exemple : <code>character level NomDuJoueur 60</code>.',
+    'gm_command_docs' => 'Pour la liste complète des commandes, tapez <code>help</code> ou consultez les <a href="https://trinitycore.info/en/server/GM-Commands" target="_blank" class="text-[#f2cf5b] hover:underline">commandes GM de TrinityCore</a>.',
+    'command_placeholder' => 'character level NomDuJoueur 60',
+    'ra_no_output' => '(la commande n\'a rien renvoyé)',
+    'error_admin_only' => 'Seuls les administrateurs peuvent modifier ce réglage.',
+    'title_soap_settings' => 'Réglages RA',
+    'page_description_soap' => 'Réglages de la console RA',
+    'header_soap_settings' => 'Réglages RA (console distante du worldserver)',
+    'status_soap_configured' => 'RA configuré',
+    'status_soap_not_configured' => 'RA non configuré',
+    'label_soap_url' => 'Hôte RA',
+    'placeholder_soap_url' => '127.0.0.1',
+    'help_soap_url' => 'L\'adresse sur laquelle les worldservers écoutent pour RA (Ra.IP dans worldserver.conf). Chaque royaume a son propre port, dans includes/realm_config.php.',
+    'label_soap_user' => 'Compte console',
+    'placeholder_soap_user' => 'Vide = le compte console du launcher',
+    'help_soap_user' => 'Un nom de compte de jeu comme 3#1, de niveau GM 3 sur tous les royaumes. Laissez vide pour utiliser le compte console créé par le Setup du repack (localservers.json).',
+    'label_soap_pass' => 'Mot de passe du compte console',
+    'placeholder_soap_pass' => 'Vide = garder le mot de passe enregistré',
+    'help_soap_pass' => 'Le mot de passe du compte console ci-dessus.',
+    'button_save_verify_soap' => 'Enregistrer',
+    'success_soap_settings_saved' => 'Réglages RA enregistrés.',
+    'error_soap_url_required' => 'L\'hôte RA est obligatoire (une adresse IP ou un nom d\'hôte).',
+    'error_soap_pass_required' => 'Le mot de passe du compte console est obligatoire.',
+    'ra_verify_ok' => 'RA répond sur le royaume %s.',
+    'ra_verify_failed' => 'Royaume %s : %s',
+    'info_step_1' => 'Le compte console doit avoir le niveau GM 3 dans <code>account_access</code> avec <code>RealmID = -1</code>. Le Setup du repack en crée un et le launcher le garde dans <code>localservers.json</code>.',
+    'info_step_2' => 'Le <code>worldserver.conf</code> de chaque royaume doit avoir <strong>Ra.Enable = 1</strong> (activé par défaut dans le repack).',
+    'info_step_3' => 'Le royaume doit être démarré : la boutique, la console et les services de personnage lui parlent par RA.',
+];

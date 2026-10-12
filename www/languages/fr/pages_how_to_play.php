@@ -1,0 +1,31 @@
+<?php
+return [
+    'how_to_play_title' => 'Comment Jouer',
+    'how_to_play_subtitle' => 'Configurez votre accès à Forever en quatre étapes.',
+    'step_1_title' => 'Créer un Compte',
+    'step_1_desc' => 'Inscrivez-vous gratuitement sur notre site web :',
+    'create_account' => 'Créer un Compte',
+    'create_account_alt' => 'Créer un Compte',
+    'step_2_title' => 'Télécharger le Jeu',
+    'step_2_desc' => 'Installez le client compatible puis Forever Launcher, qui prépare et démarre le jeu pour ce serveur.',
+    'direct_download' => 'Téléchargement Direct',
+    'torrent_download' => 'Téléchargement Torrent',
+    'download_game_alt' => 'Télécharger le Jeu',
+    'step_3_title' => 'Configurer la Realmlist',
+    'step_3_desc_1' => 'Ouvrez votre dossier World of Warcraft, allez dans Data/enUS ou Data/enGB, et trouvez realmlist.wtf.',
+    'step_3_desc_2' => 'Ouvrez-le avec le Bloc-notes et remplacez tout son contenu par :',
+    'step_3_desc_3' => 'Enregistrez le fichier et fermez-le.',
+    'edit_realmlist_alt' => 'Modifier la Realmlist',
+    'step_4_title' => 'Commencez à Jouer !',
+    'step_4_desc_1' => 'Ouvrez Wow.exe (pas Launcher.exe) et connectez-vous avec vos identifiants.',
+    'step_4_desc_2' => 'Profitez de votre aventure sur notre serveur !',
+    'launch_wow_alt' => 'Lancer WoW',
+    'cta_title' => 'Prêt à Commencer Votre Aventure ?',
+    'cta_desc' => 'Créez un compte maintenant et commencez votre aventure dans le monde d\'Azeroth !',
+    'cta_button' => 'Commencer Maintenant',
+    'quickstart_guide' => 'Guide de Démarrage Rapide',
+    'copy' => 'Copier',
+    'copied' => 'Copié !',
+    'ready_to_play' => 'Prêt à jouer ! Profitez de votre aventure.'
+];
+?>

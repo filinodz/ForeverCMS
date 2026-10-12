@@ -1,0 +1,27 @@
+<?php
+return [
+    'page_title' => ' - Reenviar correo de activación',
+    'meta_description' => 'Reenviar el correo de activación para su cuenta del servidor de World of Warcraft.',
+    'resend_title' => 'Reenviar correo de activación',
+    'username_placeholder' => 'Nombre de usuario',
+    'email_placeholder' => 'Correo electrónico',
+    'resend_button' => 'Reenviar correo de activación',
+    'login_link' => '¿Ya activado?',
+    'login_link_text' => '<a href="%s">Iniciar sesión aquí</a>',
+    'login_link_text_simple' => 'Iniciar sesión aquí',
+    'email_subject' => '[REENVIAR] Active su cuenta',
+    'email_greeting' => '¡Bienvenido, {username}!',
+    'email_thanks' => 'Gracias por registrarse. Haga clic en el botón de abajo para activar su cuenta:',
+    'email_button' => 'Activar cuenta',
+    'email_ignore' => 'Si no solicitó esto, ignore este correo electrónico.',
+    'error_username_required' => 'El nombre de usuario es obligatorio',
+    'error_email_required' => 'El correo electrónico es obligatorio',
+    'error_email_invalid' => 'Correo electrónico inválido',
+    'error_recaptcha_failed' => 'La verificación de reCAPTCHA falló.',
+    'error_database' => 'Error de base de datos: ',
+    'error_no_account' => 'No se encontró ninguna cuenta no activada coincidente',
+    'error_update_failed' => 'Error al actualizar: ',
+    'error_email_failed' => 'Error al enviar el correo: ',
+    'success_email_sent' => 'Correo de activación enviado exitosamente a %s',
+];
+?>

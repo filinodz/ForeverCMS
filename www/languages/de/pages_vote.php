@@ -1,0 +1,32 @@
+<?php
+return [
+    'vote_title' => ' - Stimme für epische Belohnungen ab',
+    'vote_title_h1' => ' - Stimme für epische Belohnungen ab',
+    'vote_subtitle' => 'Unterstütze unseren Server, indem du auf Top-Seiten abstimmst und exklusive In-Game-Belohnungen erhältst!',
+    'vote_no_sites' => 'Momentan sind keine Abstimmungsseiten verfügbar.',
+    'vote_points_label' => 'Abstimmungspunkte',
+    'vote_button' => 'Abstimmen',
+    'claim_button' => 'Einlösen',
+    'vote_cooldown_label' => 'h Abklingzeit',
+    'vote_cooldown_timer' => 'Abklingzeit: Berechnung läuft...',
+    'vote_cooldown_ready' => 'Bereit zum Abstimmen!',
+    'vote_rewards_title' => 'Abstimmungsbelohnungen',
+    'vote_reward_gold' => 'Gold',
+    'vote_reward_gold_desc' => 'Erhalte bis zu 40 Gold pro Abstimmung, um deinen Reichtum im Spiel zu steigern.',
+    'vote_reward_enchants' => 'Verzauberungen',
+    'vote_reward_enchants_desc' => 'Schalte mächtige Waffen- und Rüstungsverzauberungen für deine Charaktere frei.',
+    'vote_reward_mounts' => 'Reittiere',
+    'vote_reward_mounts_desc' => 'Erhalte Zugang zu exklusiven Reittieren, die nur durch Abstimmungen verfügbar sind.',
+    'vote_reward_vip_points' => 'VIP-Punkte',
+    'vote_reward_vip_points_desc' => 'Verdiene Punkte, um sie gegen spezielle Gegenstände und Vorteile einzutauschen.',
+    'vote_modal_title' => 'Danke fürs Abstimmen!',
+    'vote_modal_message' => 'Du wirst zu <span class="site-name"></span> weitergeleitet, um deine Abstimmung abzuschließen.',
+    'vote_modal_button' => 'Weiter',
+    'site_logo_alt' => 'Sahtout Server-Logo',
+    'vote_login_prompt' => 'Bitte melde dich an, um abzustimmen und Belohnungen zu verdienen.',
+    'vote_unauthorized' => 'Während der Abklingzeit kannst du nicht abstimmen.',
+    'vote_claim_success' => 'Belohnungen erfolgreich eingelöst!',
+    'vote_claim_error' => 'Fehler beim Einlösen der Belohnungen: ',
+    'vote_site_image_alt' => 'Abstimmungsseite'
+];
+?>

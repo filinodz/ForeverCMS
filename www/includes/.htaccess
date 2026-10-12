@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^(.*)$ / [R=301,L]
+Options -Indexes

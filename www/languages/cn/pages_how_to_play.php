@@ -1,0 +1,31 @@
+<?php
+return [
+    'how_to_play_title' => '如何游戏',
+    'how_to_play_subtitle' => '通过4个简单步骤加入我们的服务器，今天就开始你的巫妖王之怒冒险！',
+    'step_1_title' => '创建账户',
+    'step_1_desc' => '在我们的网站上注册免费账户：',
+    'create_account' => '创建账户',
+    'create_account_alt' => '创建账户',
+    'step_2_title' => '下载游戏',
+    'step_2_desc' => '你需要魔兽世界：巫妖王之怒 (3.3.5a)。选择你喜欢的下载方式：',
+    'direct_download' => '直接下载',
+    'torrent_download' => '种子下载',
+    'download_game_alt' => '下载游戏',
+    'step_3_title' => '设置Realmlist',
+    'step_3_desc_1' => '打开你的魔兽世界文件夹，进入Data/enUS或Data/enGB，找到realmlist.wtf。',
+    'step_3_desc_2' => '用记事本打开它，将里面的所有内容替换为：',
+    'step_3_desc_3' => '保存文件并关闭它。',
+    'edit_realmlist_alt' => '编辑Realmlist',
+    'step_4_title' => '开始游戏！',
+    'step_4_desc_1' => '打开Wow.exe（不是Launcher.exe），使用你的账户凭证登录。',
+    'step_4_desc_2' => '在我们的服务器上享受你的冒险！',
+    'launch_wow_alt' => '启动魔兽世界',
+    'cta_title' => '准备好开始你的冒险了吗？',
+    'cta_desc' => '立即创建账户，开始在艾泽拉斯世界的冒险！',
+    'cta_button' => '立即开始',
+    'quickstart_guide' => '快速入门指南',
+    'copy' => '复制',
+    'copied' => '已复制！',
+    'ready_to_play' => '准备游戏！享受你的冒险。'
+];
+?>

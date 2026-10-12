@@ -1,0 +1,40 @@
+name: Bug report
+description: Report a reproducible ForeverCMS problem
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "Thank you. Remove passwords, account data, private addresses and session IDs before submitting."
+  - type: input
+    id: version
+    attributes:
+      label: ForeverCMS version
+      placeholder: "For example: 1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options: ["Installation / launcher", "Account", "Admin panel", "Armory / 3D viewer", "Shop", "Discord / home page", "Other"]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: "1. Open…\n2. Select…\n3. Observe…"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and sanitized logs
+      description: Include Windows/PHP and ForeverRepack versions. Do not paste secrets.

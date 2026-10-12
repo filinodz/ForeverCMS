@@ -1,0 +1,34 @@
+name: PHP checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Show PHP version
+        run: php --version
+
+      - name: Lint application PHP
+        shell: bash
+        run: >-
+          find www -type f -name '*.php'
+          -not -path 'www/vendor/*'
+          -print0 | xargs -0 -n1 php -l
+
+      - name: Reject local-only files
+        shell: bash
+        run: |
+          test ! -e www/includes/config.secret.php
+          test ! -d setup/backups
+          test ! -d logs
+          test ! -d tmp
