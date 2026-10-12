@@ -69,6 +69,7 @@ function isValidRealmHost($value) {
 }
 
 $currentPlayerDisplay = $currentRealm['player_display'] ?? 'all';
+$currentShowStatus = !array_key_exists('show_status', $currentRealm) || (bool)$currentRealm['show_status'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $csrfToken = (string)($_POST['csrf_token'] ?? '');
@@ -83,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $realmCheckAddress = trim($_POST['realm_check_address'] ?? $currentCheckAddress);
         $realmPort = (int) ($_POST['realm_port'] ?? 0);
         $playerDisplay = $_POST['player_display'] ?? 'all';
+        $showStatus = isset($_POST['show_status']);
         $logo_path = $currentRealm['logo'] ?? $defaultLogo;
 
         if (!in_array($playerDisplay, ['all', 'separate'], true)) {
@@ -153,7 +155,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'check_address'  => $realmCheckAddress,
             'port'           => $realmPort,
             'logo'           => $logo_path,
-            'player_display' => $playerDisplay
+            'player_display' => $playerDisplay,
+            'show_status'    => $showStatus
         ]);
 
         $configPhp  = "<?php\n";
@@ -415,6 +418,28 @@ include $project_root . 'includes/header.php';
                                        min="1" max="65535" step="1"
                                        value="<?php echo htmlspecialchars($_POST['realm_port'] ?? $currentRealm['port']); ?>" 
                                        required>
+                            </div>
+
+                            <!-- Player Display -->
+                            <div>
+                                <label class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block mb-2">
+                                    <?php echo translate('label_realm_visibility', 'Home-page status visibility'); ?>
+                                </label>
+                                <label class="flex items-start gap-3 p-4 bg-[#0a0e16]/50 border border-[rgba(201,162,39,.15)] rounded-sm cursor-pointer hover:border-[#c9a227]/40 transition-all duration-200">
+                                    <input type="checkbox"
+                                           name="show_status"
+                                           value="1"
+                                           class="mt-1 accent-[#c9a227]"
+                                           <?php echo (($_SERVER['REQUEST_METHOD'] === 'POST' ? isset($_POST['show_status']) : $currentShowStatus)) ? 'checked' : ''; ?>>
+                                    <div>
+                                        <div class="text-[#e5e7eb] font-semibold text-sm">
+                                            <?php echo translate('realm_visibility_show', 'Show this realm in the public status panel'); ?>
+                                        </div>
+                                        <div class="text-[#6a7a8a] text-xs mt-1">
+                                            <?php echo translate('realm_visibility_show_desc', 'Disable this for realms such as PvP, Hardcore or RP that you do not want to advertise on the home page.'); ?>
+                                        </div>
+                                    </div>
+                                </label>
                             </div>
 
                             <!-- Player Display -->

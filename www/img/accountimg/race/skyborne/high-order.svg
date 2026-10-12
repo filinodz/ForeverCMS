@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">High Order Skyborne</title>
+  <desc id="desc">A gold and azure winged sun emblem for the Alliance Skyborne.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="68%">
+      <stop offset="0" stop-color="#173f75"/>
+      <stop offset="1" stop-color="#071426"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff1a8"/>
+      <stop offset=".45" stop-color="#e6b93e"/>
+      <stop offset="1" stop-color="#8a5b0b"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="60" fill="url(#bg)" stroke="#e2b640" stroke-width="4"/>
+  <path fill="#62b8ff" stroke="#d8f0ff" stroke-width="2" d="M57 58 22 32l11 26-20-2 27 22-19 7 36 14-11-29zM71 58l35-26-11 26 20-2-27 22 19 7-36 14 11-29z"/>
+  <path fill="url(#gold)" stroke="#fff0a0" stroke-width="2" d="m64 20 9 22 23 2-18 15 6 23-20-12-20 12 6-23-18-15 23-2z"/>
+  <circle cx="64" cy="56" r="12" fill="#f9dc63" stroke="#fff4bd" stroke-width="3"/>
+  <path fill="none" stroke="#f5d86e" stroke-width="4" stroke-linecap="round" d="M64 78v30M53 92l11 16 11-16"/>
+</svg>

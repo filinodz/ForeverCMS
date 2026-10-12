@@ -500,15 +500,7 @@ function getOnlineStatus($online) {
 
 function getRaceIcon($race, $gender) {
     global $base_path;
-    $races = [
-        1 => 'human', 2 => 'orc', 3 => 'dwarf', 4 => 'nightelf',
-        5 => 'undead', 6 => 'tauren', 7 => 'gnome', 8 => 'troll',
-        10 => 'bloodelf', 11 => 'draenei'
-    ];
-    $gender_folder = ($gender == 1) ? 'female' : 'male';
-    $race_name = $races[$race] ?? 'default';
-    $image = $race_name . '.png';
-    return sprintf('<img src="%simg/accountimg/race/%s/%s" alt="%s" class="w-6 h-6 inline-block rounded-full">', $base_path, $gender_folder, $image, translate('race_icon', 'Race Icon'));
+    return sprintf('<img src="%simg/accountimg/race/%s" alt="%s" class="w-6 h-6 inline-block rounded-full">', $base_path, forever_race_icon_file($race, $gender), translate('race_icon', 'Race Icon'));
 }
 
 /** Forever: teleport destinations of a race's faction, as key => world.game_tele name. */
@@ -530,8 +522,7 @@ function getClassIcon($class) {
 
 function getFactionIcon($race) {
     global $base_path;
-    $allianceRaces = [1, 3, 4, 7, 11];
-    $faction = in_array($race, $allianceRaces) ? 'alliance.png' : 'horde.png';
+    $faction = forever_is_alliance($race) ? 'alliance.png' : 'horde.png';
     return sprintf('<img src="%simg/accountimg/faction/%s" alt="%s" class="w-5 h-5 inline-block">', $base_path, $faction, translate('faction_icon', 'Faction Icon'));
 }
 

@@ -117,8 +117,7 @@ try {
 }
 // Faction helper
 function getFaction($race) {
-    $alliance = [1, 3, 4, 7, 11, 22, 25, 29];
-    return in_array((int)$race, $alliance, true) ? 'Alliance' : 'Horde';
+    return forever_is_alliance($race) ? 'Alliance' : 'Horde';
 }
 
 // Image paths
@@ -129,17 +128,7 @@ function factionIcon($race) {
 }
 function raceIcon($race, $gender) {
     global $base_path;
-    $genderFolder = ((int)$gender === 0) ? 'male' : 'female';
-    $raceMap = [
-        1 => 'human', 2 => 'orc', 3 => 'dwarf', 4 => 'nightelf',
-        5 => 'undead', 6 => 'tauren', 7 => 'gnome', 8 => 'troll',
-        9 => 'goblin', 10 => 'bloodelf', 11 => 'draenei',
-        22 => 'worgen', 25 => 'pandaren_alliance', 26 => 'pandaren_horde',
-        29 => 'voidelf'
-    ];
-    $raceInt = (int)$race;
-    $raceName = $raceMap[$raceInt] ?? 'unknown';
-    return $base_path . "img/accountimg/race/{$genderFolder}/{$raceName}.png";
+    return $base_path . 'img/accountimg/race/' . forever_race_icon_file($race, $gender);
 }
 function classIcon($class) {
     global $base_path;

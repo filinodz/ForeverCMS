@@ -499,8 +499,10 @@ $result = $site_db->query($query);
                                 (string)($social_links['discord'] ?? ''),
                                 (string)($discord_widget_id ?? '')
                             );
+                            $home_discord_widget_available = $home_discord_widget_id !== ''
+                                && forever_discord_widget_available($home_discord_widget_id);
                             ?>
-                            <?php if ($home_discord_widget_id !== ''): ?>
+                            <?php if ($home_discord_widget_available): ?>
                                 <div class="discord-widget-container bg-black/30 p-1 sm:p-2 border border-[#c9a227]/20 rounded-sm">
                                     <iframe src="https://discord.com/widget?id=<?php echo rawurlencode($home_discord_widget_id); ?>&amp;theme=dark"
                                             title="<?php echo htmlspecialchars(translate('home_discord_widget_title', 'Forever Discord community'), ENT_QUOTES, 'UTF-8'); ?>"
@@ -512,13 +514,19 @@ $result = $site_db->query($query);
                                             sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
                                             class="rounded-sm"></iframe>
                                 </div>
-                            <?php elseif (!empty($social_links['discord'])): ?>
+                            <?php endif; ?>
+                            <?php if (!empty($social_links['discord'])): ?>
                                 <a class="discord-invite-fallback" href="<?php echo htmlspecialchars($social_links['discord'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">
                                     <i class="fab fa-discord"></i>
-                                    <span><?php echo translate('home_discord_join_button', 'Join the Forever community'); ?></span>
+                                    <span><?php echo translate($home_discord_widget_available ? 'home_discord_open_button' : 'home_discord_join_button', $home_discord_widget_available ? 'Open Discord' : 'Join the Forever community'); ?></span>
                                     <i class="fas fa-arrow-up-right-from-square text-xs"></i>
                                 </a>
-                            <?php else: ?>
+                                <?php if ($home_discord_widget_id !== '' && !$home_discord_widget_available): ?>
+                                    <p class="discord-widget-empty mt-2"><?php echo translate('home_discord_widget_disabled', 'The live Discord widget is unavailable. Enable Server Settings > Widget in Discord; the invitation button still works.'); ?></p>
+                                <?php endif; ?>
+                            <?php elseif ($home_discord_widget_id !== '' && !$home_discord_widget_available): ?>
+                                <p class="discord-widget-empty"><?php echo translate('home_discord_widget_disabled_no_invite', 'The Discord widget is disabled and no invitation URL is configured.'); ?></p>
+                            <?php elseif ($home_discord_widget_id === ''): ?>
                                 <p class="discord-widget-empty"><?php echo translate('home_discord_not_configured', 'Discord is not configured yet.'); ?></p>
                             <?php endif; ?>
                         </div>

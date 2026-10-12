@@ -30,8 +30,7 @@ if ($arena3v3Display === 'humans_only' && isset($char_db)) {
 
 // Faction from race
 function getFaction($race) {
-    $alliance = [1, 3, 4, 7, 11, 22, 25, 29];
-    return in_array($race, $alliance) ? 'Alliance' : 'Horde';
+    return forever_is_alliance($race) ? 'Alliance' : 'Horde';
 }
 
 function factionIconByName($faction) {

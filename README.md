@@ -22,7 +22,8 @@ manage the portal from one themed administration area.
 ## Highlights
 
 - Account registration, login, activation and recovery workflows.
-- Multi-realm status, character lists and armory pages.
+- Multi-realm status with per-realm visibility controls, character lists and armory pages.
+- Native High Order and Windshaper Skyborne faction counting and themed race icons.
 - Local 3D character viewer with bundled model data.
 - News, downloads, guides, vote system and premium shop.
 - Administration for content, users, realms, Discord and shop settings.

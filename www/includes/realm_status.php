@@ -18,7 +18,7 @@ define('REALM_CACHE_DIR', __DIR__ . '/../cache/');
 define('REALM_CACHE_TTL', 30);          // Refresh every 30 seconds
 define('REALM_CACHE_TIMEOUT', 1.0);     // Socket timeout in seconds
 define('REALM_CACHE_STALE_MAX', 300);   // Max age of stale fallback data: 5 minutes
-define('REALM_CACHE_VERSION', 2);       // Schema version to invalidate outdated caches
+define('REALM_CACHE_VERSION', 3);       // Schema version to invalidate outdated caches
 
 // Ensure cache directory exists and is safe
 if (!is_dir(REALM_CACHE_DIR)) {
@@ -207,8 +207,8 @@ function getOnlinePlayerStats($char_db, $playerbotsDb = 'acore_playerbots') {
             COUNT(*) AS total,
             COUNT(*) AS real_players,
             0 AS bots,
-            COALESCE(SUM(c.race IN (1, 3, 4, 7, 11)), 0) AS alliance,
-            COALESCE(SUM(c.race IN (2, 5, 6, 8, 10)), 0) AS horde
+            COALESCE(SUM(c.race IN (1, 3, 4, 7, 11, 22, 25, 29, 30, 32, 34, 37, 52, 85, 86, 95)), 0) AS alliance,
+            COALESCE(SUM(c.race NOT IN (1, 3, 4, 7, 11, 22, 24, 25, 29, 30, 32, 34, 37, 52, 85, 86, 95)), 0) AS horde
         FROM characters c
         WHERE c.online = 1
     ";
@@ -221,8 +221,8 @@ function getOnlinePlayerStats($char_db, $playerbotsDb = 'acore_playerbots') {
             COUNT(*) AS total,
             COALESCE(SUM(pat.account_id IS NULL), 0) AS real_players,
             COALESCE(SUM(pat.account_id IS NOT NULL), 0) AS bots,
-            COALESCE(SUM(c.race IN (1, 3, 4, 7, 11)), 0) AS alliance,
-            COALESCE(SUM(c.race IN (2, 5, 6, 8, 10)), 0) AS horde
+            COALESCE(SUM(c.race IN (1, 3, 4, 7, 11, 22, 25, 29, 30, 32, 34, 37, 52, 85, 86, 95)), 0) AS alliance,
+            COALESCE(SUM(c.race NOT IN (1, 3, 4, 7, 11, 22, 24, 25, 29, 30, 32, 34, 37, 52, 85, 86, 95)), 0) AS horde
         FROM characters c
         LEFT JOIN {$playerbotsTable} pat
             ON pat.account_id = c.account
@@ -489,6 +489,10 @@ function formatServerUptime($seconds) {
 <div class="space-y-3">
     <?php foreach ($realmlist as $realm): ?>
         <?php
+        if (array_key_exists('show_status', $realm) && !$realm['show_status']) {
+            continue;
+        }
+
         // Forever: every realm counts the players of its own characters database
         $realmStatus = getRealmStatusData($realm, forever_char_db((int)$realm['id']), $auth_db);
 

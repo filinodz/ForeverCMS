@@ -314,15 +314,7 @@ if (!empty($account_ids)) {
 // Helper functions for character icons
 function getRaceIcon($race, $gender) {
     global $base_path;
-    $races = [
-        1 => 'human', 2 => 'orc', 3 => 'dwarf', 4 => 'nightelf',
-        5 => 'undead', 6 => 'tauren', 7 => 'gnome', 8 => 'troll',
-        10 => 'bloodelf', 11 => 'draenei'
-    ];
-    $gender_folder = ($gender == 1) ? 'female' : 'male';
-    $race_name = $races[$race] ?? 'default';
-    $image = $race_name . '.png';
-    return '<img src="' . $base_path . 'img/accountimg/race/' . $gender_folder . '/' . $image . '" alt="' . translate('admin_users_race_alt', 'Race') . '" class="w-5 h-5 inline-block">';
+    return '<img src="' . $base_path . 'img/accountimg/race/' . forever_race_icon_file($race, $gender) . '" alt="' . translate('admin_users_race_alt', 'Race') . '" class="w-5 h-5 inline-block">';
 }
 
 function getClassIcon($class) {
@@ -337,8 +329,7 @@ function getClassIcon($class) {
 
 function getFactionIcon($race) {
     global $base_path;
-    $allianceRaces = [1, 3, 4, 7, 11];
-    $faction = in_array($race, $allianceRaces) ? 'alliance.png' : 'horde.png';
+    $faction = forever_is_alliance($race) ? 'alliance.png' : 'horde.png';
     return '<img src="' . $base_path . 'img/accountimg/faction/' . $faction . '" alt="' . translate('admin_users_faction_alt', 'Faction') . '" class="w-4 h-4 inline-block">';
 }
 

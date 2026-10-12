@@ -421,13 +421,38 @@ function forever_class_name($class)
 function forever_race_name($race)
 {
     static $names = [1 => 'Human', 2 => 'Orc', 3 => 'Dwarf', 4 => 'Night Elf', 5 => 'Undead', 6 => 'Tauren', 7 => 'Gnome', 8 => 'Troll',
-        9 => 'Goblin', 10 => 'Blood Elf', 11 => 'Draenei', 22 => 'Worgen'];
+        9 => 'Goblin', 10 => 'Blood Elf', 11 => 'Draenei', 22 => 'Worgen', 95 => 'High Order', 96 => 'Windshaper'];
     return $names[(int)$race] ?? 'Unknown';
+}
+
+function forever_is_alliance($race)
+{
+    return in_array((int)$race, [1, 3, 4, 7, 11, 22, 25, 29, 30, 32, 34, 37, 52, 85, 86, 95], true);
 }
 
 function forever_is_horde($race)
 {
-    return in_array((int)$race, [2, 5, 6, 8, 9, 10], true);
+    return !forever_is_alliance($race) && (int)$race !== 24;
+}
+
+/** File name used by the account and armory race icon renderers. */
+function forever_race_icon_file($race, $gender = 0)
+{
+    $race = (int)$race;
+    if ($race === 95) {
+        return 'skyborne/high-order.svg';
+    }
+    if ($race === 96) {
+        return 'skyborne/windshaper.svg';
+    }
+
+    static $icons = [
+        1 => 'human.png', 2 => 'orc.png', 3 => 'dwarf.png', 4 => 'nightelf.png',
+        5 => 'undead.png', 6 => 'tauren.png', 7 => 'gnome.png', 8 => 'troll.png',
+        9 => 'goblin.png', 10 => 'bloodelf.png', 11 => 'draenei.png', 22 => 'worgen.png',
+        25 => 'pandaren_alliance.png', 26 => 'pandaren_horde.png', 29 => 'voidelf.png',
+    ];
+    return (($gender == 1) ? 'female/' : 'male/') . ($icons[$race] ?? 'default.png');
 }
 
 /** Characters of an account on one realm; deleted characters waiting for restoration are left out. */

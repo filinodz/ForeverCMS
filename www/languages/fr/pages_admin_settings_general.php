@@ -18,7 +18,8 @@ return [
 
     // YouTube
     'label_youtube_embed' => 'Lien intégré YouTube en vedette',
-    'help_youtube_embed' => 'Collez un lien YouTube (watch, short ou embed). Le système le normalisera en URL d\'intégration.',
+    'help_youtube_embed' => 'Facultatif. Collez un lien YouTube (watch, short ou embed), ou laissez vide pour masquer le panneau vidéo.',
+    'error_youtube_embed' => 'L’URL YouTube mise en avant est invalide. Laissez-la vide pour désactiver le panneau vidéo.',
     'label_youtube_title' => 'Titre de la vidéo',
     'placeholder_youtube_title' => 'Vidéo en vedette',
     'help_youtube_title' => 'Ce titre apparaît centré au-dessus de la vidéo.',
@@ -44,7 +45,7 @@ return [
     'placeholder_linkedin' => 'URL LinkedIn',
     'help_social_links' => 'Saisissez les URL complètes de vos profils sociaux. Laissez vide pour masquer.',
     'label_discord_widget_id' => 'ID du serveur pour le widget Discord',
-    'help_discord_widget_id' => 'Remplacement facultatif. Laissez vide pour détecter automatiquement le serveur depuis l’URL d’invitation Discord configurée ci-dessus.',
+    'help_discord_widget_id' => 'Remplacement facultatif. Activez d’abord Paramètres du serveur > Widget dans Discord. Laissez vide pour détecter le serveur depuis l’URL d’invitation ci-dessus.',
     'error_discord_widget_id' => 'L’ID du serveur Discord doit contenir entre 17 et 20 chiffres.',
 
     // Buttons

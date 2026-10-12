@@ -104,3 +104,66 @@ function forever_discord_widget_id(string $discordUrl, string $manualId = ''): s
     return $guildId;
 }
 
+/**
+ * Confirm that Discord's official widget is enabled for a guild.
+ *
+ * Discord returns HTTP 403 when the guild exists but Server Settings > Widget
+ * is disabled. Caching keeps this check away from the hot path while avoiding
+ * the permanent loading spinner produced by Discord's iframe in that state.
+ */
+function forever_discord_widget_available(string $guildId): bool
+{
+    if (!preg_match('/^\d{17,20}$/', $guildId)) {
+        return false;
+    }
+
+    $cacheDir = dirname(__DIR__) . '/cache';
+    $cacheFile = $cacheDir . '/discord-widget-state-' . $guildId . '.json';
+    if (is_file($cacheFile)) {
+        $cached = json_decode((string)@file_get_contents($cacheFile), true);
+        if (is_array($cached) && (int)($cached['expires'] ?? 0) > time()) {
+            return !empty($cached['available']);
+        }
+    }
+
+    $apiUrl = 'https://discord.com/api/guilds/' . rawurlencode($guildId) . '/widget.json';
+    $status = 0;
+    if (function_exists('curl_init')) {
+        $curl = curl_init($apiUrl);
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 2,
+            CURLOPT_TIMEOUT => 3,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_USERAGENT => 'ForeverCMS/1.1',
+        ]);
+        curl_exec($curl);
+        $status = (int)curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        curl_close($curl);
+    } elseif (filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) {
+        $context = stream_context_create(['http' => [
+            'method' => 'GET',
+            'timeout' => 3,
+            'ignore_errors' => true,
+            'header' => "Accept: application/json\r\nUser-Agent: ForeverCMS/1.1\r\n",
+        ]]);
+        @file_get_contents($apiUrl, false, $context);
+        foreach (($http_response_header ?? []) as $header) {
+            if (preg_match('~^HTTP/\S+\s+(\d{3})~i', $header, $statusMatch)) {
+                $status = (int)$statusMatch[1];
+                break;
+            }
+        }
+    }
+
+    $available = $status === 200;
+    if (is_dir($cacheDir) && is_writable($cacheDir)) {
+        @file_put_contents($cacheFile, json_encode([
+            'available' => $available,
+            'expires' => time() + ($available ? 600 : 120),
+        ]), LOCK_EX);
+    }
+
+    return $available;
+}
+

@@ -16,6 +16,7 @@ $realmlist = array (
     'char_db' => 'characters',
     'logo' => 'img/forever/realm-crest.svg',
     'player_display' => 'all',
+    'show_status' => true,
   ),
   1 =>
   array (
@@ -29,6 +30,7 @@ $realmlist = array (
     'char_db' => 'characters_pvp',
     'logo' => 'img/forever/realm-crest.svg',
     'player_display' => 'all',
+    'show_status' => true,
   ),
   2 =>
   array (
@@ -42,6 +44,7 @@ $realmlist = array (
     'char_db' => 'characters_rp',
     'logo' => 'img/forever/realm-crest.svg',
     'player_display' => 'all',
+    'show_status' => true,
   ),
   3 =>
   array (
@@ -55,5 +58,6 @@ $realmlist = array (
     'char_db' => 'characters_hc',
     'logo' => 'img/forever/realm-crest.svg',
     'player_display' => 'all',
+    'show_status' => true,
   ),
 );

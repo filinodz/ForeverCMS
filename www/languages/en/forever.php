@@ -58,6 +58,9 @@ return [
     'shop_premium_desc_skyborne' => 'Rare Skyborne collectible created for World of Warcraft: Forever.',
     'home_discord_widget_title' => 'Forever Discord community',
     'home_discord_join_button' => 'Join the Forever community',
+    'home_discord_open_button' => 'Open Discord',
+    'home_discord_widget_disabled' => 'The live Discord widget is unavailable. Enable Server Settings > Widget in Discord; the invitation button still works.',
+    'home_discord_widget_disabled_no_invite' => 'The Discord widget is disabled and no invitation URL is configured.',
     'home_discord_not_configured' => 'Discord is not configured yet.',
 
     // admin: users and characters

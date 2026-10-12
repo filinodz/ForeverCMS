@@ -648,7 +648,9 @@ require_once $project_root . 'includes/header.php';
                 7 => ['name' => translate('race_gnome', 'Gnome'), 'icon' => 'gnome'],
                 8 => ['name' => translate('race_troll', 'Troll'), 'icon' => 'troll'],
                 10 => ['name' => translate('race_blood_elf', 'Blood Elf'), 'icon' => 'bloodelf'],
-                11 => ['name' => translate('race_draenei', 'Draenei'), 'icon' => 'draenei']
+                11 => ['name' => translate('race_draenei', 'Draenei'), 'icon' => 'draenei'],
+                95 => ['name' => translate('race_high_order', 'High Order'), 'icon' => 'skyborne/high-order'],
+                96 => ['name' => translate('race_windshaper', 'Windshaper'), 'icon' => 'skyborne/windshaper']
             ];
             $classes = [
                 1 => ['name' => translate('class_warrior', 'Warrior'), 'icon' => 'warrior'],
@@ -677,11 +679,13 @@ require_once $project_root . 'includes/header.php';
                 4 => ['name' => translate('faction_alliance', 'Alliance'), 'icon' => 'alliance'],
                 7 => ['name' => translate('faction_alliance', 'Alliance'), 'icon' => 'alliance'],
                 11 => ['name' => translate('faction_alliance', 'Alliance'), 'icon' => 'alliance'],
+                95 => ['name' => translate('faction_alliance', 'Alliance'), 'icon' => 'alliance'],
                 2 => ['name' => translate('faction_horde', 'Horde'), 'icon' => 'horde'],
                 5 => ['name' => translate('faction_horde', 'Horde'), 'icon' => 'horde'],
                 6 => ['name' => translate('faction_horde', 'Horde'), 'icon' => 'horde'],
                 8 => ['name' => translate('faction_horde', 'Horde'), 'icon' => 'horde'],
-                10 => ['name' => translate('faction_horde', 'Horde'), 'icon' => 'horde']
+                10 => ['name' => translate('faction_horde', 'Horde'), 'icon' => 'horde'],
+                96 => ['name' => translate('faction_horde', 'Horde'), 'icon' => 'horde']
             ];
             $qualityColors = [
                 0 => '#9d9d9d', 1 => '#ffffff', 2 => '#1eff00', 3 => '#0070dd',
@@ -910,7 +914,9 @@ require_once $project_root . 'includes/header.php';
                             <?php 
                             $raceIcon = isset($races[$character['race']]) ? $races[$character['race']]['icon'] : 'unknown';
                             $gender = ($character['gender'] ?? 0) == 0 ? 'male' : 'female';
-                            $raceIconPath = "{$base_path}img/accountimg/race/{$gender}/{$raceIcon}.png";
+                            $raceIconPath = in_array((int)($character['race'] ?? 0), [95, 96], true)
+                                ? "{$base_path}img/accountimg/race/{$raceIcon}.svg"
+                                : "{$base_path}img/accountimg/race/{$gender}/{$raceIcon}.png";
                             ?>
                             <img src="<?= htmlspecialchars($raceIconPath) ?>" alt="<?= isset($races[$character['race']]) ? htmlspecialchars($races[$character['race']]['name']) : translate('race_unknown', 'Unknown') ?>">
                             <?= isset($races[$character['race']]) ? htmlspecialchars($races[$character['race']]['name']) : translate('race_unknown', 'Unknown') ?>

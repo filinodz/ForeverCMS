@@ -1,6 +1,14 @@
 <?php
-session_start();
-session_unset();
+define('ALLOWED_ACCESS', true);
+require_once __DIR__ . '/../includes/paths.php';
+require_once $project_root . 'includes/session.php';
+
+$_SESSION = [];
+if (ini_get('session.use_cookies')) {
+    $cookie = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000, $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']);
+}
 session_destroy();
-header('Location: login');
+
+header("Location: {$base_path}login");
 exit;

@@ -71,26 +71,20 @@ if (empty($site_title_name_new)) {
 // Sanitize: prevent PHP injection when writing to config
 $site_title_name_new = trim($site_title_name_new);
 
-$youtube_embed_url_new = normalizeYouTubeEmbedUrl((string)($_POST['youtube_embed_url'] ?? ''));
-if ($youtube_embed_url_new === '') {
-    $youtube_embed_url_new = $youtube_embed_url;
-}
+$youtube_embed_input = trim((string)($_POST['youtube_embed_url'] ?? ''));
+$youtube_embed_url_new = normalizeYouTubeEmbedUrl($youtube_embed_input);
 
-$youtube_title_new = trim($_POST['youtube_title'] ?? '');
-if ($youtube_title_new === '') {
-    $youtube_title_new = 'Featured Video';
-}
-$youtube_title_new = trim($youtube_title_new);
+$youtube_title_new = trim((string)($_POST['youtube_title'] ?? ''));
 
-$youtube_description_new = trim($_POST['youtube_description'] ?? '');
-if ($youtube_description_new === '') {
-    $youtube_description_new = 'Watch a featured video here. Replace it with your own channel or highlight later.';
-}
-$youtube_description_new = trim($youtube_description_new);
+$youtube_description_new = trim((string)($_POST['youtube_description'] ?? ''));
 
 // Initialize variables
 $errors = [];
 $success = false;
+
+if ($youtube_embed_input !== '' && $youtube_embed_url_new === '') {
+    $errors[] = translate('error_youtube_embed', 'The featured YouTube URL is invalid. Leave it empty to disable the video panel.');
+}
 
 // Handle logo upload (YOUR ORIGINAL CODE - UNTOUCHED)
 $logo_path = $site_logo;

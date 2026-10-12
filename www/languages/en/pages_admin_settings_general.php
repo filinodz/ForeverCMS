@@ -18,7 +18,8 @@ return [
 
     // YouTube
     'label_youtube_embed' => 'Featured YouTube Embed Link',
-    'help_youtube_embed' => 'Paste a YouTube watch, short, or embed link. The system will normalize it to an embed URL.',
+    'help_youtube_embed' => 'Optional. Paste a YouTube watch, short, or embed link, or leave it empty to hide the video panel.',
+    'error_youtube_embed' => 'The featured YouTube URL is invalid. Leave it empty to disable the video panel.',
     'label_youtube_title' => 'Video Title',
     'placeholder_youtube_title' => 'Featured Video',
     'help_youtube_title' => 'This title appears centered above the video.',
@@ -44,7 +45,7 @@ return [
     'placeholder_linkedin' => 'LinkedIn URL',
     'help_social_links' => 'Enter the full URLs for your social media profiles. Leave blank to hide.',
     'label_discord_widget_id' => 'Discord Widget Server ID',
-    'help_discord_widget_id' => 'Optional override. Leave empty to resolve the widget automatically from the Discord invitation URL configured above.',
+    'help_discord_widget_id' => 'Optional override. Enable Server Settings > Widget in Discord first. Leave empty to resolve the server automatically from the invitation URL above.',
     'error_discord_widget_id' => 'The Discord server ID must contain 17 to 20 digits.',
 
     // Buttons

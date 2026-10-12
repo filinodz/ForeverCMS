@@ -174,8 +174,7 @@ include $project_root . 'includes/header.php';
                                               focus:bg-[#0f141e]/90 outline-none transition-all duration-200 
                                               placeholder:text-[#96aac8]/40"
                                        value="<?php echo htmlspecialchars($youtube_embed_url ?? ''); ?>"
-                                       placeholder="https://www.youtube.com/embed/VIDEO_ID"
-                                       required>
+                                       placeholder="https://www.youtube.com/embed/VIDEO_ID">
                                 <div class="text-[#6a7a8a] text-xs mt-1">
                                     <?php echo translate('help_youtube_embed', 'Paste a YouTube watch, short, or embed link. The system will normalize it to an embed URL.'); ?>
                                 </div>
@@ -197,8 +196,7 @@ include $project_root . 'includes/header.php';
                                               placeholder:text-[#96aac8]/40"
                                        maxlength="64"
                                        value="<?php echo htmlspecialchars($youtube_title ?? 'Featured Video'); ?>"
-                                       placeholder="<?php echo translate('placeholder_youtube_title', 'Featured Video'); ?>"
-                                       required>
+                                       placeholder="<?php echo translate('placeholder_youtube_title', 'Featured Video'); ?>">
                                 <div class="text-[#6a7a8a] text-xs mt-1">
                                     <?php echo translate('help_youtube_title', 'This title appears centered above the video.'); ?>
                                 </div>
