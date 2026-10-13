@@ -422,14 +422,22 @@ $result = $site_db->query($query);
                     </div>
                 </section>
 
-                <!-- TABS: YOUTUBE + BUGTRACKER -->
-                <section class="wow-panel p-3 sm:p-4 md:p-6" <?php echo empty($youtube_embed_url) ? 'style="display:none"' : ''; ?>>
-                    <div class="flex flex-wrap gap-1 sm:gap-2 mb-4 sm:mb-6">
-                        <button class="tab-btn text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2" data-tab="youtube"><?php echo translate('home_tab_youtube', 'YouTube'); ?></button>
-                        <button class="tab-btn text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2" data-tab="bugtracker"><?php echo translate('home_tab_bugtracker', 'Bugtracker'); ?></button>
-                    </div>
+                <?php
+                $home_show_youtube = !empty($youtube_embed_url);
+                $home_show_bugtracker = !empty($bugtracker_enabled);
+                ?>
+                <!-- Optional community panels -->
+                <?php if ($home_show_youtube || $home_show_bugtracker): ?>
+                <section class="wow-panel p-3 sm:p-4 md:p-6">
+                    <?php if ($home_show_youtube && $home_show_bugtracker): ?>
+                        <div class="flex flex-wrap gap-1 sm:gap-2 mb-4 sm:mb-6">
+                            <button class="tab-btn active text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2" data-tab="youtube"><?php echo translate('home_tab_youtube', 'YouTube'); ?></button>
+                            <button class="tab-btn text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2" data-tab="bugtracker"><?php echo translate('home_tab_bugtracker', 'Bugtracker'); ?></button>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="tab-content">
+                        <?php if ($home_show_youtube): ?>
                         <div class="tab-panel active" id="panel-youtube">
                             <div class="text-center mb-4 sm:mb-5">
                                 <h2 class="section-title text-lg sm:text-xl md:text-2xl force-wrap" style="justify-content:center;">
@@ -448,16 +456,30 @@ $result = $site_db->query($query);
                                     allowfullscreen></iframe>
                             </div>
                         </div>
+                        <?php endif; ?>
 
-                        <div class="tab-panel" id="panel-bugtracker">
+                        <?php if ($home_show_bugtracker): ?>
+                        <div class="tab-panel <?php echo $home_show_youtube ? '' : 'active'; ?>" id="panel-bugtracker">
                             <div class="text-center py-8 sm:py-12">
                                 <svg class="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                                 <h3 class="text-lg sm:text-xl font-bold text-white mb-2 force-wrap" style="font-family:'Cinzel',serif;"><?php echo translate('home_bugtracker_title', 'Bugtracker Coming Soon'); ?></h3>
-                                <p class="text-gray-400 text-sm sm:text-base force-wrap"><?php echo translate('home_bugtracker_desc', 'Report bugs and track issues here.'); ?></p>
+                                <p class="text-gray-400 text-sm sm:text-base force-wrap"><?php echo translate('home_bugtracker_content', 'Report bugs and track issues here.'); ?></p>
+                                <?php if (!empty($bugtracker_url)): ?>
+                                    <a href="<?php echo htmlspecialchars($bugtracker_url, ENT_QUOTES, 'UTF-8'); ?>"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="discord-invite-fallback inline-flex mt-5">
+                                        <i class="fas fa-bug"></i>
+                                        <span><?php echo translate('home_bugtracker_open', 'Open Bugtracker'); ?></span>
+                                        <i class="fas fa-arrow-up-right-from-square text-xs"></i>
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </section>
+                <?php endif; ?>
             </div>
 
             <!-- ============ RIGHT SIDE PANEL - Now visible on all screen sizes ============ -->
@@ -547,8 +569,10 @@ $result = $site_db->query($query);
             tab.addEventListener('click', () => {
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                Object.keys(panels).forEach(key => panels[key].classList.remove('active'));
-                panels[tab.dataset.tab].classList.add('active');
+                Object.values(panels).filter(Boolean).forEach(panel => panel.classList.remove('active'));
+                if (panels[tab.dataset.tab]) {
+                    panels[tab.dataset.tab].classList.add('active');
+                }
             });
         });
 

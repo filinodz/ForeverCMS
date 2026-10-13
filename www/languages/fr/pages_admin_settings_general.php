@@ -26,6 +26,13 @@ return [
     'label_youtube_description' => 'Description de la vidéo',
     'placeholder_youtube_description' => 'Regardez une vidéo en vedette ici...',
     'help_youtube_description' => 'Ce texte apparaît sous le titre dans le panneau vidéo.',
+    'label_bugtracker_enabled' => 'Afficher l’onglet Bugtracker',
+    'help_bugtracker_enabled' => 'Désactivez cette option pour afficher uniquement la vidéo YouTube.',
+    'label_bugtracker_url' => 'URL du Bugtracker',
+    'help_bugtracker_url' => 'Lien facultatif ouvert par le bouton Bugtracker.',
+    'error_bugtracker_url' => 'L’URL du Bugtracker doit être une adresse HTTP ou HTTPS valide.',
+    'label_show_currencies' => 'Afficher les monnaies du compte',
+    'help_show_currencies' => 'Affiche les Points et les Jetons dans l’interface publique du compte. Désactivez cette option tant que ces monnaies ne sont pas utilisées.',
 
     // Logo
     'label_website_logo' => 'Télécharger le logo',

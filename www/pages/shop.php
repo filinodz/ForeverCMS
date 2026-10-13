@@ -433,7 +433,7 @@ include_once $project_root . 'includes/header.php';
             </div>
             
             <!-- User Balance -->
-            <?php if (!empty($_SESSION['user_id'])): ?>
+            <?php if (!empty($_SESSION['user_id']) && (!isset($show_currencies) || $show_currencies)): ?>
                 <div class="flex flex-wrap justify-center gap-4 mb-6 p-4 bg-[rgba(0,0,0,0.4)] border border-[rgba(201,162,39,0.1)]">
                     <span class="inline-flex items-center gap-2 px-4 py-2 bg-[rgba(242,207,82,0.15)] border border-[rgba(201,162,39,0.3)] text-[#f2cf5b] font-semibold text-base force-wrap">
                         <i class="fas fa-coins"></i> <?php echo translate('shop_points', 'Points'); ?>: <?php echo $points; ?>
@@ -442,7 +442,7 @@ include_once $project_root . 'includes/header.php';
                         <i class="fas fa-gem"></i> <?php echo translate('shop_tokens', 'Tokens'); ?>: <?php echo $tokens; ?>
                     </span>
                 </div>
-            <?php else: ?>
+            <?php elseif (empty($_SESSION['user_id'])): ?>
                 <div class="text-center text-gray-300 text-sm md:text-base p-4 bg-[rgba(242,207,82,0.08)] border border-[rgba(201,162,39,0.2)] mb-6 force-wrap">
                     <i class="fas fa-info-circle text-[#f2cf5b] mr-2"></i>
                     <?php echo str_replace('{base_path}', $base_path, translate('shop_login_prompt', 'Please <a href="{base_path}login" class="text-[#f2cf5b] hover:text-yellow-300 underline">log in</a> to purchase items.')); ?>

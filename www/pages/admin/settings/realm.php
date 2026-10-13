@@ -423,7 +423,7 @@ include $project_root . 'includes/header.php';
                             <!-- Player Display -->
                             <div>
                                 <label class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block mb-2">
-                                    <?php echo translate('label_realm_visibility', 'Home-page status visibility'); ?>
+                                    <?php echo translate('label_realm_visibility', 'Public realm visibility'); ?>
                                 </label>
                                 <label class="flex items-start gap-3 p-4 bg-[#0a0e16]/50 border border-[rgba(201,162,39,.15)] rounded-sm cursor-pointer hover:border-[#c9a227]/40 transition-all duration-200">
                                     <input type="checkbox"
@@ -433,10 +433,10 @@ include $project_root . 'includes/header.php';
                                            <?php echo (($_SERVER['REQUEST_METHOD'] === 'POST' ? isset($_POST['show_status']) : $currentShowStatus)) ? 'checked' : ''; ?>>
                                     <div>
                                         <div class="text-[#e5e7eb] font-semibold text-sm">
-                                            <?php echo translate('realm_visibility_show', 'Show this realm in the public status panel'); ?>
+                                            <?php echo translate('realm_visibility_show', 'Show this realm publicly'); ?>
                                         </div>
                                         <div class="text-[#6a7a8a] text-xs mt-1">
-                                            <?php echo translate('realm_visibility_show_desc', 'Disable this for realms such as PvP, Hardcore or RP that you do not want to advertise on the home page.'); ?>
+                                            <?php echo translate('realm_visibility_show_desc', 'When disabled, this realm is hidden from the home-page status panel and the public realm selector. Staff can still select and manage it.'); ?>
                                         </div>
                                     </div>
                                 </label>

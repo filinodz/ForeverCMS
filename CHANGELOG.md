@@ -7,6 +7,18 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-13
+
+### Added
+
+- Administration settings to enable or disable the home-page Bugtracker panel and configure its external URL.
+- Administration setting to show or hide Points and Tokens throughout the public account interface.
+
+### Changed
+
+- A realm hidden in Realm Configuration is now removed from both the public status panel and the public realm selector, while remaining available to staff.
+- The home-page media panel now displays only the configured content; when Bugtracker is disabled, the YouTube video no longer shows an unnecessary tab bar.
+
 ## [1.1.0] - 2026-10-12
 
 ### Added

@@ -27,6 +27,7 @@ return [
     'home_youtube_content' => 'Regardez une vidéo mise en avant ici. Vous pourrez la remplacer plus tard par votre propre chaîne ou une autre mise en avant.',
     'home_bugtracker_title' => 'Suivi des bogues',
     'home_bugtracker_content' => 'Consultez et signalez les problèmes avec le serveur pour nous aider à améliorer votre expérience.',
+    'home_bugtracker_open' => 'Ouvrir le suivi des bogues',
     'home_realm_status_error' => 'Erreur : Statut du royaume indisponible.'
 ];
 ?>

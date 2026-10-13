@@ -29,6 +29,14 @@ function forever_realms()
     return is_array($realmlist) ? array_values($realmlist) : [];
 }
 
+/** Realms advertised to visitors in the status panel and realm selector. */
+function forever_public_realms()
+{
+    return array_values(array_filter(forever_realms(), static function ($realm) {
+        return !array_key_exists('show_status', $realm) || (bool)$realm['show_status'];
+    }));
+}
+
 function forever_realm($realm_id)
 {
     foreach (forever_realms() as $realm) {

@@ -28,6 +28,7 @@ manage the portal from one themed administration area.
 - News, downloads, guides, vote system and premium shop.
 - Administration for content, users, realms, Discord and shop settings.
 - Configurable Discord invite and home-page widget—no hard-coded community link.
+- Configurable public realm visibility, Bugtracker panel and Points/Tokens display.
 - Forever Launcher startup integration and a recoverable Windows installer.
 - English and French interface.
 - Clean distribution model: no player accounts, sessions or database dumps.

@@ -169,8 +169,11 @@ if (isset($_SESSION['user_id'])) {
     $gmlevel = forever_gm_level($auth_db, (int)$_SESSION['user_id']);
 }
 
-// Forever: the realm the pages show (characters, armory, shop deliveries)
-$forever_realms = forever_realms();
+// Forever: visitors only see realms enabled in Realm Configuration. Staff keep
+// every realm in this selector so a hidden realm can still be administered.
+$can_manage_realms = !empty($_SESSION['user_id'])
+    && (in_array($_SESSION['role'] ?? '', ['admin', 'moderator'], true) || $gmlevel > 0);
+$forever_realms = $can_manage_realms ? forever_realms() : forever_public_realms();
 $forever_realm = forever_current_realm();
 function getRealmUrl($realm_id) {
     global $currentUrl;
@@ -731,10 +734,12 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
 
                 <!-- User Profile (Logged In) -->
                 <?php if (!empty($_SESSION['user_id'])): ?>
+                    <?php if (!isset($show_currencies) || $show_currencies): ?>
                     <div class="hidden md:flex items-center gap-2 force-wrap">
                         <span class="badge-gold"><i class="fas fa-coins"></i> <?php echo $points; ?></span>
                         <span class="badge-iron"><i class="fas fa-gem"></i> <?php echo $tokens; ?></span>
                     </div>
+                    <?php endif; ?>
 
                     <div id="profileDropdownContainer">
                         <img src="<?php echo htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8'); ?>" alt="User Profile" class="avatar-frame" id="profileToggle">
@@ -751,10 +756,12 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
 
                                         <p class="text-gray-400 text-[11px] truncate force-wrap"><?php echo $email; ?></p>
 
+                                        <?php if (!isset($show_currencies) || $show_currencies): ?>
                                         <div class="flex gap-1.5 mt-1.5 flex-wrap">
                                             <span class="badge-gold text-[10px] !py-0.5 !px-1.5"><i class="fas fa-coins"></i> <?php echo $points; ?></span>
                                             <span class="badge-iron text-[10px] !py-0.5 !px-1.5"><i class="fas fa-gem"></i> <?php echo $tokens; ?></span>
                                         </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

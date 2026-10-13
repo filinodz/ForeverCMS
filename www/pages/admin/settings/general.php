@@ -223,6 +223,65 @@ include $project_root . 'includes/header.php';
                                 </div>
                             </div>
 
+                            <!-- Optional Bugtracker tab -->
+                            <div class="rounded-sm border border-[#c9a227]/20 bg-[#0a0e16]/45 p-4 space-y-4">
+                                <label class="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox"
+                                           id="bugtracker_enabled"
+                                           name="bugtracker_enabled"
+                                           value="1"
+                                           class="mt-1 accent-[#c9a227]"
+                                           <?php echo (!empty($bugtracker_enabled)) ? 'checked' : ''; ?>>
+                                    <span>
+                                        <span class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block">
+                                            <?php echo translate('label_bugtracker_enabled', 'Show the Bugtracker tab'); ?>
+                                        </span>
+                                        <span class="text-[#8290a3] text-xs mt-1 block leading-relaxed">
+                                            <?php echo translate('help_bugtracker_enabled', 'Disable this to show only the YouTube video.'); ?>
+                                        </span>
+                                    </span>
+                                </label>
+
+                                <div id="bugtrackerUrlField">
+                                    <label for="bugtracker_url" class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block mb-2">
+                                        <?php echo translate('label_bugtracker_url', 'Bugtracker URL'); ?>
+                                    </label>
+                                    <input type="url"
+                                           id="bugtracker_url"
+                                           name="bugtracker_url"
+                                           class="w-full px-4 py-3 text-[0.95rem] text-[#e5e7eb]
+                                                  bg-[#0a0e16]/80 border border-[#c9a227]/30 rounded-sm
+                                                  focus:border-[#f2cf5b] focus:shadow-[0_0_10px_rgba(242,207,82,.2)]
+                                                  focus:bg-[#0f141e]/90 outline-none transition-all duration-200
+                                                  placeholder:text-[#96aac8]/40"
+                                           maxlength="255"
+                                           value="<?php echo htmlspecialchars($bugtracker_url ?? ''); ?>"
+                                           placeholder="https://github.com/your-server/issues">
+                                    <div class="text-[#6a7a8a] text-xs mt-1">
+                                        <?php echo translate('help_bugtracker_url', 'Optional link opened by the Bugtracker button.'); ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Public currency display -->
+                            <div class="rounded-sm border border-[#c9a227]/20 bg-[#0a0e16]/45 p-4">
+                                <label class="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox"
+                                           name="show_currencies"
+                                           value="1"
+                                           class="mt-1 accent-[#c9a227]"
+                                           <?php echo (!isset($show_currencies) || $show_currencies) ? 'checked' : ''; ?>>
+                                    <span>
+                                        <span class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block">
+                                            <?php echo translate('label_show_currencies', 'Show account currencies'); ?>
+                                        </span>
+                                        <span class="text-[#8290a3] text-xs mt-1 block leading-relaxed">
+                                            <?php echo translate('help_show_currencies', 'Show Points and Tokens in the public account interface. Disable this while currencies are not in use.'); ?>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+
                             <!-- Logo Upload - Centered -->
                             <div>
                                 <label class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider 
@@ -399,6 +458,16 @@ include $project_root . 'includes/header.php';
                         uploadPlaceholder.style.display = 'block';
                     }
                 });
+            }
+
+            const bugtrackerToggle = document.getElementById('bugtracker_enabled');
+            const bugtrackerUrlField = document.getElementById('bugtrackerUrlField');
+            if (bugtrackerToggle && bugtrackerUrlField) {
+                const updateBugtrackerField = () => {
+                    bugtrackerUrlField.classList.toggle('hidden', !bugtrackerToggle.checked);
+                };
+                bugtrackerToggle.addEventListener('change', updateBugtrackerField);
+                updateBugtrackerField();
             }
         });
     </script>

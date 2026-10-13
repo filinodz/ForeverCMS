@@ -78,12 +78,23 @@ $youtube_title_new = trim((string)($_POST['youtube_title'] ?? ''));
 
 $youtube_description_new = trim((string)($_POST['youtube_description'] ?? ''));
 
+$bugtracker_enabled_new = isset($_POST['bugtracker_enabled']);
+$bugtracker_url_new = trim((string)($_POST['bugtracker_url'] ?? ''));
+$show_currencies_new = isset($_POST['show_currencies']);
+
 // Initialize variables
 $errors = [];
 $success = false;
 
 if ($youtube_embed_input !== '' && $youtube_embed_url_new === '') {
     $errors[] = translate('error_youtube_embed', 'The featured YouTube URL is invalid. Leave it empty to disable the video panel.');
+}
+
+if ($bugtracker_url_new !== '') {
+    $bugtracker_scheme = strtolower((string)parse_url($bugtracker_url_new, PHP_URL_SCHEME));
+    if (filter_var($bugtracker_url_new, FILTER_VALIDATE_URL) === false || !in_array($bugtracker_scheme, ['http', 'https'], true)) {
+        $errors[] = translate('error_bugtracker_url', 'The Bugtracker URL must be a valid HTTP or HTTPS address.');
+    }
 }
 
 // Handle logo upload (YOUR ORIGINAL CODE - UNTOUCHED)
@@ -195,6 +206,13 @@ if (empty($errors)) {
         $config_content .= "\$youtube_embed_url = " . var_export($youtube_embed_url_new, true) . ";\n";
         $config_content .= "\$youtube_title = " . var_export($youtube_title_new, true) . ";\n";
         $config_content .= "\$youtube_description = " . var_export($youtube_description_new, true) . ";\n\n";
+
+        // === Optional Bugtracker and public currency display ===
+        $config_content .= "// Optional Bugtracker tab beside the featured video.\n";
+        $config_content .= "\$bugtracker_enabled = " . var_export($bugtracker_enabled_new, true) . ";\n";
+        $config_content .= "\$bugtracker_url = " . var_export($bugtracker_url_new, true) . ";\n\n";
+        $config_content .= "// Public currency balances (header, account page and shop page).\n";
+        $config_content .= "\$show_currencies = " . var_export($show_currencies_new, true) . ";\n\n";
 
         // === Social Links ===
         $config_content .= "// Social links\n";

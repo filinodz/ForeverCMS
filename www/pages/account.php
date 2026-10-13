@@ -902,6 +902,7 @@ include_once $project_root . 'includes/header.php';
                                     <p class="text-2xl font-bold text-white force-wrap"><?php echo number_format($totalGold / 10000, 2); ?><span class="text-sm text-gray-400 ml-1">g</span></p>
                                     <p class="text-gray-400 text-sm"><?php echo translate('label_total_gold', 'Total Gold'); ?></p>
                                 </div>
+                                <?php if (!isset($show_currencies) || $show_currencies): ?>
                                 <div class="text-center min-w-0">
                                     <p class="text-2xl font-bold text-white force-wrap"><?php echo $currencies['points']; ?> <span class="text-sm text-gray-400">P</span></p>
                                     <p class="text-gray-400 text-sm"><?php echo translate('label_points', 'Points'); ?></p>
@@ -910,6 +911,7 @@ include_once $project_root . 'includes/header.php';
                                     <p class="text-2xl font-bold text-white force-wrap"><?php echo $currencies['tokens']; ?> <span class="text-sm text-gray-400">T</span></p>
                                     <p class="text-gray-400 text-sm"><?php echo translate('label_tokens', 'Tokens'); ?></p>
                                 </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

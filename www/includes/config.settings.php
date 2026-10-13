@@ -12,6 +12,13 @@ $youtube_embed_url = '';
 $youtube_title = '';
 $youtube_description = '';
 
+// Optional Bugtracker tab beside the featured video.
+$bugtracker_enabled = false;
+$bugtracker_url = '';
+
+// Public currency balances (header, account page and shop page).
+$show_currencies = true;
+
 // Logo
 $site_logo = 'img/forever_logo.svg';
 

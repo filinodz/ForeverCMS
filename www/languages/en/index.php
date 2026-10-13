@@ -27,6 +27,7 @@ return [
     'home_youtube_content' => 'Watch a featured video here. Replace it with your own channel or highlight later.',
     'home_bugtracker_title' => 'Bugtracker',
     'home_bugtracker_content' => 'View and report issues with the server to help us improve your experience.',
+    'home_bugtracker_open' => 'Open Bugtracker',
     'home_realm_status_error' => 'Error: Realm status unavailable.'
 ];
 ?>
