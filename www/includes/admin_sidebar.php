@@ -25,6 +25,8 @@ if (strpos($current_path, 'admin/dashboard') !== false) {
     $active_page = 'characters';
 } elseif (strpos($current_path, 'admin/ashop') !== false) {
     $active_page = 'shop';
+} elseif (strpos($current_path, 'admin/forever_creator') !== false) {
+    $active_page = 'forever_creator';
 } elseif (strpos($current_path, 'admin/gm_cmd') !== false) {
     $active_page = 'gm_cmd';
 } elseif (strpos($current_path, 'admin/settings') !== false) {
@@ -282,6 +284,14 @@ if (strpos($current_path, 'admin/dashboard') !== false) {
                    href="<?php echo $base_path; ?>admin/ashop">
                     <i class="fas fa-shopping-cart w-5 text-center text-[0.9rem] group-hover:scale-110 group-hover:text-[#f2cf5b] transition-all duration-300"></i> 
                     <?php echo translate('admin_shop', 'Shop Management'); ?>
+                </a>
+            </li>
+
+            <li>
+                <a class="group flex items-center gap-3 px-3 py-2.5 text-[0.85rem] font-semibold tracking-wide text-gray-400 bg-black/20 border-l-3 border-transparent hover:text-gray-200 hover:bg-[rgba(201,162,39,.08)] hover:border-[rgba(201,162,39,.4)] hover:translate-x-1 transition-all duration-200 relative clip-gaming <?php echo ($page_class === 'forever-creator' || $active_page === 'forever_creator') ? 'active-link' : ''; ?>"
+                   href="<?php echo $base_path; ?>admin/forever_creator">
+                    <i class="fas fa-hammer w-5 text-center text-[0.9rem] group-hover:scale-110 group-hover:text-[#f2cf5b] transition-all duration-300"></i>
+                    <?php echo translate('admin_forever_creator', 'ForeverCreator'); ?>
                 </a>
             </li>
             

@@ -47,6 +47,8 @@ Setup installs the Forever premium products into the canonical `world.shop_*` ta
 - Forever premium design and community-supplied WoW Forever backgrounds.
 - Configurable Discord widget, public realms, Bugtracker, Points and Tokens.
 - Live Players Online page linked to the Armory.
+- Integrated ForeverCreator item studio with WoW-style live preview, direct hotfix insertion and creation history.
+- Per-realm administration for Normal, PvP, RP and Hardcore.
 - Shared CMS/in-game shop and premium catalog.
 - Local 3D character viewer assets.
 - Portable PHP runtime and one-click setup.

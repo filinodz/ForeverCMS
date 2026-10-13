@@ -54,6 +54,13 @@ $class_colors = [
     6 => '#c41f3b', 7 => '#0070de', 8 => '#69ccf0', 9 => '#9482c9', 10 => '#00ff96',
     11 => '#ff7d0a', 12 => '#a330c9', 13 => '#33937f',
 ];
+$map_names = [
+    0 => translate('map_eastern_kingdoms', 'Eastern Kingdoms'),
+    1 => translate('map_kalimdor', 'Kalimdor'),
+    2853 => 'Deadwind Pass Forever',
+    2921 => 'Naxxramas Forever',
+    2980 => 'Dalaran City Forever',
+];
 $alliance_count = 0;
 $horde_count = 0;
 foreach ($players as $player) {
@@ -77,7 +84,7 @@ ob_start();
             linear-gradient(180deg, #080c13 0%, #05070c 58%, #030408 100%);
         background-attachment: fixed;
     }
-    .online-shell { position: relative; isolation: isolate; }
+    .online-shell { position: relative; isolation: isolate; max-width:1440px; }
     .online-shell::before {
         content: ''; position: absolute; inset: -28px -18px auto; height: 290px; z-index: -1;
         background: linear-gradient(90deg, transparent, rgba(201,162,39,.07), transparent);
@@ -94,22 +101,36 @@ ob_start();
     }
     .realm-tab:hover, .realm-tab.active { color: #fff1b2; border-color: rgba(242,207,82,.66); background: rgba(201,162,39,.12); }
     .online-stat {
-        background: linear-gradient(145deg, rgba(19,26,38,.88), rgba(7,10,16,.9));
-        border: 1px solid rgba(201,162,39,.16); box-shadow: inset 0 1px rgba(255,255,255,.025);
+        position:relative; overflow:hidden; background: linear-gradient(145deg, rgba(19,26,38,.92), rgba(7,10,16,.94));
+        border: 1px solid rgba(201,162,39,.16); box-shadow: inset 0 1px rgba(255,255,255,.025),0 15px 32px rgba(0,0,0,.2);
     }
+    .online-stat::before { content:''; position:absolute; inset:0 auto 0 0; width:2px; background:var(--stat-color,#f2cf5b); box-shadow:0 0 14px var(--stat-color,#f2cf5b); }
+    .roster-toolbar { display:flex; align-items:center; gap:.8rem; padding:.8rem; background:rgba(7,10,16,.84); border:1px solid rgba(126,145,171,.15); }
+    .roster-search { flex:1; min-width:0; color:#ecf1f8; background:#090d14; border:1px solid rgba(126,145,171,.2); padding:.72rem .9rem .72rem 2.55rem; outline:none; }
+    .roster-search:focus { border-color:rgba(242,207,82,.6); box-shadow:0 0 0 3px rgba(242,207,82,.07); }
+    .roster-search-wrap { position:relative; flex:1; }
+    .roster-search-wrap i { position:absolute; left:.9rem; top:50%; transform:translateY(-50%); color:#69788d; }
+    .roster-count { color:#7f8da0; font-size:.72rem; text-transform:uppercase; letter-spacing:.09em; white-space:nowrap; }
     .player-card {
-        position: relative; overflow: hidden; display: flex; align-items: center; gap: 1rem;
-        min-height: 112px; padding: 1rem; background: linear-gradient(135deg, rgba(17,23,34,.95), rgba(7,10,16,.96));
+        position: relative; overflow: hidden; display: grid; grid-template-columns:auto minmax(0,1fr) auto; align-items: center; gap: 1rem;
+        min-height: 126px; padding: 1.1rem; background: linear-gradient(135deg, rgba(17,23,34,.97), rgba(7,10,16,.98));
         border: 1px solid rgba(122,143,170,.15); box-shadow: 0 14px 30px rgba(0,0,0,.22); transition: .22s ease;
     }
+    .player-card::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 12% 50%,color-mix(in srgb,var(--class-color) 13%,transparent),transparent 34%); pointer-events:none; }
     .player-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--class-color); box-shadow: 0 0 16px var(--class-color); }
     .player-card:hover { transform: translateY(-3px); border-color: rgba(242,207,82,.38); box-shadow: 0 18px 36px rgba(0,0,0,.38); }
-    .race-frame { width: 68px; height: 68px; flex: 0 0 68px; display: grid; place-items: center; background: #080b11; border: 1px solid rgba(242,207,82,.32); transform: rotate(45deg); }
-    .race-frame img { width: 52px; height: 52px; object-fit: contain; transform: rotate(-45deg); }
+    .race-frame { position:relative; width: 72px; height: 72px; display: grid; place-items: center; background: linear-gradient(145deg,#101722,#05070b); border: 1px solid rgba(242,207,82,.38); transform: rotate(45deg); box-shadow:inset 0 0 18px rgba(0,0,0,.65),0 8px 20px rgba(0,0,0,.32); }
+    .race-frame img { width: 54px; height: 54px; object-fit: contain; transform: rotate(-45deg); }
     .class-icon { width: 22px; height: 22px; object-fit: cover; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; }
     .online-dot { width: 7px; height: 7px; border-radius: 50%; background: #57db87; box-shadow: 0 0 10px #57db87; }
+    .level-medallion { width:42px; height:42px; display:grid; place-items:center; color:#fff0ac; font-weight:900; font-size:.82rem; border-radius:50%; background:#0a0e15; border:1px solid rgba(242,207,82,.35); box-shadow:inset 0 0 13px rgba(201,162,39,.09); }
+    .faction-badge { display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .45rem; font-size:.62rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; border:1px solid currentColor; opacity:.85; }
+    .faction-alliance { color:#77a9ff; background:rgba(69,117,199,.08); }
+    .faction-horde { color:#ef6b63; background:rgba(189,57,51,.08); }
+    .player-location { display:flex; align-items:center; gap:.35rem; color:#68788e; font-size:.7rem; margin-top:.55rem; }
     .empty-online { background: rgba(8,12,19,.84); border: 1px dashed rgba(201,162,39,.25); }
-    @media (max-width: 768px) { body.players-online-page { padding-top: 96px; } .race-frame { width: 58px; height: 58px; flex-basis: 58px; } .race-frame img { width: 44px; height: 44px; } }
+    @media (max-width: 768px) { body.players-online-page { padding-top: 96px; } .race-frame { width: 58px; height: 58px; } .race-frame img { width: 44px; height: 44px; } .player-card { min-height:110px;padding:.9rem;gap:.85rem; } .level-medallion { width:36px;height:36px; } }
+    @media (max-width: 520px) { .roster-toolbar { align-items:stretch;flex-direction:column; } .roster-count { padding-left:.2rem; } .player-location { display:none; } }
 </style>
 <?php
 $page_head = ob_get_clean();
@@ -135,16 +156,16 @@ include_once $project_root . 'includes/header.php';
         </nav>
     <?php endif; ?>
 
-    <section class="grid grid-cols-3 gap-3 md:gap-5 max-w-3xl mx-auto mb-9">
-        <div class="online-stat p-4 text-center">
+    <section class="grid grid-cols-3 gap-3 md:gap-5 max-w-3xl mx-auto mb-8">
+        <div class="online-stat p-4 text-center" style="--stat-color:#f2cf5b">
             <div class="text-2xl md:text-3xl font-black text-[#f2cf5b]"><?php echo count($players); ?></div>
             <div class="text-[10px] md:text-xs uppercase tracking-wider text-[#8290a3] mt-1"><?php echo translate('online_total', 'Online'); ?></div>
         </div>
-        <div class="online-stat p-4 text-center">
+        <div class="online-stat p-4 text-center" style="--stat-color:#77a9ff">
             <div class="text-2xl md:text-3xl font-black text-[#77a9ff]"><?php echo $alliance_count; ?></div>
             <div class="text-[10px] md:text-xs uppercase tracking-wider text-[#8290a3] mt-1"><?php echo translate('faction_alliance', 'Alliance'); ?></div>
         </div>
-        <div class="online-stat p-4 text-center">
+        <div class="online-stat p-4 text-center" style="--stat-color:#ef6b63">
             <div class="text-2xl md:text-3xl font-black text-[#ef6b63]"><?php echo $horde_count; ?></div>
             <div class="text-[10px] md:text-xs uppercase tracking-wider text-[#8290a3] mt-1"><?php echo translate('faction_horde', 'Horde'); ?></div>
         </div>
@@ -161,18 +182,29 @@ include_once $project_root . 'includes/header.php';
             <p><?php echo translate('online_empty', 'No adventurers are connected to this realm right now.'); ?></p>
         </div>
     <?php else: ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div class="roster-toolbar mb-4">
+            <label class="roster-search-wrap">
+                <i class="fas fa-search" aria-hidden="true"></i>
+                <span class="sr-only"><?php echo translate('online_search', 'Search a character'); ?></span>
+                <input id="rosterSearch" class="roster-search" type="search" autocomplete="off" placeholder="<?php echo htmlspecialchars(translate('online_search_placeholder', 'Search by name, race or class…'), ENT_QUOTES, 'UTF-8'); ?>">
+            </label>
+            <div id="rosterCount" class="roster-count"><?php echo count($players); ?> <?php echo translate('online_adventurers', 'adventurers'); ?></div>
+        </div>
+        <div id="rosterGrid" class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
             <?php foreach ($players as $player):
                 $class_id = (int)$player['class'];
                 $class_name = forever_class_name($class_id);
                 $race_name = forever_race_name((int)$player['race']);
                 $class_color = $class_colors[$class_id] ?? '#c9a227';
                 $race_icon = $base_path . 'img/accountimg/race/' . forever_race_icon_file((int)$player['race'], (int)$player['gender']);
+                $is_alliance = forever_is_alliance((int)$player['race']);
+                $faction_name = $is_alliance ? translate('faction_alliance', 'Alliance') : translate('faction_horde', 'Horde');
+                $map_name = $map_names[(int)$player['map']] ?? (translate('map_unknown', 'Map') . ' #' . (int)$player['map']);
                 $armory_url = $base_path . 'character?guid=' . (int)$player['guid'] . '&realm=' . (int)$selected_realm['id'] . '&lang=' . urlencode($langCode);
             ?>
-                <a href="<?php echo htmlspecialchars($armory_url, ENT_QUOTES, 'UTF-8'); ?>" class="player-card group" style="--class-color: <?php echo $class_color; ?>;">
+                <a href="<?php echo htmlspecialchars($armory_url, ENT_QUOTES, 'UTF-8'); ?>" class="player-card group" style="--class-color: <?php echo $class_color; ?>;" data-player-search="<?php echo htmlspecialchars(strtolower($player['name'] . ' ' . $class_name . ' ' . $race_name . ' ' . $faction_name), ENT_QUOTES, 'UTF-8'); ?>">
                     <span class="race-frame">
-                        <img src="<?php echo htmlspecialchars($race_icon, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($race_name, ENT_QUOTES, 'UTF-8'); ?>">
+                        <img src="<?php echo htmlspecialchars($race_icon, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($race_name, ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src='<?php echo htmlspecialchars($base_path . 'img/accountimg/race/male/default.png', ENT_QUOTES, 'UTF-8'); ?>'">
                     </span>
                     <span class="min-w-0 flex-1">
                         <span class="flex items-center gap-2 mb-1">
@@ -185,13 +217,40 @@ include_once $project_root . 'includes/header.php';
                             <?php endif; ?>
                             <?php echo htmlspecialchars($class_name, ENT_QUOTES, 'UTF-8'); ?>
                         </span>
-                        <span class="block text-xs text-[#7f8ea2] mt-1"><?php echo translate('label_level', 'Level'); ?> <?php echo (int)$player['level']; ?> · <?php echo htmlspecialchars($race_name, ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="flex flex-wrap items-center gap-2 mt-1.5">
+                            <span class="text-xs text-[#7f8ea2]"><?php echo htmlspecialchars($race_name, ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="faction-badge <?php echo $is_alliance ? 'faction-alliance' : 'faction-horde'; ?>"><?php echo htmlspecialchars($faction_name, ENT_QUOTES, 'UTF-8'); ?></span>
+                        </span>
+                        <span class="player-location"><i class="fas fa-map-marker-alt"></i><?php echo htmlspecialchars($map_name, ENT_QUOTES, 'UTF-8'); ?> · <?php echo translate('zone_label', 'Zone'); ?> #<?php echo (int)$player['zone']; ?></span>
                     </span>
-                    <i class="fas fa-chevron-right text-[#c9a227]/60 group-hover:text-[#f2cf5b] group-hover:translate-x-1 transition-all"></i>
+                    <span class="level-medallion" title="<?php echo htmlspecialchars(translate('label_level', 'Level'), ENT_QUOTES, 'UTF-8'); ?> <?php echo (int)$player['level']; ?>"><?php echo (int)$player['level']; ?></span>
                 </a>
             <?php endforeach; ?>
         </div>
+        <div id="rosterNoResults" class="empty-online hidden mt-4 p-8 text-center text-[#91a0b4]"><?php echo translate('online_no_results', 'No online character matches this search.'); ?></div>
     <?php endif; ?>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const search = document.getElementById('rosterSearch');
+    const cards = Array.from(document.querySelectorAll('[data-player-search]'));
+    const counter = document.getElementById('rosterCount');
+    const noResults = document.getElementById('rosterNoResults');
+    if (!search) return;
+    const update = () => {
+        const query = search.value.trim().toLocaleLowerCase();
+        let visible = 0;
+        cards.forEach(card => {
+            const show = !query || card.dataset.playerSearch.includes(query);
+            card.hidden = !show;
+            if (show) visible++;
+        });
+        counter.textContent = `${visible} <?php echo addslashes(translate('online_adventurers', 'adventurers')); ?>`;
+        noResults.classList.toggle('hidden', visible !== 0);
+    };
+    search.addEventListener('input', update);
+});
+</script>
 
 <?php include_once $project_root . 'includes/footer.php'; ?>

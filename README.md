@@ -28,6 +28,7 @@ manage the portal from one themed administration area.
 - News, downloads, guides, vote system and a premium shop synchronized with ForeverCore's in-game catalog.
 - One shared `world.shop_*` catalog, one `auth.account_shop_points` wallet and one purchase history for the website and the game.
 - Administration for content, users, realms, Discord and the shared shop; changes are reloaded in game automatically.
+- Integrated ForeverCreator item studio with a live WoW-style preview, direct database insertion and editable creation history.
 - Configurable Discord invite and home-page widget—no hard-coded community link.
 - Configurable public realm visibility, Bugtracker panel and independent Points/Token display.
 - Forever Launcher startup integration and a recoverable Windows installer.
@@ -59,7 +60,7 @@ bundled PHP runtime.
 Requirements:
 
 - Windows 10/11 or a PHP-compatible web server;
-- PHP 8.2 or newer with PDO MySQL;
+- PHP 8.2 or newer with MySQLi;
 - a running ForeverRepack database;
 - a ForeverRepack checkout for launcher integration.
 

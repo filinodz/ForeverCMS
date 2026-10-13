@@ -91,7 +91,7 @@ function forever_end_session($base_path, $error)
 
 // Define protected and admin pages
 $protected_pages = ['account.php', 'buy_item.php'];
-$admin_pages = ['dashboard.php', 'users.php', 'anews.php','characters.php','ashop.php','gm_cmd.php', 'logout.php','save_general.php'];
+$admin_pages = ['dashboard.php', 'users.php', 'anews.php','characters.php','ashop.php','forever_creator.php','gm_cmd.php', 'logout.php','save_general.php'];
 $current_page = basename($_SERVER['PHP_SELF']);
 $current_dir = basename(dirname($_SERVER['PHP_SELF']));
 $is_admin_page = (in_array($current_page, $admin_pages) && $current_dir === 'admin') || $current_dir === 'settings';

@@ -260,3 +260,22 @@ CREATE TABLE IF NOT EXISTS `website_activity_log` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Items created from the integrated ForeverCreator studio. This table stores
+-- the editable design payload; the playable records live in hotfixes/world.
+CREATE TABLE IF NOT EXISTS `creator_items` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int unsigned NOT NULL,
+  `base_item_id` int unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `quality` tinyint unsigned NOT NULL DEFAULT '1',
+  `icon_file_data_id` int NOT NULL DEFAULT '0',
+  `payload_json` longtext NOT NULL,
+  `created_by` int unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_creator_item_id` (`item_id`),
+  KEY `idx_creator_updated` (`updated_at`),
+  KEY `idx_creator_author` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -26,11 +26,20 @@ $defaultLogo = 'img/logos/realm1_logo.webp';
 
 require_once $project_root . 'includes/realm_config.php';
 
-// Forever: several realms. This page edits the realm chosen in the header; the other realms and the
-// realm's id, type, characters database and RA port (edited in includes/realm_config.php) are kept.
+// Select the realm explicitly on this page. Staff should not have to change the
+// public site realm selector just to configure PvP, RP or Hardcore.
+$requestedRealmId = 0;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realm_id'])) {
+    $requestedRealmId = (int)$_POST['realm_id'];
+} elseif (isset($_GET['realm']) && ctype_digit((string)$_GET['realm'])) {
+    $requestedRealmId = (int)$_GET['realm'];
+} elseif (isset($current_realm['id'])) {
+    $requestedRealmId = (int)$current_realm['id'];
+}
+
 $realmIndex = 0;
 foreach ($realmlist as $realmKey => $realmEntry) {
-    if ((int)$realmEntry['id'] === (int)$current_realm['id']) {
+    if ((int)$realmEntry['id'] === $requestedRealmId) {
         $realmIndex = $realmKey;
         break;
     }
@@ -83,6 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $realmAddress = trim($_POST['realm_address'] ?? '');
         $realmCheckAddress = trim($_POST['realm_check_address'] ?? $currentCheckAddress);
         $realmPort = (int) ($_POST['realm_port'] ?? 0);
+        $realmRaPort = (int)($_POST['realm_ra_port'] ?? ($currentRealm['ra_port'] ?? 3443));
+        $realmType = strtolower(trim((string)($_POST['realm_type'] ?? ($currentRealm['type'] ?? 'normal'))));
+        $realmCharDb = trim((string)($_POST['realm_char_db'] ?? ($currentRealm['char_db'] ?? 'characters')));
         $playerDisplay = $_POST['player_display'] ?? 'all';
         $showStatus = isset($_POST['show_status']);
         $logo_path = $currentRealm['logo'] ?? $defaultLogo;
@@ -106,6 +118,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if ($realmPort <= 0 || $realmPort > 65535) {
             $errors[] = translate('err_realm_port_invalid', 'Realm Port must be a valid number (1-65535).');
+        }
+        if ($realmRaPort <= 0 || $realmRaPort > 65535) {
+            $errors[] = translate('err_realm_ra_port_invalid', 'Remote administration port must be between 1 and 65535.');
+        }
+        if (!in_array($realmType, ['normal', 'pvp', 'rp', 'hardcore'], true)) {
+            $errors[] = translate('err_realm_type_invalid', 'Realm type is invalid.');
+        }
+        if (!preg_match('/^[A-Za-z0-9_]{1,64}$/', $realmCharDb)) {
+            $errors[] = translate('err_realm_database_invalid', 'Characters database name may only contain letters, numbers and underscores.');
+        } else {
+            $dbCheck = $site_db->prepare('SELECT COUNT(*) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = ?');
+            if ($dbCheck) {
+                $dbCheck->bind_param('s', $realmCharDb);
+                $dbCheck->execute();
+                $dbCheck->bind_result($databaseExists);
+                $dbCheck->fetch();
+                $dbCheck->close();
+                if (!(int)$databaseExists) {
+                    $errors[] = sprintf(translate('err_realm_database_missing', 'Characters database "%s" does not exist.'), $realmCharDb);
+                }
+            }
         }
 
    if (empty($errors)) {
@@ -154,6 +187,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'address'        => $realmAddress,
             'check_address'  => $realmCheckAddress,
             'port'           => $realmPort,
+            'ra_port'        => $realmRaPort,
+            'type'           => $realmType,
+            'char_db'        => $realmCharDb,
             'logo'           => $logo_path,
             'player_display' => $playerDisplay,
             'show_status'    => $showStatus
@@ -196,6 +232,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 $success = true;
+                $realmlist = $newRealmList;
+                $currentRealm = $newRealmList[$realmIndex];
+                $currentCheckAddress = $currentRealm['check_address'];
+                $currentPlayerDisplay = $currentRealm['player_display'];
+                $currentShowStatus = (bool)$currentRealm['show_status'];
                 $playerbotsMissing = !armory_playerbots_table_exists($char_db ?? null);
             }
         }
@@ -256,6 +297,22 @@ ob_start();
         .btn-clip {
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
         }
+        .realm-switcher { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; }
+        .realm-switch {
+            position:relative; display:flex; align-items:center; gap:.8rem; min-width:0; padding:1rem;
+            color:#9aa8ba; background:rgba(7,10,16,.82); border:1px solid rgba(133,151,176,.16);
+            text-decoration:none; transition:border-color .2s ease, transform .2s ease, background .2s ease;
+        }
+        .realm-switch:hover { transform:translateY(-2px); border-color:rgba(242,207,82,.42); }
+        .realm-switch.active { color:#fff1b2; border-color:rgba(242,207,82,.72); background:linear-gradient(145deg,rgba(201,162,39,.16),rgba(8,11,18,.9)); box-shadow:0 12px 30px rgba(0,0,0,.28); }
+        .realm-switch img { width:42px; height:42px; object-fit:contain; }
+        .realm-switch small { display:block; margin-top:.2rem; color:#68778b; font-size:.67rem; text-transform:uppercase; letter-spacing:.09em; }
+        .realm-switch .visibility-dot { position:absolute; top:.6rem; right:.6rem; width:7px; height:7px; border-radius:50%; background:#566170; }
+        .realm-switch .visibility-dot.public { background:#55d68a; box-shadow:0 0 10px rgba(85,214,138,.65); }
+        .realm-select { appearance:none; background:#0a0e16; color:#e5e7eb; color-scheme:dark; }
+        .realm-select option { color:#e5e7eb; background:#0a0e16; }
+        @media (max-width:1100px) { .realm-switcher { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+        @media (max-width:560px) { .realm-switcher { grid-template-columns:1fr; } }
     </style>
 <?php
 $page_head = ob_get_clean();
@@ -281,6 +338,31 @@ include $project_root . 'includes/header.php';
 
                     <!-- Settings Navbar -->
                     <?php include $project_root . 'pages/admin/settings/settings_navbar.php'; ?>
+
+                    <section aria-label="<?php echo htmlspecialchars(translate('realm_choose_to_edit', 'Choose a realm to edit'), ENT_QUOTES, 'UTF-8'); ?>">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <div>
+                                <h2 class="text-[#f2cf5b] font-bold tracking-wide"><?php echo translate('realm_choose_to_edit', 'Choose a realm to edit'); ?></h2>
+                                <p class="text-xs text-[#728096] mt-1"><?php echo translate('realm_choose_to_edit_desc', 'Every realm has its own visibility, database and connection settings.'); ?></p>
+                            </div>
+                            <span class="text-[10px] uppercase tracking-[.16em] text-[#68778b]"><?php echo count($realmlist); ?> realms</span>
+                        </div>
+                        <div class="realm-switcher">
+                            <?php foreach ($realmlist as $configuredRealm):
+                                $realmIsActive = (int)$configuredRealm['id'] === (int)$currentRealm['id'];
+                                $realmEditUrl = $base_path . 'admin/settings/realm?realm=' . (int)$configuredRealm['id'] . '&lang=' . urlencode($langCode);
+                            ?>
+                                <a class="realm-switch <?php echo $realmIsActive ? 'active' : ''; ?>" href="<?php echo htmlspecialchars($realmEditUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                                    <span class="visibility-dot <?php echo !empty($configuredRealm['show_status']) ? 'public' : ''; ?>"></span>
+                                    <img src="<?php echo htmlspecialchars($base_path . ($configuredRealm['logo'] ?? $defaultLogo), ENT_QUOTES, 'UTF-8'); ?>" alt="">
+                                    <span class="min-w-0">
+                                        <strong class="block truncate"><?php echo htmlspecialchars($configuredRealm['name'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                                        <small>#<?php echo (int)$configuredRealm['id']; ?> · <?php echo htmlspecialchars(strtoupper($configuredRealm['type'] ?? 'normal'), ENT_QUOTES, 'UTF-8'); ?> · <?php echo htmlspecialchars($configuredRealm['char_db'] ?? 'characters', ENT_QUOTES, 'UTF-8'); ?></small>
+                                    </span>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </section>
 
                     <!-- Success / Error Messages -->
                     <?php if (!empty($errors)): ?>
@@ -330,6 +412,7 @@ include $project_root . 'includes/header.php';
 
                         <form method="POST" enctype="multipart/form-data" class="space-y-4 md:space-y-6 max-w-3xl mx-auto">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                            <input type="hidden" name="realm_id" value="<?php echo (int)$currentRealm['id']; ?>">
                             <!-- Current Logo Preview -->
                             <div>
                                 <label class="form-label text-[#f2cf5b] font-bold text-sm 
@@ -402,7 +485,8 @@ include $project_root . 'includes/header.php';
                             </div>
 
                             <!-- Realm Port -->
-                            <div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
                                 <label for="realm_port" class="form-label text-[#f2cf5b] font-bold text-sm 
                                                                tracking-wider block mb-2 
                                                                drop-shadow-[0_0_12px_rgba(201,162,39,.15),0_2px_4px_rgba(0,0,0,.8)]">
@@ -418,6 +502,30 @@ include $project_root . 'includes/header.php';
                                        min="1" max="65535" step="1"
                                        value="<?php echo htmlspecialchars($_POST['realm_port'] ?? $currentRealm['port']); ?>" 
                                        required>
+                              </div>
+                              <div>
+                                <label for="realm_ra_port" class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block mb-2"><?php echo translate('label_realm_ra_port', 'Remote Administration Port'); ?></label>
+                                <input type="number" id="realm_ra_port" name="realm_ra_port" min="1" max="65535" step="1"
+                                       class="w-full px-4 py-3 text-[0.95rem] text-[#e5e7eb] bg-[#0a0e16]/80 border border-[#c9a227]/30 rounded-sm focus:border-[#f2cf5b] outline-none"
+                                       value="<?php echo (int)($_POST['realm_ra_port'] ?? ($currentRealm['ra_port'] ?? 3443)); ?>" required>
+                              </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="realm_type" class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block mb-2"><?php echo translate('label_realm_type', 'Realm Type'); ?></label>
+                                    <select id="realm_type" name="realm_type" class="realm-select w-full px-4 py-3 border border-[#c9a227]/30 rounded-sm focus:border-[#f2cf5b] outline-none">
+                                        <?php $selectedType = $_POST['realm_type'] ?? ($currentRealm['type'] ?? 'normal'); foreach (['normal' => 'Normal', 'pvp' => 'PvP', 'rp' => 'Roleplay', 'hardcore' => 'Hardcore'] as $typeValue => $typeLabel): ?>
+                                            <option value="<?php echo $typeValue; ?>" <?php echo $selectedType === $typeValue ? 'selected' : ''; ?>><?php echo $typeLabel; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="realm_char_db" class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block mb-2"><?php echo translate('label_realm_database', 'Characters Database'); ?></label>
+                                    <input type="text" id="realm_char_db" name="realm_char_db" maxlength="64" pattern="[A-Za-z0-9_]+"
+                                           class="w-full px-4 py-3 text-[0.95rem] text-[#e5e7eb] bg-[#0a0e16]/80 border border-[#c9a227]/30 rounded-sm focus:border-[#f2cf5b] outline-none"
+                                           value="<?php echo htmlspecialchars($_POST['realm_char_db'] ?? ($currentRealm['char_db'] ?? 'characters'), ENT_QUOTES, 'UTF-8'); ?>" required>
+                                </div>
                             </div>
 
                             <!-- Player Display -->

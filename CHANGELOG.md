@@ -7,6 +7,26 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-13
+
+### Added
+
+- ForeverCreator item studio inside the administration panel with a live WoW-style inspection preview.
+- Direct, transactional item creation in ForeverCore's `hotfixes` tables and `world.armory_item` index.
+- Full item controls for classification, requirements, prices, ten stat slots, sockets, flags and five spell effects.
+- Protected creation history with edit and delete actions for items created by the integrated studio.
+- Dedicated realm switcher in Realm Configuration for Normal, PvP, RP and Hardcore.
+
+### Changed
+
+- Players Online now uses a responsive premium roster with live search, faction badges, class identity, location and level medallions.
+- Realm Configuration now edits realm type, character database, game port, RA port and public visibility without leaving the page.
+
+### Fixed
+
+- Missing race artwork can no longer break the Players Online card layout.
+- ForeverCreator creation and history updates are committed atomically across the server databases.
+
 ## [1.3.0] - 2026-10-13
 
 ### Added
