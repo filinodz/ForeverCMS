@@ -82,10 +82,18 @@ $bugtracker_enabled_new = isset($_POST['bugtracker_enabled']);
 $bugtracker_url_new = trim((string)($_POST['bugtracker_url'] ?? ''));
 $show_points_new = isset($_POST['show_points']);
 $show_tokens_new = isset($_POST['show_tokens']);
+$forever_portal_new = trim((string)($_POST['forever_portal'] ?? ($forever_portal ?? 'trinity.actual.battle.net')));
+$forever_launcher_url_new = trim((string)($_POST['forever_launcher_url'] ?? ($forever_launcher_url ?? '')));
 
 // Initialize variables
 $errors = [];
 $success = false;
+if (!preg_match('/^(?:[A-Za-z0-9][A-Za-z0-9.\-]*|\[[0-9a-fA-F:]+\])(?::[0-9]{1,5})?$/', $forever_portal_new) || strlen($forever_portal_new)>253) {
+    $errors[] = translate('error_portal_invalid','Enter a valid realmlist hostname or IP address, optionally followed by a port.');
+}
+if ($forever_launcher_url_new !== '' && (!filter_var($forever_launcher_url_new,FILTER_VALIDATE_URL) || !in_array(strtolower((string)parse_url($forever_launcher_url_new,PHP_URL_SCHEME)),['http','https'],true))) {
+    $errors[] = translate('error_launcher_url_invalid','The launcher download URL must use HTTP or HTTPS.');
+}
 
 if ($youtube_embed_input !== '' && $youtube_embed_url_new === '') {
     $errors[] = translate('error_youtube_embed', 'The featured YouTube URL is invalid. Leave it empty to disable the video panel.');
@@ -240,10 +248,11 @@ if (empty($errors)) {
         })($config_file);
         $config_content .= "\n// Forever: what players need to connect (shown on the How to Play page).\n";
         $config_content .= "// \$forever_portal is the \"portal\" of the launcher's servers.json entry for this server.\n";
-        $config_content .= "\$forever_portal = " . var_export($forever_kept[0], true) . ";\n";
-        $config_content .= "\$forever_launcher_url = " . var_export($forever_kept[1], true) . ";\n";
+        $config_content .= "\$forever_portal = " . var_export($forever_portal_new, true) . ";\n";
+        $config_content .= "\$forever_launcher_url = " . var_export($forever_launcher_url_new, true) . ";\n";
 
         if (file_put_contents($config_file, $config_content)) {
+            if (function_exists('opcache_invalidate')) opcache_invalidate($config_file,true);
             $success = true;
         } else {
             $errors[] = translate('error_file_write_failed', 'Failed to update configuration file.');

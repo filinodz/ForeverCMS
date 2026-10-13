@@ -1,0 +1,250 @@
+diff --git a/src/server/game/World/World.cpp b/src/server/game/World/World.cpp
+index 1febcb38ba..a926d5bb7e 100644
+--- a/src/server/game/World/World.cpp
++++ b/src/server/game/World/World.cpp
+@@ -48,6 +48,7 @@
+ #include "CreatureGroups.h"
+ #include "CreatureTextMgr.h"
+ #include "DB2Stores.h"
++#include "DB2HotfixGenerator.h"
+ #include "DatabaseEnv.h"
+ #include "DetourMemoryFunctions.h"
+ #include "DisableMgr.h"
+@@ -1362,10 +1363,68 @@ bool World::SetInitialWorldSettings()
+     sDB2Manager.LoadHotfixBlob(m_availableDbcLocaleMask);
+     TC_LOG_INFO("server.loading", "Loading hotfix info...");
+     sDB2Manager.LoadHotfixData(m_availableDbcLocaleMask);
++
++    // An optional, world-only authoring layer for ForeverCreator. Export actual
++    // client records once so Classic templates are available without SQL hotfixes.
++    if (WorldDatabase.Query("SHOW TABLES LIKE 'forever_creator_runtime'"))
++    {
++        std::pair<DB2StorageBase*, char const*> const creatorStores[] = {
++            { &sItemStore, "item" }, { &sItemSparseStore, "item_sparse" },
++            { &sItemSearchNameStore, "item_search_name" }, { &sItemAppearanceStore, "item_appearance" },
++            { &sItemModifiedAppearanceStore, "item_modified_appearance" },
++            { &sItemEffectStore, "item_effect" }, { &sItemXItemEffectStore, "item_x_item_effect" }
++        };
++        uint32 count = 0;
++        std::pair<DB2StorageBase*, char const*> const creatorMathStores[] = {
++            { &sRandPropPointsStore, "rand_prop_points" }, { &sArmorLocationStore, "armor_location" },
++            { &sItemArmorQualityStore, "item_armor_quality" }, { &sItemArmorTotalStore, "item_armor_total" },
++            { &sItemArmorShieldStore, "item_armor_shield" }, { &sItemDamageOneHandStore, "item_damage_one_hand" },
++            { &sItemDamageTwoHandStore, "item_damage_two_hand" }, { &sItemDamageOneHandCasterStore, "item_damage_one_hand_caster" },
++            { &sItemDamageTwoHandCasterStore, "item_damage_two_hand_caster" }, { &sItemDamageAmmoStore, "item_damage_ammo" }
++        };
++        for (auto const& [store, name] : creatorMathStores)
++        {
++            std::string source = "forever_creator_source_" + std::string(name);
++            if (QueryResult rows = WorldDatabase.Query(Trinity::StringFormat("SELECT COUNT(*) FROM `{}`", source).c_str()))
++                if (!(*rows)[0].GetUInt64()) store->ExportWorldSource(source);
++        }
++        for (auto const& [store, name] : creatorStores)
++        {
++            std::string source = "forever_creator_source_" + std::string(name);
++            if (QueryResult rows = WorldDatabase.Query(Trinity::StringFormat("SELECT COUNT(*) FROM `{}`", source).c_str()))
++                if (!(*rows)[0].GetUInt64()) store->ExportWorldSource(source);
++            for (uint32 id : store->LoadWorldOverrides("forever_creator_" + std::string(name)))
++            {
++                DB2HotfixGeneratorBase::AddClientHotfix(store->GetTableHash(), id);
++                ++count;
++            }
++        }
++        WorldDatabase.DirectExecute(Trinity::StringFormat("REPLACE INTO forever_creator_runtime (id, version, loaded_records, loaded_at) VALUES (1,2,{},NOW())", count).c_str());
++        TC_LOG_INFO("server.loading", ">> ForeverCreator: loaded {} custom records from world", count);
++    }
+     TC_LOG_INFO("server.loading", "Loading hotfix optional data...");
+     sDB2Manager.LoadHotfixOptionalData(m_availableDbcLocaleMask);
+     TC_LOG_INFO("server.loading", "Indexing loaded data stores...");
+     sDB2Manager.IndexLoadedStores();
++    // Read-only website metadata after core-specific data fixes have been indexed.
++    if (WorldDatabase.Query("SHOW TABLES LIKE 'forever_armory_source_spell_name'"))
++    {
++        std::pair<DB2StorageBase*, char const*> const armoryStores[] = {
++            { &sSpellNameStore, "spell_name" }, { &sSpellMiscStore, "spell_misc" },
++            { &sTraitTreeStore, "trait_tree" }, { &sTraitNodeStore, "trait_node" },
++            { &sTraitNodeEntryStore, "trait_node_entry" }, { &sTraitNodeXTraitNodeEntryStore, "trait_node_x_trait_node_entry" },
++            { &sTraitDefinitionStore, "trait_definition" }, { &sTraitEdgeStore, "trait_edge" },
++            { &sSkillLineStore, "skill_line" }, { &sSkillRaceClassInfoStore, "skill_race_class_info" },
++            { &sSkillLineXTraitTreeStore, "skill_line_x_trait_tree" }, { &sTalentStore, "talent" }, { &sPvpTalentStore, "pvp_talent" }
++        };
++        for (auto const& [store, name] : armoryStores)
++        {
++            std::string table = "forever_armory_source_" + std::string(name);
++            if (QueryResult rows = WorldDatabase.Query(Trinity::StringFormat("SELECT COUNT(*) FROM `{}`", table).c_str()))
++                if (!(*rows)[0].GetUInt64()) store->ExportWorldSource(table);
++        }
++        TC_LOG_INFO("server.loading", ">> ForeverCMS: Armory spell and trait libraries available in world");
++    }
+     ///- Load M2 fly by cameras
+     LoadM2Cameras(m_dataPath);
+     ///- Load GameTables
+diff --git a/src/server/shared/DataStores/DB2Store.cpp b/src/server/shared/DataStores/DB2Store.cpp
+index 79fbfe4a9d..cfc54f4818 100644
+--- a/src/server/shared/DataStores/DB2Store.cpp
++++ b/src/server/shared/DataStores/DB2Store.cpp
+@@ -21,6 +21,9 @@
+ #include "DB2FileSystemSource.h"
+ #include "DB2Meta.h"
+ #include "StringFormat.h"
++#include "DatabaseEnv.h"
++#include <cstring>
++#include <algorithm>
+ 
+ DB2StorageBase::DB2StorageBase(char const* fileName, DB2LoadInfo const* loadInfo)
+     : _tableHash(0), _layoutHash(0), _fileName(fileName), _fieldCount(0), _loadInfo(loadInfo), _dataTable(nullptr), _dataTableEx(),
+@@ -35,6 +38,8 @@ DB2StorageBase::~DB2StorageBase()
+     delete[] _dataTableEx[1];
+     for (char* strings : _stringPool)
+         delete[] strings;
++    for (char* records : _worldDataPool)
++        delete[] records;
+     delete[] _indexTable;
+ }
+ 
+@@ -143,3 +148,123 @@ void DB2StorageBase::LoadStringsFromDB(LocaleConstant locale)
+     loader.LoadStrings(true, locale, _indexTableSize, _indexTable, _stringPool);
+     _stringPool.shrink_to_fit();
+ }
++
++void DB2StorageBase::ExportWorldSource(std::string const& table) const
++{
++    std::string columns;
++    for (uint32 f = 0; f < _loadInfo->FieldCount; ++f)
++        columns += (f ? "," : "") + std::string("`") + _loadInfo->Fields[f].Name + "`";
++    WorldDatabaseTransaction trans = WorldDatabase.BeginTransaction();
++    trans->Append(Trinity::StringFormat("DELETE FROM `{}`", table).c_str());
++    std::string values;
++    auto quote = [](char const* value)
++    {
++        std::string text = value ? value : "";
++        WorldDatabase.EscapeString(text);
++        return "'" + text + "'";
++    };
++    for (uint32 id = _minId; id < _indexTableSize; ++id)
++    {
++        char const* data = _indexTable[id];
++        if (!data) continue;
++        std::string row;
++        for (uint32 f = 0; f < _loadInfo->FieldCount; ++f)
++        {
++            DB2FieldMeta const& field = _loadInfo->Fields[f];
++            if (f) row += ',';
++            switch (field.Type)
++            {
++                case FT_BYTE:
++                    row += field.IsSigned ? std::to_string(*reinterpret_cast<int8 const*>(data)) : std::to_string(*reinterpret_cast<uint8 const*>(data)); data += 1; break;
++                case FT_SHORT:
++                    row += field.IsSigned ? std::to_string(*reinterpret_cast<int16 const*>(data)) : std::to_string(*reinterpret_cast<uint16 const*>(data)); data += 2; break;
++                case FT_INT:
++                    row += field.IsSigned ? std::to_string(*reinterpret_cast<int32 const*>(data)) : std::to_string(*reinterpret_cast<uint32 const*>(data)); data += 4; break;
++                case FT_LONG:
++                    row += field.IsSigned ? std::to_string(*reinterpret_cast<int64 const*>(data)) : std::to_string(*reinterpret_cast<uint64 const*>(data)); data += 8; break;
++                case FT_FLOAT:
++                    row += Trinity::StringFormat("{}", *reinterpret_cast<float const*>(data)); data += 4; break;
++                case FT_STRING:
++                {
++                    LocalizedString const* localized = reinterpret_cast<LocalizedString const*>(data);
++                    char const* text = (*localized)[LOCALE_enUS];
++                    if (!text || !*text)
++                        for (char const* candidate : localized->Str)
++                            if (candidate && *candidate) { text = candidate; break; }
++                    row += quote(text); data += sizeof(LocalizedString); break;
++                }
++                case FT_STRING_NOT_LOCALIZED:
++                    row += quote(*reinterpret_cast<char const* const*>(data)); data += sizeof(char const*); break;
++                default: return;
++            }
++        }
++        values += (values.empty() ? "" : ",") + std::string("(") + row + ",0)";
++        if (values.size() > 60000)
++        {
++            trans->Append(Trinity::StringFormat("INSERT INTO `{}` ({},VerifiedBuild) VALUES {}", table, columns, values).c_str());
++            values.clear();
++        }
++    }
++    if (!values.empty()) trans->Append(Trinity::StringFormat("INSERT INTO `{}` ({},VerifiedBuild) VALUES {}", table, columns, values).c_str());
++    WorldDatabase.DirectCommitTransaction(trans);
++}
++
++std::vector<uint32> DB2StorageBase::LoadWorldOverrides(std::string const& table)
++{
++    std::vector<uint32> loaded;
++    std::string columns;
++    for (uint32 f = 0; f < _loadInfo->FieldCount; ++f)
++        columns += (f ? "," : "") + std::string("`") + _loadInfo->Fields[f].Name + "`";
++    QueryResult result = WorldDatabase.Query(Trinity::StringFormat("SELECT {} FROM `{}` ORDER BY VerifiedBuild", columns, table).c_str());
++    if (!result || result->GetFieldCount() != _loadInfo->FieldCount) return loaded;
++    uint32 indexField = _loadInfo->Meta->GetDbIndexField();
++    uint32 size = _loadInfo->Meta->GetRecordSize();
++    do
++    {
++        Field* fields = result->Fetch();
++        uint32 id = fields[indexField].GetUInt32();
++        if (!id || id > 2000000) continue;
++        if (id >= _indexTableSize)
++        {
++            uint32 newSize = id + 1;
++            char** next = new char*[newSize]();
++            std::copy_n(_indexTable, _indexTableSize, next);
++            delete[] _indexTable;
++            _indexTable = next; _indexTableSize = newSize;
++        }
++        char* record = new char[size]();
++        _worldDataPool.push_back(record);
++        char* cursor = record;
++        for (uint32 f = 0; f < _loadInfo->FieldCount; ++f)
++        {
++            switch (_loadInfo->Fields[f].Type)
++            {
++                case FT_BYTE: *reinterpret_cast<uint8*>(cursor) = uint8(fields[f].GetUInt64()); cursor += 1; break;
++                case FT_SHORT: *reinterpret_cast<uint16*>(cursor) = uint16(fields[f].GetUInt64()); cursor += 2; break;
++                case FT_INT: *reinterpret_cast<uint32*>(cursor) = uint32(fields[f].GetUInt64()); cursor += 4; break;
++                case FT_LONG: *reinterpret_cast<uint64*>(cursor) = fields[f].GetUInt64(); cursor += 8; break;
++                case FT_FLOAT: *reinterpret_cast<float*>(cursor) = fields[f].GetFloat(); cursor += 4; break;
++                case FT_STRING:
++                {
++                    LocalizedString* localized = reinterpret_cast<LocalizedString*>(cursor);
++                    char* text = nullptr;
++                    if (char* value = DB2DatabaseLoader::AddString(const_cast<char const**>(&text), fields[f].GetStringView())) _stringPool.push_back(value);
++                    for (char const*& locale : localized->Str) locale = text ? text : "";
++                    cursor += sizeof(LocalizedString); break;
++                }
++                case FT_STRING_NOT_LOCALIZED:
++                {
++                    char const** text = reinterpret_cast<char const**>(cursor);
++                    if (char* value = DB2DatabaseLoader::AddString(text, fields[f].GetStringView())) _stringPool.push_back(value);
++                    else *text = "";
++                    cursor += sizeof(char const*); break;
++                }
++                default: break;
++            }
++        }
++        ASSERT(cursor - record == size);
++        _indexTable[id] = record; _minId = std::min(_minId, id);
++        loaded.push_back(id);
++    } while (result->NextRow());
++    return loaded;
++}
+diff --git a/src/server/shared/DataStores/DB2Store.h b/src/server/shared/DataStores/DB2Store.h
+index 3f8448e111..6fe8a6505d 100644
+--- a/src/server/shared/DataStores/DB2Store.h
++++ b/src/server/shared/DataStores/DB2Store.h
+@@ -53,6 +53,9 @@ public:
+     void LoadStringsFrom(std::string const& path, LocaleConstant locale);
+     void LoadFromDB();
+     void LoadStringsFromDB(LocaleConstant locale);
++    // ForeverCreator keeps its editable item records in the world database.
++    void ExportWorldSource(std::string const& table) const;
++    std::vector<uint32> LoadWorldOverrides(std::string const& table);
+ 
+ protected:
+     uint32 _tableHash;
+@@ -63,6 +66,7 @@ protected:
+     char* _dataTable;
+     char* _dataTableEx[2];
+     std::vector<char*> _stringPool;
++    std::vector<char*> _worldDataPool;
+     char** _indexTable;
+     uint32 _indexTableSize;
+     uint32 _minId;

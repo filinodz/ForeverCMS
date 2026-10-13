@@ -58,6 +58,10 @@ try
     if ($LASTEXITCODE -ne 0) { Fail 'could not create the website database (see the message above).' }
     Get-Content -LiteralPath (Join-Path $Cms 'sql\forever_shared_shop.sql') -Raw -Encoding UTF8 | & $Mysql -uroot "-P$MysqlPort" -h 127.0.0.1 --default-character-set=utf8mb4
     if ($LASTEXITCODE -ne 0) { Fail 'could not synchronize the ForeverCMS and in-game shop catalogs.' }
+    Get-Content -LiteralPath (Join-Path $Cms 'sql\forever_creator_world.sql') -Raw -Encoding UTF8 | & $Mysql -uroot "-P$MysqlPort" -h 127.0.0.1 --default-character-set=utf8mb4
+    if ($LASTEXITCODE -ne 0) { Fail 'could not prepare the ForeverCreator world authoring tables.' }
+    Get-Content -LiteralPath (Join-Path $Cms 'sql\forever_armory_library.sql') -Raw -Encoding UTF8 | & $Mysql -uroot "-P$MysqlPort" -h 127.0.0.1 --default-character-set=utf8mb4
+    if ($LASTEXITCODE -ne 0) { Fail 'could not prepare the Armory spell and trait library.' }
     & $Mysql -uroot "-P$MysqlPort" -h 127.0.0.1 -e "GRANT ALL PRIVILEGES ON forever_site.* TO 'trinity'@'127.0.0.1'; GRANT ALL PRIVILEGES ON forever_site.* TO 'trinity'@'localhost'; FLUSH PRIVILEGES;"
     if ($LASTEXITCODE -ne 0) { Fail 'could not give the trinity user access to forever_site.' }
     Good 'website database forever_site is ready'

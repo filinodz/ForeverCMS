@@ -24,11 +24,13 @@ manage the portal from one themed administration area.
 - Account registration, login, activation and recovery workflows.
 - Multi-realm status with per-realm visibility controls, a live Players Online roster and direct Armory links.
 - Native High Order and Windshaper Skyborne faction counting and themed race icons.
-- Local 3D character viewer with bundled model data.
+- Character directory and multi-realm search, separate from the PvP leaderboard.
+- Equipped 3D character viewer, actual Classic talent trees and saved ranks, Legacy builds, spellbook and skills with real client icons.
 - News, downloads, guides, vote system and a premium shop synchronized with ForeverCore's in-game catalog.
 - One shared `world.shop_*` catalog, one `auth.account_shop_points` wallet and one purchase history for the website and the game.
 - Administration for content, users, realms, Discord and the shared shop; changes are reloaded in game automatically.
-- Integrated ForeverCreator item studio with a live WoW-style preview, direct database insertion and editable creation history.
+- Integrated ForeverCreator for items, creatures, quests, Classic teleporters, vendor inventory, loot, NPC placement and named destinations.
+- Free visual editor for the complete **How to join us** page, starting with the installed layout rather than a blank canvas.
 - Configurable Discord invite and home-page widget—no hard-coded community link.
 - Configurable public realm visibility, Bugtracker panel and independent Points/Token display.
 - Forever Launcher startup integration and a recoverable Windows installer.
@@ -39,7 +41,7 @@ manage the portal from one themed administration area.
 
 The recommended community installation is the packaged release:
 
-1. Stop Forever Launcher.
+1. Stop Forever Launcher and all running worldserver realms.
 2. Extract the complete ForeverCMS release.
 3. Run `Install-ForeverCMS.bat`.
 4. Pass a custom location if auto-detection does not find the repack:
@@ -55,12 +57,78 @@ The release payload includes the runtime required by the launcher. This source
 repository intentionally excludes generated secrets, local logs, backups and the
 bundled PHP runtime.
 
+To update an existing installation, add `-ReplaceExisting`. Your current CMS and
+worldserver are backed up; private settings and game accounts are retained. Do
+not use `-ResetSiteDatabase` for a normal update.
+
+Version 1.5 includes a compatible worldserver for ForeverRepack 2026-10-09. If you
+maintain a custom ForeverCore build, use `-SkipCoreUpdate` and apply the patch in
+[`core`](./core), then rebuild your own server. The item and talent features need
+this bridge; installing only the PHP files is not sufficient.
+
+## Page studio
+
+Open **Admin → Page studio** to edit `/how_to_play` in English or French. The
+editor imports the installed page with all its text, links and layout. Double-click
+text to edit it, select a link or image to change its properties, and use blocks
+and the style panel to add sections or change the design. Images can use your own
+URLs. Desktop, tablet and mobile canvases are included.
+
+Save drafts without changing the public page, **Publish** the layout, or restore
+a saved revision. **Use original page** disables the custom layout without
+destroying the saved draft. Login, shop, rankings and other application screens
+are not replaced by this editor.
+
+The free bundled editor is GrapesJS, under BSD-3-Clause. No account, API key or
+paid plan is required. Scripts, forms and arbitrary iframe embeds are removed
+from published layouts for safety. The global header/footer remain controlled
+by General Settings. Use `{{realmlist}}`, `{{launcher_url}}`, `{{site_title}}` and
+`{{discord_url}}` to follow the current server settings.
+
+## ForeverCreator and world integration
+
+Use **Admin → ForeverCreator** to load an existing server template by ID or
+search by name, choose a free creation ID, and edit its fields. All schema fields
+are available, including advanced requirements, flags, sockets, rewards, spell
+effects and Classic-specific NPC/quest tables. Item stats use the same budgets,
+armor and damage data as the running core; the stat assistant converts actual
+attribute points into the correct stored values.
+
+The appearance library uses display IDs exported from your server. Items and
+NPCs have a 3D preview; teleporters also have a live destination-menu preview.
+Teleports are restricted to maps 0/1 and checked against installed terrain.
+Vendor and loot tools support multiple rows per tracked creation.
+
+**Save to world** commits the records and their ownership history together.
+History lets you edit, delete or restore your own creations. Existing server
+records cannot be overwritten. SQL export validates the same fields and IDs
+without modifying the database.
+
+Restart the updated worldserver after a save or deletion before testing in game.
+Items also update the website's Armory index. If your game client retains an old
+custom item, close it and clear its cache. This is not a live-edit or client-asset
+authoring tool. Generated NPCs are not spawned automatically: use NPC placement
+or `.npc add <entry>` after the restart. New quests need a quest giver/ender.
+
+New records are stored in `world.forever_creator_*`, with normal world tables for
+NPCs, quests, gossip, loot and placements. The bridge reads these definitions at
+startup and sends the standard client data notifications **without writing SQL
+hotfixes tables**. It also exports read-only template, appearance, spell and trait
+metadata from the server's loaded DB2 data to `world`.
+
+3D uses the bundled renderer, local verified assets and a cached, fixed-origin
+gateway to the public Astral/Wowhead model libraries. Windows HTTPS certificate
+verification remains enabled. Custom Forever client-only geometry unavailable
+from these sources must be provided separately; an unavailable model does not
+mean its server display ID is invalid. Live inspection previews stat values and
+known spell names, not a simulation of every possible proc or scripted effect.
+
 ## Work from source
 
 Requirements:
 
 - Windows 10/11 or a PHP-compatible web server;
-- PHP 8.2 or newer with MySQLi;
+- PHP 8.2 or newer with MySQLi, DOM, cURL and mbstring;
 - a running ForeverRepack database;
 - a ForeverRepack checkout for launcher integration.
 
@@ -129,6 +197,12 @@ ForeverCMS is based on the open-source
 [SahtoutCMS](https://github.com/SahtoutDev/SahtoutCMS). The upstream MIT notice is
 preserved in [`LICENSE-SahtoutCMS.txt`](./LICENSE-SahtoutCMS.txt). ForeverCMS
 modifications are available under the [MIT License](./LICENSE).
+
+The optional ForeverCore patch and corresponding worldserver are GPL-2.0-or-later,
+separate from the CMS's MIT license. Full corresponding core source accompanies
+the release; see [`core/README.md`](./core/README.md). GrapesJS retains its own
+BSD-3-Clause license. Model assets and the third-party renderer retain their
+respective rights; they are not relicensed under the CMS license.
 
 World of Warcraft and related names, artwork and assets are trademarks or
 copyrighted works of Blizzard Entertainment. This fan-made community project is

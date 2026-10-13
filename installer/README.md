@@ -10,7 +10,7 @@ ForeverCMS is the local community portal built for ForeverRepack: Battle.net acc
 
 ## Installation
 
-1. Close Forever Launcher.
+1. Stop all world realms and the Website / CMS web server, then close Forever Launcher. MySQL may remain running.
 2. Extract the complete release archive to a normal folder.
 3. Double-click `Install-ForeverCMS.bat`.
 4. Start Forever Launcher, open **LOCAL SERVER**, then start Database, Auth Server, World Server and Web Server.
@@ -36,7 +36,9 @@ The installer refuses to overwrite an existing `cms` folder unless `-ReplaceExis
 .\Install-ForeverCMS.ps1 -RepackPath "D:\Path\To\ForeverRepack" -ReplaceExisting
 ```
 
-The existing `forever_site` database is preserved by default. Add `-ResetSiteDatabase` only when you intentionally want to remove CMS-specific accounts, settings and history. This option never deletes the repack's `auth`, `characters*`, `world` or `hotfixes` databases.
+The existing `forever_site` database and private site / realm configuration are preserved by default. Add `-ResetSiteDatabase` only when you intentionally want to remove CMS-specific accounts, settings and page revisions. This option never deletes the repack's `auth`, `characters*`, `world` or `hotfixes` databases. Creator history lives in `world` and is preserved.
+
+The package includes a compatible worldserver. Its previous executable is backed up; server configuration is not replaced. If your core has other custom modifications, apply the patch from `cms/core` to your own source, rebuild, then install with `-SkipCoreUpdate`. Full corresponding server source is supplied as a separate release download under GPL-2.0-or-later.
 
 ## Shared in-game shop
 
@@ -47,9 +49,15 @@ Setup installs the Forever premium products into the canonical `world.shop_*` ta
 - Forever premium design and community-supplied WoW Forever backgrounds.
 - Configurable Discord widget, public realms, Bugtracker, Points and Tokens.
 - Live Players Online page linked to the Armory.
-- Integrated ForeverCreator item studio with WoW-style live preview, direct hotfix insertion and creation history.
+- Integrated ForeverCreator: items, creatures, quests, Classic-safe teleporters, vendors, loot, NPC placement and destinations, with world insertion and creation history.
+- Item appearance selection, live item / NPC 3D preview and server-calculated item stats.
+- Complete visual editing of How to join us, with drafts, publishing and revision restoration.
+- Searchable multi-realm Armory, separate PvP rankings, saved talents, spellbook and skills.
+- Admin-configurable connection realmlist and launcher download link.
 - Per-realm administration for Normal, PvP, RP and Hardcore.
 - Shared CMS/in-game shop and premium catalog.
 - Local 3D character viewer assets.
 - Portable PHP runtime and one-click setup.
 - Clean CMS schema without bundled player accounts, sessions, logs, secrets or database dumps.
+
+Restart worldserver after saving or deleting creator records. Preview models depend on available public assets; private client-only models require their own assets.

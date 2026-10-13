@@ -1,0 +1,6 @@
+GrapesJS 0.22.13
+Source: https://github.com/GrapesJS/grapesjs
+Distribution: https://unpkg.com/grapesjs@0.22.13/dist/grapes.min.js
+Styles: https://unpkg.com/grapesjs@0.22.13/dist/css/grapes.min.css
+License: BSD-3-Clause (see LICENSE in this directory).
+Bundled locally; no API key, account, paid subscription or CDN request required.

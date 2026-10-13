@@ -8,6 +8,10 @@
  */
 function forever_route($root, $path)
 {
+    if (preg_match('~^/model-assets/(.+)$~',$path,$modelMatch)) {
+        $_GET['asset']=$modelMatch[1];
+        return $root . DIRECTORY_SEPARATOR . 'pages' . DIRECTORY_SEPARATOR . 'model_asset.php';
+    }
     if (strpos($path, '..') !== false || strpos($path, "\0") !== false) {
         http_response_code(400);
         echo 'Bad request';

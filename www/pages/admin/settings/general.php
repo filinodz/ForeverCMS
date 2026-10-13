@@ -159,6 +159,17 @@ include $project_root . 'includes/header.php';
                             </div>
 
                             <!-- Featured YouTube Video -->
+                            <div class="p-4 border border-[#c9a227]/30 bg-[#0a0e16]/60 space-y-4">
+                                <h3 class="text-[#e9cb73] font-bold"><?php echo translate('connection_settings','Player connection'); ?></h3>
+                                <label class="block"><span class="block text-sm text-gray-300 mb-2"><?php echo translate('label_forever_portal','Realmlist / Battle.net portal'); ?></span>
+                                    <input type="text" name="forever_portal" id="forever_portal" maxlength="253" required class="w-full px-4 py-3 text-[#e5e7eb] bg-[#080c13] border border-[#c9a227]/30 outline-none focus:border-[#f2cf5b]" value="<?php echo htmlspecialchars($forever_portal ?? 'trinity.actual.battle.net',ENT_QUOTES,'UTF-8'); ?>">
+                                    <span class="block mt-2 text-xs text-[#8190a5]"><?php echo translate('help_forever_portal','Shown on How to join us and available in the page editor as {{realmlist}}. This is the player connection address, not the internal status-check address.'); ?></span>
+                                </label>
+                                <label class="block"><span class="block text-sm text-gray-300 mb-2"><?php echo translate('label_forever_launcher_url','Launcher download link'); ?></span>
+                                    <input type="url" name="forever_launcher_url" class="w-full px-4 py-3 text-[#e5e7eb] bg-[#080c13] border border-[#c9a227]/30 outline-none focus:border-[#f2cf5b]" value="<?php echo htmlspecialchars($forever_launcher_url ?? '',ENT_QUOTES,'UTF-8'); ?>">
+                                </label>
+                            </div>
+                            <!-- Featured YouTube Video -->
                             <div>
                                 <label for="youtube_embed_url" class="form-label text-[#f2cf5b] font-bold text-sm 
                                                                         tracking-wider block mb-2 

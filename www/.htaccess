@@ -1,4 +1,5 @@
 RewriteEngine On
+RewriteRule ^model-assets/(.+)$ pages/model_asset.php?asset=$1 [QSA,L]
 
 # Serve existing files and directories directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]

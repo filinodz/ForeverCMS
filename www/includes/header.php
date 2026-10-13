@@ -26,6 +26,8 @@ $display_tokens = isset($show_tokens) ? (bool)$show_tokens : (!isset($show_curre
 
 // Include language detection
 require_once $project_root . 'languages/language.php';
+require_once $project_root . 'includes/forever_pages.php';
+forever_pages_boot();
 
 // Check if session is started; warn in source code if not
 if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -712,7 +714,7 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
                     <?php echo translate('nav_news', 'News'); ?>
                 </a>
 
-                <a href="<?php echo $esc_base; ?>armory/solo_pvp" class="nav-link <?php echo strpos($page_class, 'armory') !== false ? 'active' : ''; ?>">
+                <a href="<?php echo $esc_base; ?>armory/" class="nav-link <?php echo strpos($page_class, 'armory') !== false ? 'active' : ''; ?>">
                     <?php echo translate('nav_armory', 'Armory'); ?>
                 </a>
 
@@ -745,7 +747,7 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
                 <!-- User Profile (Logged In) -->
                 <?php if (!empty($_SESSION['user_id'])): ?>
                     <?php if ($display_points || $display_tokens): ?>
-                    <div class="hidden md:flex items-center gap-2 force-wrap">
+                    <div class="hidden md:flex items-center gap-2" style="flex-shrink:0;white-space:nowrap;word-break:normal;overflow-wrap:normal">
                         <?php if ($display_points): ?>
                         <span class="badge-gold"><i class="fas fa-coins"></i> <?php echo $points; ?></span>
                         <?php endif; ?>

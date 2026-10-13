@@ -18,6 +18,14 @@ jobs:
       - name: Show PHP version
         run: php --version
 
+      - name: Check studio JavaScript
+        run: |
+          node --check www/assets/js/admin/creator-studio.js
+          node --check www/assets/js/admin/page-studio.js
+
+      - name: Check page sanitizer
+        run: php tests/page_studio_test.php
+
       - name: Lint application PHP
         shell: bash
         run: >-

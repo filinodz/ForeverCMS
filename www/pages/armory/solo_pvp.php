@@ -55,8 +55,8 @@ try {
             FROM characters c
             LEFT JOIN guild_member gm ON c.guid = gm.guid
             LEFT JOIN guild g ON gm.guildid = g.guildid
-            WHERE c.name LIKE ? {$botWhereClause}
-            ORDER BY c.level DESC, c.totalKills DESC
+            WHERE c.deleteInfos_Account IS NULL AND c.totalKills > 0 AND c.name LIKE ? {$botWhereClause}
+            ORDER BY c.totalKills DESC, c.level DESC
             LIMIT 50
         ";
 
@@ -90,8 +90,8 @@ try {
             FROM characters c
             LEFT JOIN guild_member gm ON c.guid = gm.guid
             LEFT JOIN guild g ON gm.guildid = g.guildid
-            WHERE 1=1 {$botWhereClause}
-            ORDER BY c.level DESC, c.totalKills DESC
+            WHERE c.deleteInfos_Account IS NULL AND c.totalKills > 0 {$botWhereClause}
+            ORDER BY c.totalKills DESC, c.level DESC
             LIMIT 50
         ";
         $result = $char_db->query($sql);

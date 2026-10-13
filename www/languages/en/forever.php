@@ -141,4 +141,9 @@ return [
     'err_realm_database_invalid' => 'Characters database name may only contain letters, numbers and underscores.',
     'err_realm_database_missing' => 'Characters database "%s" does not exist.',
     'admin_forever_creator' => 'ForeverCreator',
+    'admin_page_studio' => 'Page studio',
+    'connection_settings' => 'Player connection',
+    'label_forever_portal' => 'Realmlist / Battle.net portal',
+    'help_forever_portal' => 'Shown on How to join us and available in the page editor as {{realmlist}}. This is the player connection address, not the internal status-check address.',
+    'label_forever_launcher_url' => 'Launcher download link',
 ];

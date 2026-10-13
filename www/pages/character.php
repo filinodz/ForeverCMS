@@ -834,17 +834,8 @@ require_once $project_root . 'includes/header.php';
                                         }
                                     }
 
-                                    // Display IDs are distinct from item entry IDs. Only keep IDs
-                                    // verified against the mirrored renderer data: an incorrect ID
-                                    // would silently attach another item to the character.
-                                    $known_model_items = [
-                                        45 => [4, 3265], // Squire's Shirt
-                                    ];
-                                    foreach ($itemEntries as $entry) {
-                                        if (isset($known_model_items[(int)$entry])) {
-                                            $character_model_items[] = $known_model_items[(int)$entry];
-                                        }
-                                    }
+                                    require_once $project_root.'includes/forever_models.php';
+                                    $character_model_items=forever_model_equipment($world_db,$itemEntries);
                                 }
                             } else {
                                 $error = translate('error_execute_inventory_query', 'Failed to execute inventory query.');
@@ -975,7 +966,7 @@ require_once $project_root . 'includes/header.php';
                         try {
                             const model = new window.ZamModelViewer({
                                 type: window.ZamModelViewer.WOW,
-                                contentPath: <?= json_encode($base_path . '3dmodels/wow-data/') ?>,
+                                contentPath: <?= json_encode($base_path . 'model-assets/v3/live/') ?>,
                                 container: window.jQuery(stage),
                                 hd: true,
                                 aspect: Math.max(stage.clientWidth, 1) / Math.max(stage.clientHeight, 1),
@@ -1124,9 +1115,9 @@ require_once $project_root . 'includes/header.php';
                             $v = isset($item["stat_value$i"]) ? (int)$item["stat_value$i"] : 0;
                             if ($t <= 0 || $v <= 0) continue;
                             switch ($t) {
-                                case 30: $gear_stats['spellHit']   += $v; break;
-                                case 31: $gear_stats['spellCrit']  += $v; break;
-                                case 32: $gear_stats['spellHaste'] += $v; break;
+                                case 18: case 31: $gear_stats['spellHit']   += $v; break;
+                                case 21: case 32: $gear_stats['spellCrit']  += $v; break;
+                                case 30: $gear_stats['spellHaste'] += $v; break;
                                 case 35: /* resilience already in $stats */ break;
                                 case 36: $gear_stats['haste']      += $v; break;
                                 case 37: $gear_stats['expertise']  += $v; break;
@@ -1135,7 +1126,7 @@ require_once $project_root . 'includes/header.php';
                                 case 42: $gear_stats['bonusSpell'] += $v; break;
                                 case 45: /* spellPower already in $stats */ break;
                                 case 47: $gear_stats['spellPen']   += $v; break;
-                                case 49: $gear_stats['armorPen']   += $v; break;
+                                case 44: $gear_stats['armorPen']   += $v; break;
                             }
                         }
                     }
@@ -1247,10 +1238,7 @@ require_once $project_root . 'includes/header.php';
 
             <!-- Talents Tab -->
             <div id="talents-tab" class="tab-content mt-6">
-                <div class="text-center py-12 text-gray-400">
-                    <i class="fas fa-star text-3xl block mb-3 text-[rgba(201,162,39,0.3)]"></i>
-                    <?php echo translate('talents_coming_soon', 'Talents (Coming Soon)'); ?>
-                </div>
+                <?php include $project_root.'includes/armory_traits_view.php'; ?>
             </div>
 
             <!-- PVP Tab -->

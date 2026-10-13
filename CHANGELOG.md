@@ -7,6 +7,40 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-14
+
+### Added
+
+- Free, bundled GrapesJS page studio: drag-and-drop layouts, text, images, responsive canvas, drafts, publication and revision restoration.
+- Complete How to join us page editing, starting from the installed layout; application screens are not replaced.
+- Character directory / multi-realm search separate from the PvP leaderboard, which now ranks by honorable kills.
+- Actual Classic and Legacy talent trees, saved build ranks, spellbook and skills with client-data icons.
+- Realmlist / Battle.net portal and launcher download link in General Settings, with dynamic page tokens.
+- World-backed ForeverCreator studio for items, creatures, quests, teleporters, vendor inventories, loot, NPC placement and named destinations.
+- Complete schema-based fields, real template search, appearance picker, live item / NPC 3D preview and Classic-safe teleporter menu preview.
+- Stat assistant using the core's actual item budgets, armor and weapon damage tables.
+- Transactional world creation history with edit, delete, restore, revision guards and validated SQL export.
+- Optional ForeverCore world authoring bridge and compatible Windows worldserver, with corresponding source and build instructions.
+
+### Changed
+
+- New creations write to `world` only; the updated server loads custom item definitions and notifies the client without writing to SQL hotfixes tables.
+- Item appearance resolution now uses the actual server's DB2 appearance library, rather than a single hard-coded shirt.
+- Existing records cannot be overwritten by the creator; removal targets only recorded ownership keys.
+
+### Fixed
+
+- Load template now reads the server's exported world library and reports actionable errors.
+- Windows certificate validation for 3D asset requests, missing CDN geometry through a fixed-origin archive fallback, and modern nested humanoid NPC metadata.
+- Item icons restored in the live inspection and updated when the appearance changes.
+- Armory 3D rendering includes the character's actual equipped display IDs.
+- Dark form selectors retain readable text and backgrounds.
+
+### Notes
+
+- Restart the updated worldserver after saving or deleting creations. This is not an in-game live-edit feature.
+- 3D previews depend on publicly available model data; custom client-only assets must be provided separately.
+
 ## [1.4.0] - 2026-10-13
 
 ### Added

@@ -4,6 +4,7 @@ param(
     [switch]$ReplaceExisting,
     [switch]$ResetSiteDatabase,
     [switch]$SkipLauncherUpdate,
+    [switch]$SkipCoreUpdate,
     [switch]$DryRun
 )
 
@@ -12,6 +13,7 @@ $PackageRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $PayloadRoot = Join-Path $PackageRoot 'payload'
 $PayloadCms = Join-Path $PayloadRoot 'cms'
 $PayloadLauncher = Join-Path $PayloadRoot 'ForeverLauncher.exe'
+$PayloadCore = Join-Path $PayloadRoot 'server\worldserver.exe'
 
 function Write-Step([string]$Text) { Write-Host "`n==> $Text" -ForegroundColor Cyan }
 function Write-Good([string]$Text) { Write-Host "    $Text" -ForegroundColor Green }
@@ -70,6 +72,7 @@ foreach ($relative in $required) {
 if (-not (Test-Path -LiteralPath (Join-Path $PayloadCms 'www\index.php'))) { Stop-Install 'The package payload is incomplete (payload\cms missing).' }
 if (-not $SkipLauncherUpdate -and -not (Test-Path -LiteralPath $PayloadLauncher -PathType Leaf)) { Stop-Install 'The compatible ForeverLauncher.exe is missing from the payload.' }
 Write-Good 'ForeverRepack and package payload validated.'
+if (-not $SkipCoreUpdate -and -not (Test-Path -LiteralPath $PayloadCore -PathType Leaf)) { Stop-Install 'The world authoring-compatible worldserver is missing. Use -SkipCoreUpdate only with your own patched core.' }
 
 $TargetCms = Join-Path $ResolvedRepack 'cms'
 $TargetCmsFull = [IO.Path]::GetFullPath($TargetCms).TrimEnd('\')
@@ -90,12 +93,24 @@ if ($DryRun) {
     Write-Host "    Replace existing CMS: $([bool]$ReplaceExisting)"
     Write-Host "    Reset only forever_site: $([bool]$ResetSiteDatabase)"
     Write-Host "    Update launcher: $(-not $SkipLauncherUpdate)"
+    Write-Host "    Update worldserver: $(-not $SkipCoreUpdate)"
     Write-Good 'Validation successful. No file or database was changed.'
     exit 0
 }
 
 if (Get-Process -Name 'ForeverLauncher' -ErrorAction SilentlyContinue) {
     Stop-Install 'Forever Launcher is running. Close it and start the installer again.'
+}
+$CmsProcesses = Get-CimInstance Win32_Process | Where-Object {
+    $_.Name -in @('php.exe','php-cgi.exe','python.exe','pythonw.exe') -and
+    (($_.ExecutablePath -and $_.ExecutablePath.StartsWith($TargetCmsFull + '\', [StringComparison]::OrdinalIgnoreCase)) -or
+     ($_.CommandLine -and $_.CommandLine.IndexOf($TargetCmsFull, [StringComparison]::OrdinalIgnoreCase) -ge 0))
+}
+if ($CmsProcesses) { Stop-Install 'Stop the repack Website / CMS web server before updating. No files have been replaced.' }
+if (-not $SkipCoreUpdate) {
+    $WorldTarget = [IO.Path]::GetFullPath((Join-Path $ResolvedRepack 'server\worldserver.exe'))
+    $running = Get-CimInstance Win32_Process -Filter "name='worldserver.exe'" | Where-Object { $_.ExecutablePath -and [IO.Path]::GetFullPath($_.ExecutablePath).Equals($WorldTarget,[StringComparison]::OrdinalIgnoreCase) }
+    if ($running) { Stop-Install 'Stop all worldserver realms before installing the compatible core. No files have been replaced.' }
 }
 
 $Stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
@@ -107,14 +122,28 @@ foreach ($relative in @('ForeverLauncher.exe', 'localservers.json', 'servers.jso
     $source = Join-Path $ResolvedRepack $relative
     if (Test-Path -LiteralPath $source -PathType Leaf) { Copy-Item -LiteralPath $source -Destination (Join-Path $BackupRoot $relative) -Force }
 }
+if (-not $SkipCoreUpdate) {
+    New-Item -ItemType Directory -Path (Join-Path $BackupRoot 'server') -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $ResolvedRepack 'server\worldserver.exe') -Destination (Join-Path $BackupRoot 'server\worldserver.exe')
+}
 if (Test-Path -LiteralPath $TargetCms) {
-    Copy-Item -LiteralPath $TargetCms -Destination (Join-Path $BackupRoot 'cms') -Recurse -Force
-    [IO.Directory]::Delete($TargetCmsFull, $true)
+    Move-Item -LiteralPath $TargetCmsFull -Destination (Join-Path $BackupRoot 'cms')
 }
 Write-Good 'Backup complete.'
 
 Write-Step 'Installing Forever CMS'
 Copy-Item -LiteralPath $PayloadCms -Destination $TargetCms -Recurse -Force
+if ($ReplaceExisting -and -not $ResetSiteDatabase) {
+    foreach ($relative in @('www\includes\config.php','www\includes\config.settings.php','www\includes\config.secret.php','www\includes\realm_config.php','www\includes\config.mail.php','www\includes\config.cap.php','www\includes\ra.conf.php','www\includes\armory_config.php','www\includes\auth_config.php')) {
+        $saved = Join-Path (Join-Path $BackupRoot 'cms') $relative
+        if (Test-Path -LiteralPath $saved -PathType Leaf) { Copy-Item -LiteralPath $saved -Destination (Join-Path $TargetCms $relative) -Force }
+    }
+    Write-Good 'Existing private configuration and realm settings preserved.'
+}
+if (-not $SkipCoreUpdate) {
+    Copy-Item -LiteralPath $PayloadCore -Destination (Join-Path $ResolvedRepack 'server\worldserver.exe') -Force
+    Write-Good 'World authoring-compatible worldserver installed; server configuration preserved.'
+}
 if (-not $SkipLauncherUpdate) {
     Copy-Item -LiteralPath $PayloadLauncher -Destination (Join-Path $ResolvedRepack 'ForeverLauncher.exe') -Force
     Write-Good 'Compatible Forever Launcher installed.'

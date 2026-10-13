@@ -311,6 +311,7 @@ if (strpos($current_path, 'admin/dashboard') !== false) {
                 </a>
             </li>
 
+            <li><a class="group flex items-center gap-3 px-3 py-2.5 text-[0.85rem] font-semibold text-gray-400 hover:text-[#f2cf5b]" href="<?php echo $base_path; ?>admin/settings/page_manager"><i class="fas fa-file-alt w-5 text-center" aria-hidden="true"></i><?php echo translate('admin_page_studio','Page studio'); ?></a></li>
             <!-- Divider -->
             <li class="my-3 px-2">
                 <div class="relative flex items-center">
@@ -351,7 +352,7 @@ if (strpos($current_path, 'admin/dashboard') !== false) {
 
     <!-- Footer -->
     <div class="relative z-10 px-4 py-3 border-t border-[rgba(201,162,39,.1)] shrink-0 text-center text-[0.65rem] text-gray-500 font-['Inter'] tracking-widest uppercase">
-        <span>© <?php echo date('Y'); ?> Sahtout WoW</span>
+        <span>© <?php echo date('Y'); ?> ForeverCMS · FilinoDZ</span>
     </div>
 </aside>
 
