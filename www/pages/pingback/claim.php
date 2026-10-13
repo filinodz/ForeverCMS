@@ -289,6 +289,15 @@ try {
             throw new Exception(sprintf($translate('err_database_generic', 'Database error: %s'), $stmt->error));
         }
         $stmt->close();
+        $stmt = $site_db->prepare("INSERT INTO auth.account_shop_points (AccountID, Points) VALUES (?, ?) ON DUPLICATE KEY UPDATE Points = Points + VALUES(Points)");
+        if (!$stmt) {
+            throw new Exception(sprintf($translate('err_database_generic', 'Database error: %s'), $site_db->error));
+        }
+        $stmt->bind_param('ii', $user_id, $total_points);
+        if (!$stmt->execute()) {
+            throw new Exception(sprintf($translate('err_database_generic', 'Database error: %s'), $stmt->error));
+        }
+        $stmt->close();
     }
 
     // Update user points

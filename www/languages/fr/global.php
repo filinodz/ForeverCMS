@@ -6,6 +6,7 @@ return [
     'nav_how_to_play' => 'Comment jouer',
     'nav_news' => 'Nouvelles',
     'nav_armory' => 'Armurerie',
+    'nav_players_online' => 'Joueurs en ligne',
     'nav_shop' => 'Boutique',
     'nav_register' => 'S’inscrire',
     'nav_login' => 'Connexion',

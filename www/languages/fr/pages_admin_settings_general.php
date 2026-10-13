@@ -31,8 +31,10 @@ return [
     'label_bugtracker_url' => 'URL du Bugtracker',
     'help_bugtracker_url' => 'Lien facultatif ouvert par le bouton Bugtracker.',
     'error_bugtracker_url' => 'L’URL du Bugtracker doit être une adresse HTTP ou HTTPS valide.',
-    'label_show_currencies' => 'Afficher les monnaies du compte',
-    'help_show_currencies' => 'Affiche les Points et les Jetons dans l’interface publique du compte. Désactivez cette option tant que ces monnaies ne sont pas utilisées.',
+    'label_show_points' => 'Afficher les Points',
+    'help_show_points' => 'Affiche le portefeuille de Points partagé avec la boutique en jeu.',
+    'label_show_tokens' => 'Afficher les Jetons',
+    'help_show_tokens' => 'Affiche la monnaie CMS facultative Jetons, indépendamment des Points.',
 
     // Logo
     'label_website_logo' => 'Télécharger le logo',

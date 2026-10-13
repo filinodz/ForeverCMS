@@ -3,18 +3,18 @@ define('ALLOWED_ACCESS', true);
 require_once __DIR__ . '/../includes/paths.php'; // Include paths.php
 require_once $project_root . 'includes/session.php';
 require_once $project_root . 'includes/item_tooltip.php';
+require_once $project_root . 'includes/forever_shop.php';
 require_once $project_root . 'languages/language.php';
 require_once $project_root . 'includes/config.settings.php'; // Site title used in $page_title
 
 $page_class = 'shop';
 
-$selected_category = isset($_GET['category']) ? $_GET['category'] : 'All';
-$valid_categories = ['All', 'Service', 'Mount', 'Pet', 'Gold', 'Stuff', 'Set'];
-if (!in_array($selected_category, $valid_categories, true)) {
-    $selected_category = 'All';
-}
-
 $category_images = [
+    'General' => 'img/shopimg/icons/category_stuff.jpg',
+    'Services' => 'img/shopimg/icons/category_service.gif',
+    'Professions' => 'img/shopimg/icons/category_stuff.jpg',
+    'Mounts' => 'img/shopimg/icons/category_mount.jpg',
+    'Companions' => 'img/shopimg/icons/category_pet.jpg',
     'Service' => 'img/shopimg/icons/category_service.gif',
     'Mount' => 'img/shopimg/icons/category_mount.jpg',
     'Pet' => 'img/shopimg/icons/category_pet.jpg',
@@ -22,9 +22,6 @@ $category_images = [
     'Stuff' => 'img/shopimg/icons/category_stuff.jpg',
     'Set' => 'img/shopimg/icons/category_stuff.jpg'
 ];
-
-// Categories that should show tooltips
-$tooltip_categories = ['Mount', 'Pet', 'Stuff', 'Set'];
 
 // Curated cosmetic rewards from the Forever Heroic/Epic packs and Legacy Track.
 $premium_item_labels = [
@@ -51,23 +48,18 @@ $premium_label_descriptions = [
 // Render tooltips inline: tell item_tooltip.php to emit its <style> block only once per request
 $item_tooltip_inline_css = true;
 
-// Forever: item data (tooltips, icons, set contents) comes from world.armory_item, see includes/forever_items.php
-$query = "
-    SELECT si.item_id, si.category, si.name, si.description, si.image, si.point_cost, si.token_cost, si.stock, si.level_boost, si.at_login_flags, si.is_set, si.itemset_id, si.entry AS sit_entry
-    FROM shop_items si
-    ORDER BY si.category, si.name
-";
-$stmt = $site_db->prepare($query);
+// One catalog for both storefronts: these are the same world.shop_* rows loaded
+// by ForeverCore's in-game shop.  There is no CMS-side catalog copy anymore.
+$catalog = forever_shop_catalog($world_db);
 $items = [];
-if ($stmt) {
-    $stmt->execute();
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-        $items[$row['category']][] = $row;
-    }
-    $stmt->close();
-} else {
-    error_log("Failed to prepare shop items query: " . $site_db->error);
+foreach ($catalog as $row) {
+    $row['action_label'] = forever_shop_action_label($row['actions']);
+    $items[$row['category']][] = $row;
+}
+$valid_categories = array_merge(['All'], array_keys($items));
+$selected_category = isset($_GET['category']) ? (string)$_GET['category'] : 'All';
+if (!in_array($selected_category, $valid_categories, true)) {
+    $selected_category = 'All';
 }
 
 $shop_entries = [];
@@ -81,32 +73,20 @@ foreach ($items as $category_rows) {
 $shop_game_items = forever_items($world_db, $shop_entries);
 foreach ($items as $category_name => $category_rows) {
     foreach ($category_rows as $row_index => $row) {
-        // an entry the game does not know has no tooltip
+        // An entry the game does not know has no tooltip and cannot be bought
+        // safely from the website.
         if (!empty($row['sit_entry']) && !isset($shop_game_items[(int)$row['sit_entry']])) {
             $items[$category_name][$row_index]['sit_entry'] = null;
+            $items[$category_name][$row_index]['web_purchasable'] = false;
         }
-        $items[$category_name][$row_index]['set_item_count'] = ((int)$row['is_set'] === 1 && !empty($row['itemset_id']))
-            ? count(forever_itemset_entries($world_db, (int)$row['itemset_id'])) : 0;
+        $items[$category_name][$row_index]['set_item_count'] = 0;
     }
 }
 
 $points = 0;
 $tokens = 0;
 if (!empty($_SESSION['user_id'])) {
-    $stmt = $site_db->prepare("SELECT points, tokens FROM user_currencies WHERE account_id = ?");
-    if ($stmt) {
-        $stmt->bind_param("i", $_SESSION['user_id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user_currency = $result->fetch_assoc();
-        $stmt->close();
-        $points = $user_currency ? (int)$user_currency['points'] : 0;
-        $tokens = $user_currency ? (int)$user_currency['tokens'] : 0;
-    } else {
-        error_log("Failed to prepare currency query: " . $site_db->error);
-    }
-} else {
-    error_log("No user_id in session");
+    $points = forever_shop_points($auth_db, (int)$_SESSION['user_id']);
 }
 
 $characters = [];
@@ -159,6 +139,9 @@ if (isset($_GET['status'])) {
             break;
         case 'delivery_failed':
             $status_message = '<div class="bg-red-900/40 border border-red-600/40 text-red-200 px-5 py-3 flex items-center gap-3 mb-4 force-wrap"><i class="fas fa-exclamation-circle text-red-400 text-lg"></i><span>' . translate('shop_error_delivery_failed', 'The game server could not deliver this purchase. You have not been charged.') . '</span></div>';
+            break;
+        case 'ingame_only':
+            $status_message = '<div class="bg-sky-900/40 border border-sky-500/40 text-sky-100 px-5 py-3 flex items-center gap-3 mb-4 force-wrap"><i class="fas fa-gamepad text-sky-300 text-lg"></i><span>' . translate('shop_ingame_only_hint', 'Purchase this reward directly in the in-game shop.') . '</span></div>';
             break;
         case 'character_not_found':
             $status_message = '<div class="bg-red-900/40 border border-red-600/40 text-red-200 px-5 py-3 flex items-center gap-3 mb-4 force-wrap"><i class="fas fa-exclamation-circle text-red-400 text-lg"></i><span>' . translate('shop_status_character_not_found', 'Selected character not found or not owned.') . '</span></div>';
@@ -433,13 +416,13 @@ include_once $project_root . 'includes/header.php';
             </div>
             
             <!-- User Balance -->
-            <?php if (!empty($_SESSION['user_id']) && (!isset($show_currencies) || $show_currencies)): ?>
+            <?php if (!empty($_SESSION['user_id']) && $display_points): ?>
                 <div class="flex flex-wrap justify-center gap-4 mb-6 p-4 bg-[rgba(0,0,0,0.4)] border border-[rgba(201,162,39,0.1)]">
                     <span class="inline-flex items-center gap-2 px-4 py-2 bg-[rgba(242,207,82,0.15)] border border-[rgba(201,162,39,0.3)] text-[#f2cf5b] font-semibold text-base force-wrap">
                         <i class="fas fa-coins"></i> <?php echo translate('shop_points', 'Points'); ?>: <?php echo $points; ?>
                     </span>
-                    <span class="inline-flex items-center gap-2 px-4 py-2 bg-[rgba(139,92,246,0.15)] border border-[rgba(139,92,246,0.3)] text-[#8b5cf6] font-semibold text-base force-wrap">
-                        <i class="fas fa-gem"></i> <?php echo translate('shop_tokens', 'Tokens'); ?>: <?php echo $tokens; ?>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 bg-[rgba(139,92,246,0.12)] border border-[rgba(139,92,246,0.25)] text-[#c4b5fd] font-semibold text-base force-wrap">
+                        <i class="fas fa-sync-alt"></i> <?php echo translate('shop_shared_wallet', 'Shared with the in-game shop'); ?>
                     </span>
                 </div>
             <?php elseif (empty($_SESSION['user_id'])): ?>
@@ -482,7 +465,7 @@ include_once $project_root . 'includes/header.php';
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             <?php foreach ($category_items as $item): ?>
                                 <?php 
-                                $has_tooltip = in_array($category, $tooltip_categories) && $item['sit_entry'] && (int)$item['is_set'] !== 1;
+                                $has_tooltip = !empty($item['sit_entry']) && isset($shop_game_items[(int)$item['sit_entry']]);
                                 $premium_label = !empty($item['sit_entry']) ? ($premium_item_labels[(int)$item['sit_entry']] ?? '') : '';
                                 $item_description = $premium_label !== ''
                                     ? ($premium_label_descriptions[$premium_label] ?? $item['description'])
@@ -492,7 +475,7 @@ include_once $project_root . 'includes/header.php';
                                 <div class="item-card relative bg-[rgba(10,14,22,0.8)] border border-[rgba(201,162,39,0.12)] p-4 flex flex-col <?php echo $has_tooltip ? 'has-tooltip' : ''; ?> <?php echo $is_out_of_stock ? 'out-of-stock' : ''; ?> min-w-0" data-entry="<?php echo $item['sit_entry'] ? htmlspecialchars($item['sit_entry']) : ''; ?>">
                                     <!-- Image -->
                                     <div class="item-visual relative w-full">
-                                        <img src="<?php echo htmlspecialchars(!empty($item['image']) ? $base_path . $item['image'] : (!empty($item['sit_entry']) ? forever_icon_url($shop_game_items[(int)$item['sit_entry']]['icon']) : $base_path . 'img/shop/placeholder.png')); ?>" alt="<?php echo str_replace('{name}', htmlspecialchars($item['name']), translate('shop_item_image_alt', '{name}')); ?>" class="item-image w-full h-48 object-cover border border-[rgba(201,162,39,0.08)]">
+                                        <img src="<?php echo htmlspecialchars(!empty($item['sit_entry']) ? forever_icon_url($shop_game_items[(int)$item['sit_entry']]['icon']) : $base_path . $item['image']); ?>" alt="<?php echo str_replace('{name}', htmlspecialchars($item['name']), translate('shop_item_image_alt', '{name}')); ?>" class="item-image w-full h-48 object-cover border border-[rgba(201,162,39,0.08)]" onerror="this.onerror=null;this.src='<?php echo htmlspecialchars($base_path . $item['image'], ENT_QUOTES, 'UTF-8'); ?>';">
                                         <?php if ($premium_label !== ''): ?>
                                             <span class="premium-item-badge"><i class="fas fa-crown"></i><?php echo htmlspecialchars($premium_label); ?></span>
                                         <?php endif; ?>
@@ -506,6 +489,12 @@ include_once $project_root . 'includes/header.php';
                                     <!-- Details -->
                                     <h3 class="text-white text-lg font-bold mt-3 mb-1 force-wrap min-w-0 break-words [overflow-wrap:anywhere]"><?php echo htmlspecialchars($item['name']); ?></h3>
                                     <p class="text-gray-400 text-sm flex-1 force-wrap min-w-0 break-words [overflow-wrap:anywhere]"><?php echo htmlspecialchars($item_description ?? translate('shop_no_description', 'No description available.')); ?></p>
+                                    <?php if (!$item['web_purchasable']): ?>
+                                        <p class="text-sky-300 text-xs font-semibold mt-2 force-wrap">
+                                            <i class="fas fa-gamepad mr-1"></i>
+                                            <?php echo htmlspecialchars($item['action_label']); ?> · <?php echo translate('shop_ingame_only_hint', 'Purchase this reward directly in the in-game shop.'); ?>
+                                        </p>
+                                    <?php endif; ?>
                                     
                                     <?php if ((int)$item['is_set'] === 1 && !empty($item['itemset_id'])): ?>
                                         <p class="text-[#89d2ff] text-xs font-semibold mt-1 force-wrap">
@@ -572,7 +561,11 @@ include_once $project_root . 'includes/header.php';
                                     </div>
                                     
                                     <!-- Purchase -->
-                                    <?php if (!empty($_SESSION['user_id'])): ?>
+                                    <?php if (!$item['web_purchasable']): ?>
+                                        <div class="w-full text-center py-2.5 bg-[rgba(56,189,248,0.10)] border border-[rgba(56,189,248,0.28)] text-sky-300 font-semibold text-sm mt-3 force-wrap">
+                                            <i class="fas fa-gamepad mr-1"></i><?php echo translate('shop_available_ingame', 'Available in game'); ?>
+                                        </div>
+                                    <?php elseif (!empty($_SESSION['user_id'])): ?>
                                         <form action="<?php echo $base_path; ?>buy_item" method="POST" class="mt-3 purchase-form">
                                             <input type="hidden" name="item_id" value="<?php echo (int)$item['item_id']; ?>">
                                             <?php if (!empty($_SESSION['csrf_token'])): ?>

@@ -74,6 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $stmt->bind_param("iisi", $points, $tokens, $role, $account_id);
             $success = $stmt->execute();
             $stmt->close();
+            if ($success) {
+                $stmt = $auth_db->prepare("INSERT INTO " . DB_AUTH . ".account_shop_points (AccountID, Points) VALUES (?, ?) ON DUPLICATE KEY UPDATE Points = VALUES(Points)");
+                $stmt->bind_param('ii', $account_id, $points);
+                $success = $stmt->execute();
+                $stmt->close();
+            }
             
             // Forever: the e-mail is the Battle.net login and the password verifier is tied to it, so it can only
             // be changed by its owner (Account page, with the password). It is not written here.
@@ -177,8 +183,11 @@ $stmt->close();
 $total_website_pages = ceil($total_website_users / $users_per_page);
 
 // Fetch website users
-$users_query = "SELECT uc.account_id, uc.username, uc.avatar, uc.points, uc.tokens, uc.role, uc.last_updated, LOWER(a.email) AS email
-                FROM " . DB_SITE . ".user_currencies uc JOIN " . DB_AUTH . ".account a ON uc.account_id = a.id WHERE 1=1";
+$users_query = "SELECT uc.account_id, uc.username, uc.avatar, COALESCE(sp.Points, 0) AS points, uc.tokens, uc.role, uc.last_updated, LOWER(a.email) AS email
+                FROM " . DB_SITE . ".user_currencies uc
+                JOIN " . DB_AUTH . ".account a ON uc.account_id = a.id
+                LEFT JOIN " . DB_AUTH . ".account_shop_points sp ON sp.AccountID = uc.account_id
+                WHERE 1=1";
 $params = [];
 $types = '';
 if ($search_username) {

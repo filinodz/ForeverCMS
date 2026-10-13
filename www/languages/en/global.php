@@ -6,6 +6,7 @@ return [
     'nav_how_to_play' => 'How to Play',
     'nav_news' => 'News',
     'nav_armory' => 'Armory',
+    'nav_players_online' => 'Players Online',
     'nav_shop' => 'Shop',
     'nav_register' => 'Register',
     'nav_login' => 'Login',

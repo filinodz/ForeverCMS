@@ -183,6 +183,7 @@ if (file_exists($project_root . 'includes/config.settings.php')) {
                     <a href="<?php echo $base_path; ?>news" class="footer-nav-link"><?php echo translate('nav_news', 'News'); ?></a>
                     <a href="<?php echo $base_path; ?>shop" class="footer-nav-link"><?php echo translate('nav_shop', 'Shop'); ?></a>
                     <a href="<?php echo $base_path; ?>armory/solo_pvp" class="footer-nav-link"><?php echo translate('nav_armory', 'Armory'); ?></a>
+                    <a href="<?php echo $base_path; ?>players_online" class="footer-nav-link"><?php echo translate('nav_players_online', 'Players Online'); ?></a>
                 </div>
                 <div class="h-px w-48 bg-gradient-to-r from-transparent via-[#c9a227] to-transparent opacity-50"></div>
                 <p class="text-gray-500 text-xs tracking-wider uppercase font-semibold">

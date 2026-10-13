@@ -4,6 +4,15 @@ if (!defined('ALLOWED_ACCESS')) { exit('Forbidden'); }
 // Forever: texts that differ from SahtoutCMS. This file wins over global.php and the page files of every
 // language; a language's own forever.php (languages/<code>/forever.php) wins over this one.
 return [
+    'nav_players_online' => 'Players Online',
+    'online_page_title' => 'Players Online',
+    'online_meta_description' => 'See who is currently adventuring on the Forever realms and open their Armory profile.',
+    'online_kicker' => 'LIVE REALM ROSTER',
+    'online_intro' => 'See who is exploring Azeroth right now. Select a character to open their complete Armory profile.',
+    'online_choose_realm' => 'Choose a realm',
+    'online_total' => 'Online',
+    'online_unavailable' => 'The realm roster is temporarily unavailable.',
+    'online_empty' => 'No adventurers are connected to this realm right now.',
     // header
     'realm' => 'Realm',
     'footer_logo_alt' => 'Forever logo',

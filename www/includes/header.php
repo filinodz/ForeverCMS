@@ -19,6 +19,11 @@ if (!defined('ALLOWED_ACCESS')) {
 // Use $project_root for including config.settings.php
 require_once $project_root . 'includes/config.settings.php'; // load logo + socials
 
+// Currency visibility was split in ForeverCMS 1.3. Older configuration files
+// keep their previous behaviour until an administrator saves the new options.
+$display_points = isset($show_points) ? (bool)$show_points : (!isset($show_currencies) || (bool)$show_currencies);
+$display_tokens = isset($show_tokens) ? (bool)$show_tokens : (!isset($show_currencies) || (bool)$show_currencies);
+
 // Include language detection
 require_once $project_root . 'languages/language.php';
 
@@ -79,11 +84,12 @@ if (isset($_SESSION['user_id'])) {
         WHERE account_id = ?
     ");
 
-    // Query auth_db for email
+    // Query auth_db for email and the wallet shared with ForeverCore's shop.
     $stmt_auth = $auth_db->prepare("
-        SELECT LOWER(COALESCE(b.email, a.email)) AS email
+        SELECT LOWER(COALESCE(b.email, a.email)) AS email, COALESCE(sp.Points, 0) AS shop_points
         FROM account a
         LEFT JOIN battlenet_accounts b ON b.id = a.battlenet_account
+        LEFT JOIN account_shop_points sp ON sp.AccountID = a.id
         WHERE a.id = ?
     ");
 
@@ -102,7 +108,7 @@ if (isset($_SESSION['user_id'])) {
             $row_site = $result_site->fetch_assoc();
             $row_auth = $result_auth->fetch_assoc();
 
-            $points = (int)$row_site['points'];
+            $points = (int)$row_auth['shop_points'];
             $tokens = (int)$row_site['tokens'];
             $email = htmlspecialchars($row_auth['email'] ?? 'user@example.com', ENT_QUOTES, 'UTF-8');
             $role = $row_site['role'] ?? 'player';
@@ -710,6 +716,10 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
                     <?php echo translate('nav_armory', 'Armory'); ?>
                 </a>
 
+                <a href="<?php echo $esc_base; ?>players_online" class="nav-link <?php echo $page_class === 'players-online' ? 'active' : ''; ?>">
+                    <?php echo translate('nav_players_online', 'Players Online'); ?>
+                </a>
+
                 <a href="<?php echo $esc_base; ?>shop" class="nav-link <?php echo $page_class === 'shop' ? 'active' : ''; ?>">
                     <?php echo translate('nav_shop', 'Shop'); ?>
                 </a>
@@ -734,10 +744,14 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
 
                 <!-- User Profile (Logged In) -->
                 <?php if (!empty($_SESSION['user_id'])): ?>
-                    <?php if (!isset($show_currencies) || $show_currencies): ?>
+                    <?php if ($display_points || $display_tokens): ?>
                     <div class="hidden md:flex items-center gap-2 force-wrap">
+                        <?php if ($display_points): ?>
                         <span class="badge-gold"><i class="fas fa-coins"></i> <?php echo $points; ?></span>
+                        <?php endif; ?>
+                        <?php if ($display_tokens): ?>
                         <span class="badge-iron"><i class="fas fa-gem"></i> <?php echo $tokens; ?></span>
+                        <?php endif; ?>
                     </div>
                     <?php endif; ?>
 
@@ -756,10 +770,14 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
 
                                         <p class="text-gray-400 text-[11px] truncate force-wrap"><?php echo $email; ?></p>
 
-                                        <?php if (!isset($show_currencies) || $show_currencies): ?>
+                                        <?php if ($display_points || $display_tokens): ?>
                                         <div class="flex gap-1.5 mt-1.5 flex-wrap">
+                                            <?php if ($display_points): ?>
                                             <span class="badge-gold text-[10px] !py-0.5 !px-1.5"><i class="fas fa-coins"></i> <?php echo $points; ?></span>
+                                            <?php endif; ?>
+                                            <?php if ($display_tokens): ?>
                                             <span class="badge-iron text-[10px] !py-0.5 !px-1.5"><i class="fas fa-gem"></i> <?php echo $tokens; ?></span>
+                                            <?php endif; ?>
                                         </div>
                                         <?php endif; ?>
                                     </div>

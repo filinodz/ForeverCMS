@@ -31,8 +31,10 @@ return [
     'label_bugtracker_url' => 'Bugtracker URL',
     'help_bugtracker_url' => 'Optional link opened by the Bugtracker button.',
     'error_bugtracker_url' => 'The Bugtracker URL must be a valid HTTP or HTTPS address.',
-    'label_show_currencies' => 'Show account currencies',
-    'help_show_currencies' => 'Show Points and Tokens in the public account interface. Disable this while currencies are not in use.',
+    'label_show_points' => 'Show Points',
+    'help_show_points' => 'Show the Points wallet shared with the in-game shop.',
+    'label_show_tokens' => 'Show Tokens',
+    'help_show_tokens' => 'Show the optional CMS Tokens balance independently from Points.',
 
     // Logo
     'label_website_logo' => 'Upload Logo',

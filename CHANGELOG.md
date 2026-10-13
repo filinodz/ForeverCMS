@@ -7,6 +7,26 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-13
+
+### Added
+
+- Premium Players Online page with public-realm tabs, live Alliance/Horde counts and direct character Armory links.
+- One canonical shop catalog shared by ForeverCMS and ForeverCore through `world.shop_group`, `world.shop_product` and `world.shop_product_action`.
+- One shared Points wallet through `auth.account_shop_points`, including vote rewards, administration and purchase history.
+- Canonical shared-shop administration with automatic in-game cache reload.
+- Installer migration for the shared shop catalog and existing CMS balances.
+
+### Changed
+
+- Points and Tokens now have separate visibility settings; Points remain available without exposing unused Tokens.
+- The public shop clearly identifies services that must be completed through the in-game shop.
+
+### Fixed
+
+- Gold, character services, level boosts and professions now use bundled local artwork instead of a missing placeholder image.
+- Shop item icons automatically fall back to a valid local category image if the external icon service cannot load.
+
 ## [1.2.0] - 2026-10-13
 
 ### Added

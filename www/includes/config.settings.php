@@ -17,7 +17,11 @@ $bugtracker_enabled = false;
 $bugtracker_url = '';
 
 // Public currency balances (header, account page and shop page).
-$show_currencies = true;
+// Points are the wallet shared with ForeverCore's in-game shop. Tokens remain
+// available for communities that use the legacy CMS reward system.
+$show_points = true;
+$show_tokens = false;
+$show_currencies = $show_points || $show_tokens; // backward compatibility
 
 // Logo
 $site_logo = 'img/forever_logo.svg';

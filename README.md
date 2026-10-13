@@ -22,13 +22,14 @@ manage the portal from one themed administration area.
 ## Highlights
 
 - Account registration, login, activation and recovery workflows.
-- Multi-realm status with per-realm visibility controls, character lists and armory pages.
+- Multi-realm status with per-realm visibility controls, a live Players Online roster and direct Armory links.
 - Native High Order and Windshaper Skyborne faction counting and themed race icons.
 - Local 3D character viewer with bundled model data.
-- News, downloads, guides, vote system and premium shop.
-- Administration for content, users, realms, Discord and shop settings.
+- News, downloads, guides, vote system and a premium shop synchronized with ForeverCore's in-game catalog.
+- One shared `world.shop_*` catalog, one `auth.account_shop_points` wallet and one purchase history for the website and the game.
+- Administration for content, users, realms, Discord and the shared shop; changes are reloaded in game automatically.
 - Configurable Discord invite and home-page widget—no hard-coded community link.
-- Configurable public realm visibility, Bugtracker panel and Points/Tokens display.
+- Configurable public realm visibility, Bugtracker panel and independent Points/Token display.
 - Forever Launcher startup integration and a recoverable Windows installer.
 - English and French interface.
 - Clean distribution model: no player accounts, sessions or database dumps.

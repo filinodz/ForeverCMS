@@ -3,6 +3,15 @@ if (!defined('ALLOWED_ACCESS')) { exit('Forbidden'); }
 
 // Forever : textes qui diffèrent de SahtoutCMS (voir languages/en/forever.php).
 return [
+    'nav_players_online' => 'Joueurs en ligne',
+    'online_page_title' => 'Joueurs en ligne',
+    'online_meta_description' => 'Consultez les joueurs actuellement connectés aux royaumes Forever et ouvrez leur profil Armurerie.',
+    'online_kicker' => 'EFFECTIF EN DIRECT',
+    'online_intro' => 'Découvrez qui explore Azeroth en ce moment. Sélectionnez un personnage pour ouvrir son profil Armurerie complet.',
+    'online_choose_realm' => 'Choisir un royaume',
+    'online_total' => 'En ligne',
+    'online_unavailable' => 'La liste des joueurs du royaume est temporairement indisponible.',
+    'online_empty' => 'Aucun aventurier n’est connecté à ce royaume pour le moment.',
     // en-tête
     'realm' => 'Royaume',
     'footer_logo_alt' => 'Logo Forever',

@@ -80,7 +80,8 @@ $youtube_description_new = trim((string)($_POST['youtube_description'] ?? ''));
 
 $bugtracker_enabled_new = isset($_POST['bugtracker_enabled']);
 $bugtracker_url_new = trim((string)($_POST['bugtracker_url'] ?? ''));
-$show_currencies_new = isset($_POST['show_currencies']);
+$show_points_new = isset($_POST['show_points']);
+$show_tokens_new = isset($_POST['show_tokens']);
 
 // Initialize variables
 $errors = [];
@@ -212,7 +213,10 @@ if (empty($errors)) {
         $config_content .= "\$bugtracker_enabled = " . var_export($bugtracker_enabled_new, true) . ";\n";
         $config_content .= "\$bugtracker_url = " . var_export($bugtracker_url_new, true) . ";\n\n";
         $config_content .= "// Public currency balances (header, account page and shop page).\n";
-        $config_content .= "\$show_currencies = " . var_export($show_currencies_new, true) . ";\n\n";
+        $config_content .= "// Points are shared with ForeverCore's in-game shop; Tokens are the optional CMS currency.\n";
+        $config_content .= "\$show_points = " . var_export($show_points_new, true) . ";\n";
+        $config_content .= "\$show_tokens = " . var_export($show_tokens_new, true) . ";\n";
+        $config_content .= "\$show_currencies = \$show_points || \$show_tokens; // backward compatibility\n\n";
 
         // === Social Links ===
         $config_content .= "// Social links\n";

@@ -264,19 +264,35 @@ include $project_root . 'includes/header.php';
                             </div>
 
                             <!-- Public currency display -->
-                            <div class="rounded-sm border border-[#c9a227]/20 bg-[#0a0e16]/45 p-4">
+                            <div class="rounded-sm border border-[#c9a227]/20 bg-[#0a0e16]/45 p-4 space-y-4">
                                 <label class="flex items-start gap-3 cursor-pointer">
                                     <input type="checkbox"
-                                           name="show_currencies"
+                                           name="show_points"
                                            value="1"
                                            class="mt-1 accent-[#c9a227]"
-                                           <?php echo (!isset($show_currencies) || $show_currencies) ? 'checked' : ''; ?>>
+                                           <?php echo (isset($show_points) ? $show_points : (!isset($show_currencies) || $show_currencies)) ? 'checked' : ''; ?>>
                                     <span>
                                         <span class="form-label text-[#f2cf5b] font-bold text-sm tracking-wider block">
-                                            <?php echo translate('label_show_currencies', 'Show account currencies'); ?>
+                                            <?php echo translate('label_show_points', 'Show Points'); ?>
                                         </span>
                                         <span class="text-[#8290a3] text-xs mt-1 block leading-relaxed">
-                                            <?php echo translate('help_show_currencies', 'Show Points and Tokens in the public account interface. Disable this while currencies are not in use.'); ?>
+                                            <?php echo translate('help_show_points', 'Show the Points wallet shared with the in-game shop.'); ?>
+                                        </span>
+                                    </span>
+                                </label>
+                                <div class="h-px bg-[#c9a227]/10"></div>
+                                <label class="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox"
+                                           name="show_tokens"
+                                           value="1"
+                                           class="mt-1 accent-[#8b5cf6]"
+                                           <?php echo (isset($show_tokens) ? $show_tokens : (!isset($show_currencies) || $show_currencies)) ? 'checked' : ''; ?>>
+                                    <span>
+                                        <span class="form-label text-[#c4b5fd] font-bold text-sm tracking-wider block">
+                                            <?php echo translate('label_show_tokens', 'Show Tokens'); ?>
+                                        </span>
+                                        <span class="text-[#8290a3] text-xs mt-1 block leading-relaxed">
+                                            <?php echo translate('help_show_tokens', 'Show the optional CMS Tokens balance independently from Points.'); ?>
                                         </span>
                                     </span>
                                 </label>

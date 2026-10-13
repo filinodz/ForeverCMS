@@ -188,6 +188,15 @@ try {
         throw new Exception("Failed to execute points update: " . $stmt->error);
     }
     $stmt->close();
+    $stmt = $site_db->prepare("INSERT INTO auth.account_shop_points (AccountID, Points) VALUES (?, ?) ON DUPLICATE KEY UPDATE Points = Points + VALUES(Points)");
+    if (!$stmt) {
+        throw new Exception("Failed to prepare shared shop points update: " . $site_db->error);
+    }
+    $stmt->bind_param('ii', $user_id, $reward_points);
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to execute shared shop points update: " . $stmt->error);
+    }
+    $stmt->close();
 
     $site_db->commit();
 
