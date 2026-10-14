@@ -42,7 +42,11 @@ Copy-Item -LiteralPath (Join-Path $repo 'core\COPYING') -Destination (Join-Path 
 $sourceZip = Join-Path $dist "ForeverCore-source-for-ForeverCMS-$Version.zip"
 $cmsZip = Join-Path $dist "ForeverCMS-$Version-for-ForeverRepack.zip"
 if ((Test-Path -LiteralPath $sourceZip) -or (Test-Path -LiteralPath $cmsZip)) { throw 'Release archives already exist; they will not be overwritten.' }
-git -C $coreSource archive --format=zip "--output=$sourceZip" HEAD
+# Preserve all corresponding build sources and current SQL, without obsolete
+# migration archives that are not used to compile or install the tested core.
+$corePaths = @(& git -C $coreSource ls-tree --name-only HEAD | Where-Object { $_ -ne 'sql' })
+$corePaths += @(& git -C $coreSource ls-tree --name-only HEAD sql/ | Where-Object { $_ -ne 'sql/old' })
+git -C $coreSource archive --format=zip "--output=$sourceZip" HEAD @corePaths
 if ($LASTEXITCODE -ne 0) { throw 'Core source archive failed.' }
 Expand-Archive -LiteralPath $sourceZip -DestinationPath $sourceStage
 foreach ($relative in @('src\server\shared\DataStores\DB2Store.h','src\server\shared\DataStores\DB2Store.cpp','src\server\game\World\World.cpp')) {

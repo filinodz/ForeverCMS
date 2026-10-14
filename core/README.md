@@ -21,6 +21,10 @@ source in `ForeverCore-source-for-ForeverCMS-1.5.0.zip`. Keep your existing serv
 configuration, data files and compatible runtime DLLs. Rebuild your own source
 if you maintain additional core changes instead of replacing that custom binary.
 
+The source archive preserves all server, dependency and build sources, plus
+current SQL. Only superseded historical migrations under `sql/old` are omitted;
+they are not required to compile the server.
+
 These modifications and the core binary are GPL-2.0-or-later, inherited from
 TrinityCore / ForeverCore; see `COPYING`. The PHP CMS remains separately MIT.
 ForeverCMS integration by FilinoDZ. Upstream copyright and authors are retained.
