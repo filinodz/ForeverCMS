@@ -47,4 +47,4 @@ $discord_widget_id = '1552885216970936393';
 // Forever: what players need to connect (shown on the How to Play page).
 // $forever_portal is the "portal" of the launcher's servers.json entry for this server.
 $forever_portal = 'trinity.actual.battle.net';
-$forever_launcher_url = 'https://github.com/advocaite/foreverlauncher-releases/releases/latest';
+$forever_launcher_url = '';

@@ -5,7 +5,7 @@
 <h1 align="center">ForeverCMS</h1>
 
 <p align="center">
-  A premium community portal built for Forever Launcher and ForeverRepack.
+  A Warcraft community portal for ForeverCore — with or without a launcher.
 </p>
 
 <p align="center">
@@ -15,9 +15,23 @@
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-3DA639"></a>
 </p>
 
-ForeverCMS brings the server website into the Forever experience: the launcher
-starts it with the local stack, players use their Battle.net account, and staff
-manage the portal from one themed administration area.
+ForeverCMS connects to your ForeverCore databases independently of ForeverLauncher.
+Run it with your own PHP/MySQL stack or keep the optional repack integration.
+Players use their server account, and staff manage the portal from one themed
+administration area. Adaptation and design by **FilinoDZ**, based on open-source SahtoutCMS.
+
+## Install without ForeverLauncher
+
+See [the standalone installation guide](docs/STANDALONE.md). On Windows,
+run **Install-Standalone.bat** for a graphical database setup assistant.
+It tests the connection, prepares only the website schema, and saves recoverable
+configuration backups. It does not install a game launcher or reset game data.
+
+| Deployment | Entry point | What it changes |
+| --- | --- | --- |
+| ForeverLauncher / Repack | Packaged `installer/Install-ForeverCMS.bat`, or `Setup-CMS.bat` inside the repack's `cms/` folder | CMS integration with the existing Website service; use the compatible package and back up first. |
+| Standalone Windows | `Install-Standalone.bat` | Website database and local CMS configuration only; no launcher/core replacement. |
+| Separate PHP host | [Standalone guide](docs/STANDALONE.md) and [hosting examples](docs/HOSTING.md) | Your PHP host connects to existing ForeverCore databases through a private network. |
 
 ## Highlights
 
@@ -26,6 +40,9 @@ manage the portal from one themed administration area.
 - Native High Order and Windshaper Skyborne faction counting and themed race icons.
 - Character directory and multi-realm search, separate from the PvP leaderboard.
 - Equipped 3D character viewer, actual Classic talent trees and saved ranks, Legacy builds, spellbook and skills with real client icons.
+- Enlarged 3D inspection with rotation, zoom, pause and camera reset; Classic armor metadata restores removed Retail helmet/shoulder appearances.
+- High Order / Windshaper model fallback verified against Forever client data, with explicit notices for unavailable exclusive customizations.
+- Responsive Players Online directory with combinable search, class/faction filters and separate human/bot counts.
 - News, downloads, guides, vote system and a premium shop synchronized with ForeverCore's in-game catalog.
 - One shared `world.shop_*` catalog, one `auth.account_shop_points` wallet and one purchase history for the website and the game.
 - Administration for content, users, realms, Discord and the shared shop; changes are reloaded in game automatically.
@@ -37,25 +54,26 @@ manage the portal from one themed administration area.
 - English and French interface.
 - Clean distribution model: no player accounts, sessions or database dumps.
 
-## Install a release
+## Optional repack integration
 
-The recommended community installation is the packaged release:
+For independent hosting, use **Install-Standalone.bat** and the guide above.
+The legacy repack installer is an alternative for a compatible packaged release:
 
 1. Stop Forever Launcher and all running worldserver realms.
 2. Extract the complete ForeverCMS release.
-3. Run `Install-ForeverCMS.bat`.
+3. Run `installer/Install-ForeverCMS.bat`.
 4. Pass a custom location if auto-detection does not find the repack:
 
 ```powershell
-.\Install-ForeverCMS.ps1 -RepackPath "D:\Path\To\ForeverRepack"
+.\installer\Install-ForeverCMS.ps1 -RepackPath "D:\Path\To\ForeverRepack"
 ```
 
 5. Start **Database**, **Auth Server**, **World Server** and **Web Server** from
    Forever Launcher, then open `http://127.0.0.1:8080`.
 
-The release payload includes the runtime required by the launcher. This source
-repository intentionally excludes generated secrets, local logs, backups and the
-bundled PHP runtime.
+The standalone preview includes PHP but no game core or launcher. Only a complete
+repack-integration release contains the core payload expected by the legacy installer.
+The source repository excludes generated secrets, local logs, backups and PHP.
 
 To update an existing installation, add `-ReplaceExisting`. Your current CMS and
 worldserver are backed up; private settings and game accounts are retained. Do

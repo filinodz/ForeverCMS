@@ -1,0 +1,26 @@
+/* ForeverCMS editorial finish. Existing Warcraft artwork and configuration remain unchanged. */
+:root{--fc-surface:#15191c;--fc-edge:rgba(202,177,128,.22);--fc-gold:#d7bd89;--fc-text:#e9e5dc;--fc-muted:#a7afb8}
+.realm-card{clip-path:none!important;border:1px solid var(--fc-edge)!important;border-radius:8px!important;background:linear-gradient(145deg,#1c2127ed,#10151bf5)!important;padding:17px!important;box-shadow:0 6px 24px #0003!important;transform:none!important}
+.realm-card:hover{border-color:#baa37288!important;background:#1b222bed!important}
+.realm-card .glow-gold,.realm-card .glow-gold-strong{text-shadow:none!important;color:var(--fc-gold)!important}
+.realm-card img{filter:drop-shadow(0 2px 5px #0005)}
+.realm-card .clip-realm-icon{clip-path:none;border-radius:3px}
+.realm-card .uptime-divider{opacity:.35}
+.fj-step,.fj-side,.fj-trouble{border-color:var(--fc-edge);background:#151b23f0;box-shadow:0 8px 28px #0002}
+.fj-step h2,.fj-hero h1{color:#eee2c9}
+.fj-number{border-color:#aa9164;color:var(--fc-gold)}
+.fj-link{background:#bca16b13;border-color:#bca16b66;transition:background .16s,border-color .16s}
+.fj-link:hover{background:#bca16b24;border-color:#d7bd89}
+.fj-hero{padding-top:12px}.fj-steps{gap:22px}.fj-step{padding:30px}
+/* Translated navigation plus realm/profile controls need more than a 1024px row. */
+.main-header .header-inner>div:last-child{flex-shrink:0}
+@media(max-width:1399px){
+ .main-header .nav-toggle{display:block!important;margin-left:auto}
+ .main-header nav.nav-menu{display:none}
+ .main-header nav.nav-menu.nav-open{display:flex!important;flex-direction:column;position:absolute!important;top:100%!important;left:0!important;right:0!important;max-height:calc(100dvh - 80px);overflow-y:auto;background:#10151bfa!important;border-bottom:1px solid var(--fc-edge);padding:20px;gap:10px;box-shadow:0 20px 40px #0008}
+ .main-header nav.nav-menu.nav-open .nav-link{width:100%;text-align:center;font-size:.9rem!important;padding:14px!important;white-space:normal}
+ .main-header nav.nav-menu .nav-close{display:none!important}
+}
+@media(min-width:1400px){.main-header .nav-toggle{display:none!important}}
+@media(max-width:640px){.realm-card{padding:14px!important}.fj-step{padding:22px 18px}.fj-hero h1{font-size:32px}}
+@media(prefers-reduced-motion:reduce){.realm-card,.fj-link{transition:none!important}}

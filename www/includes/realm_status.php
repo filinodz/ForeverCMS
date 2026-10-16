@@ -503,7 +503,7 @@ function formatServerUptime($seconds) {
         $allianceCount = (int)$realmStatus['alliance'];
         $hordeCount = (int)$realmStatus['horde'];
         $uptime = $isOnline ? formatServerUptime($realmStatus['uptime_seconds']) : translate('uptime_none');
-        $realmAddress = htmlspecialchars($realm['address'], ENT_QUOTES);
+
         $playerDisplay = $realm['player_display'] ?? 'all';
         
         $totalFaction = $allianceCount + $hordeCount;
@@ -614,30 +614,7 @@ function formatServerUptime($seconds) {
                 </div>
             </div>
 
-            <!-- Address row (IP) with copy button -->
-            <div class="relative mt-2 py-1.5 px-2 bg-black/35 border border-[rgba(201,162,39,.12)] clip-realm-addr">
-                <div class="flex items-center justify-center gap-1.5 font-mono text-[10px] text-gray-400 text-center">
-                    <svg class="w-3 h-3 text-[#f2cf5b] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/>
-                    </svg>
-                    <span class="text-[#c9a227] tracking-[.02em]"><?php echo $realmAddress; ?></span>
-                </div>
-
-                <button type="button"
-                        class="copy-btn absolute right-1.5 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-[#f2cf5b] transition-colors group"
-                        data-copy="<?php echo $realmAddress; ?>"
-                        aria-label="Copy address">
-                    <span class="copy-bg absolute inset-0 border border-transparent rounded-sm transition-all group-hover:border-[rgba(242,207,82,.3)]"></span>
-                    <svg class="icon-clipboard relative w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                    </svg>
-                    <svg class="icon-check relative w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Uptime row (below the IP address) -->
+            <!-- Realm uptime -->
             <div class="flex items-center justify-center gap-2 mt-1.5">
                 <div class="uptime-divider flex-1"></div>
                 <div class="flex items-center gap-1.5 whitespace-nowrap">

@@ -675,7 +675,8 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
     // Do NOT escape it. Do NOT ever populate it from user input.
     echo $page_head;
     ?>
-    <link rel="stylesheet" href="<?php echo $esc_base; ?>assets/css/forever-theme.css?v=20261011-1">
+<link rel="stylesheet" href="<?php echo $esc_base; ?>assets/css/forever-theme.css?v=20261011-1">
+    <link rel="stylesheet" href="<?php echo $esc_base; ?>assets/css/forever-premium.css?v=20261016">
 </head>
 <body class="<?php echo htmlspecialchars(trim($page_class . ' ' . $page_body_class), ENT_QUOTES, 'UTF-8'); ?>">
 
@@ -836,22 +837,24 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
 
                 <!-- Language Dropdown -->
                 <div id="langDropdownContainer">
-                    <div class="lang-btn" id="langSelected">
+                    <button type="button" class="lang-btn" id="langSelected" aria-expanded="false" aria-controls="langOptions" aria-label="<?php echo htmlspecialchars(translate('language', 'Language'), ENT_QUOTES, 'UTF-8'); ?>">
                         <img src="<?php echo htmlspecialchars($current_lang_flag, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($current_lang_name, ENT_QUOTES, 'UTF-8'); ?>" class="w-5 h-3.5 rounded-sm object-cover" id="flagIcon">
                         <span id="langLabel"><?php echo htmlspecialchars($current_lang_name, ENT_QUOTES, 'UTF-8'); ?></span>
                         <i class="fas fa-chevron-down text-[10px] ml-0.5"></i>
-                    </div>
+                    </button>
 
                     <ul class="wow-dropdown lang-options mt-3 hidden list-none p-0 m-0" id="langOptions">
                         <?php foreach ($languages as $code => $lang_data): ?>
                             <li data-value="<?php echo htmlspecialchars($code, ENT_QUOTES, 'UTF-8'); ?>"
                                 data-flag="<?php echo htmlspecialchars($lang_data['flag_url'], ENT_QUOTES, 'UTF-8'); ?>"
                                 data-name="<?php echo htmlspecialchars($lang_data['name'], ENT_QUOTES, 'UTF-8'); ?>"
-                                class="dropdown-item !py-2 !px-3 text-sm force-wrap">
+                                class="!p-0">
+                                <a class="dropdown-item !py-2 !px-3 text-sm force-wrap" href="<?php echo htmlspecialchars(getLanguageUrl($code), ENT_QUOTES, 'UTF-8'); ?>" lang="<?php echo htmlspecialchars($code, ENT_QUOTES, 'UTF-8'); ?>">
                                 <img src="<?php echo htmlspecialchars($lang_data['flag_url'], ENT_QUOTES, 'UTF-8'); ?>"
                                      alt="<?php echo htmlspecialchars($lang_data['name'], ENT_QUOTES, 'UTF-8'); ?>"
                                      class="w-5 h-3.5 rounded-sm object-cover">
                                 <span><?php echo htmlspecialchars($lang_data['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                </a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -860,4 +863,4 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
         </div>
     </header>
 
-    <script src="<?php echo $esc_base; ?>assets/js/includes/header.js?v=20261010-2"></script>
+    <script src="<?php echo $esc_base; ?>assets/js/includes/header.js?v=20261016-2" defer></script>

@@ -1,6 +1,17 @@
 <?php
 if(!defined('ALLOWED_ACCESS'))exit('Forbidden');
 
+/** Skyborne fallback is explicitly recorded in Forever 70425 ChrRaces.db2:
+ * races 95/96 use model AND texture fallback race 10 for both sexes.
+ * Do not pass unsupported race 95 to the external renderer or invent its face.
+ */
+function forever_character_model_identity(int $race,int $gender): array
+{
+    $names=[1=>'human',2=>'orc',3=>'dwarf',4=>'nightelf',5=>'scourge',6=>'tauren',7=>'gnome',8=>'troll',10=>'bloodelf',11=>'draenei'];
+    $skyborne=in_array($race,[95,96],true);$renderRace=$skyborne?10:$race;$gender=$gender===1?1:0;
+    return ['race'=>$renderRace,'gender'=>$gender,'model'=>isset($names[$renderRace])?$names[$renderRace].($gender?'female':'male'):null,'skyborne'=>$skyborne];
+}
+
 /** Actual display identifiers exported from this repack's DB2 data. */
 function forever_model_appearances($db,array $ids): array
 {

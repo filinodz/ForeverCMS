@@ -29,6 +29,8 @@ $db_site_user = 'trinity';
 $db_site_pass = 'trinity';
 $db_site_name = 'forever_site';
 
+// Standalone setup stores local credentials in an ignored, private file.
+if (is_file(__DIR__ . '/config.database.php')) require __DIR__ . '/config.database.php';
 require_once __DIR__ . '/realm_config.php';
 require_once __DIR__ . '/forever.php';
 
@@ -41,7 +43,7 @@ $site_db  = @new mysqli($db_site_host,  $db_site_user,  $db_site_pass,  $db_site
 if ($auth_db->connect_error || $world_db->connect_error || $site_db->connect_error) {
     error_log('Forever CMS: database connection failed: ' . ($auth_db->connect_error ?: ($world_db->connect_error ?: $site_db->connect_error)));
     http_response_code(503);
-    die('The website cannot reach the database. Start MySQL in the launcher (LOCAL SERVER tab) and run cms\Setup-CMS.bat once.');
+    die('The website cannot reach its databases. Check MySQL availability and the private database configuration. The server administrator can run Install-Standalone.bat to configure the connection.');
 }
 
 $auth_db->set_charset('utf8mb4');

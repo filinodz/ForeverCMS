@@ -1,98 +1,66 @@
-        // Mobile menu toggle
-        const toggleButton = document.querySelector('.nav-toggle');
-        const closeButton = document.querySelector('.nav-close');
-        const nav = document.querySelector('header nav');
-        const hamburger = toggleButton.querySelector('.hamburger');
-
-        function setMobileNav(open) {
-            nav.classList.toggle('nav-open', open);
-            hamburger.classList.toggle('active', open);
-            toggleButton.setAttribute('aria-expanded', open ? 'true' : 'false');
-        }
-
-        toggleButton.addEventListener('click', () => {
-            setMobileNav(!nav.classList.contains('nav-open'));
-        });
-
-        closeButton.addEventListener('click', () => {
-            setMobileNav(false);
-        });
-
-        nav.querySelectorAll('a').forEach((link) => {
-            link.addEventListener('click', () => setMobileNav(false));
-        });
-
-        // Profile dropdown toggle
-        const profileToggle = document.getElementById('profileToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        if (profileToggle && dropdownMenu) {
-            profileToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdownMenu.classList.toggle('show');
-                document.getElementById('langOptions').classList.remove('show');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.profile-dropdown')) {
-                    dropdownMenu.classList.remove('show');
-                }
-            });
-
-            // Handle viewport changes
-            function handleViewportChange() {
-                if (window.matchMedia('(min-width: 769px)').matches) {
-                    // Desktop view - hide dropdown
-                    dropdownMenu.classList.remove('show');
-                }
-            }
-
-            // Add event listener for viewport changes
-            window.matchMedia('(min-width: 769px)').addEventListener('change', handleViewportChange);
-            
-            // Initial check
-            handleViewportChange();
-        }
-
-        // Language dropdown toggle
-        const langToggle = document.getElementById('langSelected');
-        const langOptions = document.getElementById('langOptions');
-
-        if (langToggle && langOptions) {
-            langToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                langOptions.classList.toggle('show');
-                if (dropdownMenu) {
-                    dropdownMenu.classList.remove('show'); // Close profile menu when language is opened
-                }
-            });
-
-            // Close language dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.lang-dropdown')) {
-                    langOptions.classList.remove('show');
-                }
-            });
-
-            // Language selection
-            document.querySelectorAll('.lang-options li').forEach(option => {
-                option.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    const lang = this.getAttribute('data-value');
-                    const flagSrc = this.getAttribute('data-flag');
-                    const langLabel = this.textContent.trim();
-
-                    // Update displayed flag and label
-                    const flagIcon = document.getElementById('flagIcon');
-                    flagIcon.src = flagSrc;
-                    flagIcon.alt = langLabel;
-                    document.getElementById('langLabel').textContent = langLabel;
-
-                    // Update URL with lang parameter and reload
-                    const url = new URL(window.location);
-                    url.searchParams.set('lang', lang);
-                    window.location.href = url.toString();
-                });
-            });
-        }
+(() => {
+  'use strict';
+  const initialize = () => {
+    const toggle = document.querySelector('.nav-toggle');
+    const close = document.querySelector('.nav-close');
+    const nav = document.querySelector('header nav');
+    const hamburger = toggle?.querySelector('.hamburger');
+    const profileButton = document.getElementById('profileToggle');
+    const profileMenu = document.getElementById('dropdownMenu');
+    const languageButton = document.getElementById('langSelected');
+    const languageMenu = document.getElementById('langOptions');
+    const dropdown = (button, menu, open) => {
+      menu?.classList.toggle('show', open);
+      button?.setAttribute('aria-expanded', String(open));
+    };
+    const mobile = open => {
+      nav?.classList.toggle('nav-open', open);
+      hamburger?.classList.toggle('active', open);
+      toggle?.setAttribute('aria-expanded', String(open));
+    };
+    toggle?.addEventListener('click', () => mobile(!nav?.classList.contains('nav-open')));
+    close?.addEventListener('click', () => mobile(false));
+    nav?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobile(false)));
+    profileButton?.addEventListener('click', event => {
+      event.stopPropagation();
+      dropdown(profileButton, profileMenu, !profileMenu?.classList.contains('show'));
+      dropdown(languageButton, languageMenu, false);
+    });
+    languageButton?.addEventListener('click', event => {
+      event.stopPropagation();
+      dropdown(languageButton, languageMenu, !languageMenu?.classList.contains('show'));
+      dropdown(profileButton, profileMenu, false);
+    });
+    languageMenu?.querySelectorAll('li[data-value]').forEach(option => {
+      option.addEventListener('click', event => {
+        event.stopPropagation();
+        const language = option.dataset.value;
+        if (!language || !/^[a-z]{2}(?:-[a-zA-Z]{2})?$/.test(language)) return;
+        event.preventDefault();
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', language);
+        window.location.assign(url.href);
+      });
+    });
+    document.addEventListener('click', event => {
+      if (!(event.target instanceof Element)) return;
+      if (!event.target.closest('#langDropdownContainer')) dropdown(languageButton, languageMenu, false);
+      if (!event.target.closest('#profileDropdownContainer')) dropdown(profileButton, profileMenu, false);
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      const languageOpen = languageMenu?.classList.contains('show');
+      dropdown(languageButton, languageMenu, false);
+      dropdown(profileButton, profileMenu, false);
+      mobile(false);
+      if (languageOpen) languageButton?.focus();
+    });
+    window.matchMedia('(min-width: 1400px)').addEventListener('change', event => {
+      if (event.matches) mobile(false);
+      dropdown(profileButton, profileMenu, false);
+      dropdown(languageButton, languageMenu, false);
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, {once: true});
+  else initialize();
+})();

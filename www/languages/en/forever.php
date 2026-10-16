@@ -146,4 +146,6 @@ return [
     'label_forever_portal' => 'Realmlist / Battle.net portal',
     'help_forever_portal' => 'Shown on How to join us and available in the page editor as {{realmlist}}. This is the player connection address, not the internal status-check address.',
     'label_forever_launcher_url' => 'Launcher download link',
+    'footer_creator_by' => 'by',
+    'footer_educational_notice' => 'Unofficial community project for educational use. Not affiliated with or endorsed by Blizzard Entertainment.',
 ];

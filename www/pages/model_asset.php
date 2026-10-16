@@ -3,9 +3,9 @@
 // viewers with the same assets; arbitrary URLs and local paths are never accepted.
 $asset=(string)($_GET['asset']??'');
 if(str_starts_with($asset,'v3/'))$asset=substr($asset,3);
-if(!preg_match('~^(live|classic)/(meta/[a-z0-9_/-]+\.json|(?:mo3|bone|anim)/[0-9_/-]+\.(?:mo3|bone|anim)|textures/[0-9_/-]+\.(?:png|jpg|webp))$~i',$asset)||str_contains($asset,'..')||strlen($asset)>160){http_response_code(400);exit;}
+if(!preg_match('~^(live|classic|forever)/(meta/[a-z0-9_/-]+\.json|(?:mo3|bone|anim)/[0-9_/-]+\.(?:mo3|bone|anim)|textures/[0-9_/-]+\.(?:png|jpg|webp))$~i',$asset)||str_contains($asset,'..')||strlen($asset)>160){http_response_code(400);exit;}
 $root=dirname(__DIR__,2).'/cache/models';if(!is_dir($root))@mkdir($root,0755,true);
-$file=$root.'/'.hash('sha256','v3:'.$asset);$extension=pathinfo($asset,PATHINFO_EXTENSION);
+$file=$root.'/'.hash('sha256',($asset[0]==='f'?'v4:':'v3:').$asset);$extension=pathinfo($asset,PATHINFO_EXTENSION);
 $types=['json'=>'application/json','png'=>'image/png','jpg'=>'image/jpeg','webp'=>'image/webp','mo3'=>'application/octet-stream','bone'=>'application/octet-stream','anim'=>'application/octet-stream'];
 $relative=substr($asset,strpos($asset,'/')+1);$bundled=__DIR__.'/../3dmodels/wow-data/'.$relative;
 if(is_file($bundled)){header('Content-Type: '.$types[$extension]);header('Cache-Control: public, max-age=86400');header('X-Content-Type-Options: nosniff');readfile($bundled);exit;}
@@ -14,7 +14,11 @@ $limit=30*1024*1024;$data='';$status=0;$error='';
 // Astral's public model archive matches the bundled renderer and preserves
 // geometry that the current Wowhead endpoint no longer serves. Both origins
 // are fixed; callers cannot turn this gateway into an arbitrary web proxy.
-foreach(['https://armory.playastral.io/data/'.$relative,'https://wow.zamimg.com/modelviewer/'.$asset] as $url){
+$origins=['https://armory.playastral.io/data/'.$relative,'https://wow.zamimg.com/modelviewer/live/'.$relative,'https://wow.zamimg.com/modelviewer/classic/'.$relative];
+// Forever uses Classic display IDs. Retail has removed many original tier-set
+// models (notably helmets/shoulders); prefer Classic metadata for this viewer.
+if(str_starts_with($asset,'forever/meta/armor/')||str_starts_with($asset,'classic/'))$origins=['https://wow.zamimg.com/modelviewer/classic/'.$relative,'https://armory.playastral.io/data/'.$relative,'https://wow.zamimg.com/modelviewer/live/'.$relative];
+foreach($origins as $url){
     $data='';$handle=curl_init($url);
     curl_setopt_array($handle,[CURLOPT_FOLLOWLOCATION=>false,CURLOPT_CONNECTTIMEOUT=>6,CURLOPT_TIMEOUT=>15,CURLOPT_USERAGENT=>'ForeverCMS/1.5 (WoW model preview)',CURLOPT_WRITEFUNCTION=>static function($ch,$chunk)use(&$data,$limit){if(strlen($data)+strlen($chunk)>$limit)return 0;$data.=$chunk;return strlen($chunk);}]);
     // Retain peer/hostname verification and use Windows' trusted roots.

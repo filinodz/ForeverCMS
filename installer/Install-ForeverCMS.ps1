@@ -134,7 +134,7 @@ Write-Good 'Backup complete.'
 Write-Step 'Installing Forever CMS'
 Copy-Item -LiteralPath $PayloadCms -Destination $TargetCms -Recurse -Force
 if ($ReplaceExisting -and -not $ResetSiteDatabase) {
-    foreach ($relative in @('www\includes\config.php','www\includes\config.settings.php','www\includes\config.secret.php','www\includes\realm_config.php','www\includes\config.mail.php','www\includes\config.cap.php','www\includes\ra.conf.php','www\includes\armory_config.php','www\includes\auth_config.php')) {
+    foreach ($relative in @('www\includes\config.php','www\includes\config.settings.php','www\includes\config.secret.php','www\includes\config.database.php','www\includes\realm_config.php','www\includes\config.mail.php','www\includes\config.cap.php','www\includes\ra.conf.php','www\includes\armory_config.php','www\includes\auth_config.php')) {
         $saved = Join-Path (Join-Path $BackupRoot 'cms') $relative
         if (Test-Path -LiteralPath $saved -PathType Leaf) { Copy-Item -LiteralPath $saved -Destination (Join-Path $TargetCms $relative) -Force }
     }

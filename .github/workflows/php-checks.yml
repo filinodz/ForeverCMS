@@ -22,6 +22,17 @@ jobs:
         run: |
           node --check www/assets/js/admin/creator-studio.js
           node --check www/assets/js/admin/page-studio.js
+          node --check www/assets/js/includes/header.js
+          node --check www/assets/js/pages/character-viewer.js
+          node --check www/assets/js/pages/players-online.js
+
+      - name: Check portable configuration and roster
+        run: |
+          php tests/standalone-test.php
+          php tests/secret-config-test.php
+          php tests/join-guide-test.php
+          php tests/armory-roster-test.php
+          node tests/players-online-test.cjs
 
       - name: Check page sanitizer
         run: php tests/page_studio_test.php
@@ -37,6 +48,15 @@ jobs:
         shell: bash
         run: |
           test ! -e www/includes/config.secret.php
+          test ! -e www/includes/config.database.php
           test ! -d setup/backups
           test ! -d logs
           test ! -d tmp
+
+  repack-installer:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate repack integration without touching a server
+        shell: powershell
+        run: ./tests/repack-installer-test.ps1

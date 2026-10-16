@@ -7,6 +7,29 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Independent Windows configuration assistant for existing ForeverCore databases, without requiring ForeverLauncher.
+- Standalone PHP hosting documentation, Apache/nginx examples and clean staging with a SHA-256 manifest.
+- Enlarged character inspection with zoom, rotation, pause, camera reset, keyboard close and responsive canvas sizing.
+- Verified High Order and Windshaper client model fallback; exclusive appearances unavailable from the provider are disclosed.
+- Responsive Players Online layout, combined name/class/race search, class/faction filters and separate human/bot counts.
+- Regression checks for standalone settings, encryption-key isolation, generic join guides and roster filters.
+
+### Fixed
+
+- Classic helmet/shoulder models missing from the Retail appearance catalog.
+- Incomplete customization choices, distorted canvas resizing, repeated retries and viewer recovery after browser navigation.
+- Language selector and translated navigation overflowing laptop-width headers.
+- Repeated realmlist addresses beneath public realm cards.
+- Standalone database settings now use an ignored `config.database.php`, separate from the registration encryption key.
+
+### Deployment
+
+- The default How to Play page is generic and editable through Page Studio, without a personal server address, fixed client build or launcher download.
+- Existing ForeverLauncher/Repack integration remains available; standalone setup does not replace launchers or game-server executables.
+- Existing published page revisions and private configuration must be preserved during updates.
+
 ## [1.5.0] - 2026-10-14
 
 ### Added

@@ -163,6 +163,11 @@ return [
     'label_forever_portal' => 'Realmlist / portail Battle.net',
     'help_forever_portal' => 'Adresse affichée sur « Comment jouer », également disponible dans l’éditeur avec {{realmlist}}. Elle ne modifie pas l’adresse interne utilisée pour vérifier les royaumes.',
     'label_forever_launcher_url' => 'Lien de téléchargement du Launcher',
+    'footer_creator_by' => 'par',
+    'footer_follow_us' => 'Nous suivre',
+    'footer_rights' => 'Tous droits réservés.',
+    'language' => 'Choisir la langue',
+    'footer_educational_notice' => 'Projet communautaire non officiel à vocation éducative, sans affiliation ni approbation de Blizzard Entertainment.',
     'error_portal_invalid' => 'Saisissez un nom de domaine ou une adresse IP valide, éventuellement suivi d’un port.',
     'error_launcher_url_invalid' => 'Le lien du Launcher doit commencer par HTTP ou HTTPS.',
 ];

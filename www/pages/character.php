@@ -12,6 +12,7 @@ $page_meta_robots = 'index';
 
 ob_start();
 ?>
+<link rel="stylesheet" href="<?php echo htmlspecialchars($base_path,ENT_QUOTES,'UTF-8'); ?>assets/css/character-viewer.css?v=20261016-3">
   <style>
         * { font-family: 'Inter', sans-serif; }
 
@@ -914,103 +915,40 @@ require_once $project_root . 'includes/header.php';
                         </span>
                     </div>
                     <?php
-                    $viewer_races = [
-                        1 => 'human', 2 => 'orc', 3 => 'dwarf', 4 => 'nightelf', 5 => 'scourge',
-                        6 => 'tauren', 7 => 'gnome', 8 => 'troll', 10 => 'bloodelf', 11 => 'draenei',
-                    ];
-                    $viewer_race = $viewer_races[(int)$character['race']] ?? null;
-                    $viewer_gender = ((int)($character['gender'] ?? 0) === 0) ? 'male' : 'female';
+                    require_once $project_root.'includes/forever_models.php';
+                    $viewerIdentity=forever_character_model_identity((int)$character['race'],(int)($character['gender']??0));
+                    $viewerFr=($langCode??'en')==='fr';
+                    $viewerLabels=$viewerFr
+                        ? ['expand'=>'Agrandir','close'=>'Fermer','inspect'=>'Inspection du personnage','pause'=>'Pause','play'=>'Animer','reset'=>'Recentrer','loading'=>'Chargement du personnage…','failed'=>'Le modèle n’a pas pu être chargé. Réessayez dans un instant.','retry'=>'Réessayer','hint'=>'Glisser pour pivoter · Molette pour zoomer']
+                        : ['expand'=>'Enlarge','close'=>'Close','inspect'=>'Character inspection','pause'=>'Pause','play'=>'Animate','reset'=>'Reset view','loading'=>'Loading character…','failed'=>'The model could not be loaded. Please try again.','retry'=>'Retry','hint'=>'Drag to rotate · Scroll to zoom'];
+                    $viewerLabels['partial']=$viewerFr?'Certaines apparences équipées ne sont pas disponibles chez le fournisseur 3D. Les objets listés restent ceux du personnage.':'Some equipped appearances are unavailable from the 3D provider. The listed items are still the character’s actual equipment.';
+                    $viewerLabels['partialShort']=$viewerFr?'Apparences partielles ⓘ':'Partial appearances ⓘ';
+                    $viewerConfig=$viewerIdentity+['class'=>(int)$character['class'],'customizations'=>$character_customizations,'items'=>$character_model_items,'contentPath'=>$base_path.'model-assets/forever/','labels'=>$viewerLabels];
                     ?>
-                    <div class="character-image" id="character-model-frame">
+                    <div class="character-image" id="character-model-frame" aria-busy="true">
                         <div id="character-model-3d" class="character-model-stage" aria-label="<?php echo htmlspecialchars(translate('character_3d_model', 'Interactive 3D character model')); ?>"></div>
+                        <div class="character-model-tools">
+                            <button type="button" id="character-model-pause" aria-pressed="false"><?php echo $viewerLabels['pause']; ?></button>
+                            <button type="button" id="character-model-expand" aria-expanded="false"><?php echo $viewerLabels['expand']; ?></button>
+                        </div>
+                        <span id="character-model-asset-note" class="character-model-availability" tabindex="0" hidden></span>
                         <div class="character-model-status" id="character-model-status" role="status" aria-live="polite">
                             <span class="character-model-spinner" aria-hidden="true"></span>
                             <span id="character-model-status-text"><?php echo htmlspecialchars(translate('character_3d_loading', 'Loading authentic WoW model…')); ?></span>
                         </div>
-                        <div class="character-model-hint"><i class="fas fa-arrows-alt" aria-hidden="true"></i> <?php echo htmlspecialchars(translate('character_3d_hint', 'Drag to rotate · Wheel to zoom')); ?></div>
+                        <div class="character-model-bottom"><span class="character-model-caption"><?php echo $viewerLabels['hint']; ?></span><div>
+                            <button type="button" data-character-zoom="-1" aria-label="<?php echo $viewerFr?'Dézoomer':'Zoom out'; ?>">−</button>
+                            <button type="button" data-character-zoom="1" aria-label="<?php echo $viewerFr?'Zoomer':'Zoom in'; ?>">+</button>
+                            <button type="button" id="character-model-reset"><?php echo $viewerLabels['reset']; ?></button>
+                            <button type="button" id="character-model-retry"><?php echo $viewerLabels['retry']; ?></button>
+                        </div></div>
                         <noscript><img src="<?php echo $base_path; ?>3dmodels/3d_default.gif" alt="<?php echo translate('default_character_image', 'Default Character Image'); ?>" class="default-image"></noscript>
                     </div>
+                    <?php if($viewerIdentity['skyborne']): ?><p class="character-model-note"><?php echo $viewerFr?'Skyborne : modèle de repli du client Forever. Les apparences exclusives High Order / Windshaper ne sont pas toutes disponibles chez le fournisseur 3D.':'Skyborne: uses the Forever client’s model fallback. Exclusive High Order / Windshaper customizations are not all available from the 3D provider.'; ?></p><?php endif; ?>
                     <script src="<?php echo $base_path; ?>assets/vendor/wow-model-viewer/jquery-3.7.1.min.js"></script>
                     <script src="<?php echo $base_path; ?>assets/vendor/wow-model-viewer/viewer.min.js"></script>
-                    <script>
-                    (() => {
-                        const stage = document.getElementById('character-model-3d');
-                        const status = document.getElementById('character-model-status');
-                        const statusText = document.getElementById('character-model-status-text');
-                        const raceName = <?= json_encode($viewer_race) ?>;
-                        const genderName = <?= json_encode($viewer_gender) ?>;
-                        const character = <?= json_encode([
-                            'race' => (int)$character['race'],
-                            'gender' => (int)($character['gender'] ?? 0),
-                            'class' => (int)$character['class'],
-                            'customizations' => $character_customizations,
-                            'items' => $character_model_items,
-                        ], JSON_UNESCAPED_SLASHES) ?>;
-
-                        const showError = (message) => {
-                            status.classList.add('is-error');
-                            status.querySelector('.character-model-spinner')?.remove();
-                            statusText.textContent = message;
-                        };
-
-                        if (!raceName || !window.jQuery || !window.ZamModelViewer) {
-                            showError(<?= json_encode(translate('character_3d_unavailable', '3D model unavailable for this race.')) ?>);
-                            return;
-                        }
-
-                        // ZamModelViewer is the same data-driven renderer used by the reference
-                        // armory. It loads authentic WoW geometry instead of a generated stand-in.
-                        window.WH = window.WH || { debug: () => {} };
-                        window.WH.debug = window.WH.debug || (() => {});
-
-                        try {
-                            const model = new window.ZamModelViewer({
-                                type: window.ZamModelViewer.WOW,
-                                contentPath: <?= json_encode($base_path . 'model-assets/v3/live/') ?>,
-                                container: window.jQuery(stage),
-                                hd: true,
-                                aspect: Math.max(stage.clientWidth, 1) / Math.max(stage.clientHeight, 1),
-                                cls: character.class,
-                                charCustomization: {
-                                    race: character.race,
-                                    gender: character.gender,
-                                    options: character.customizations,
-                                    sheathMain: -1,
-                                    sheathOff: -1
-                                },
-                                items: character.items,
-                                models: {
-                                    type: window.ZamModelViewer.Wow.Types.CHARACTER,
-                                    id: raceName + genderName
-                                },
-                                mount: {
-                                    type: window.ZamModelViewer.Wow.Types.NPC,
-                                    id: 0
-                                }
-                            });
-
-                            const startedAt = Date.now();
-                            const loadedTimer = window.setInterval(() => {
-                                if (model.method('isLoaded')) {
-                                    window.clearInterval(loadedTimer);
-                                    if (model.renderer?.clearColor) {
-                                        model.renderer.clearColor[0] = 0.0078;
-                                        model.renderer.clearColor[1] = 0.0118;
-                                        model.renderer.clearColor[2] = 0.0275;
-                                    }
-                                    status.classList.add('is-hidden');
-                                    window.setTimeout(() => status.remove(), 450);
-                                } else if (Date.now() - startedAt > 30000) {
-                                    window.clearInterval(loadedTimer);
-                                    showError(<?= json_encode(translate('character_3d_load_error', 'The 3D model could not be loaded.')) ?>);
-                                }
-                            }, 150);
-                        } catch (error) {
-                            console.error('Forever character model:', error);
-                            showError(<?= json_encode(translate('character_3d_load_error', 'The 3D model could not be loaded.')) ?>);
-                        }
-                    })();
-                    </script>
+                    <script id="character-viewer-data" type="application/json"><?php echo json_encode($viewerConfig,JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_SLASHES); ?></script>
+                    <script src="<?php echo htmlspecialchars($base_path,ENT_QUOTES,'UTF-8'); ?>assets/js/pages/character-viewer.js?v=20261016-3" defer></script>
                     <div class="flex gap-2 w-full max-w-[350px]">
                         <?php foreach ([15, 16, 17] as $slot): ?>
                             <div class="slot weapon-slot flex-1 min-h-[55px] flex items-center justify-center<?= isset($items[$slot]) ? ' has-item' : '' ?>" 

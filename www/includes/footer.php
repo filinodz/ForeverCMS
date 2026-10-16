@@ -71,7 +71,9 @@ if (file_exists($project_root . 'includes/config.settings.php')) {
         text-transform: uppercase;
     }
 
-    .footer-credit span { color: rgba(232,196,106,.66); }
+    .footer-credit a { color: rgba(232,196,106,.85); text-decoration: none; }
+    .footer-credit a:hover { color: #f5dfac; text-decoration: underline; }
+    .footer-notice { max-width: 38rem; color: #9ca3af; font-size: .74rem; line-height: 1.65; text-align: center; margin: .25rem auto 0; }
 
     /* ============ FOOTER LINKS ============ */
     .footer-nav-link {
@@ -189,7 +191,8 @@ if (file_exists($project_root . 'includes/config.settings.php')) {
                 <p class="text-gray-500 text-xs tracking-wider uppercase font-semibold">
                     &copy; <?php echo date('Y') . ' ' . htmlspecialchars($site_title_name ?? 'Forever', ENT_QUOTES, 'UTF-8'); ?>. <?php echo translate('footer_rights', 'All rights reserved.'); ?>
                 </p>
-                <p class="footer-credit">Based on <span>SahtoutCMS</span></p>
+                <p class="footer-credit"><a href="https://github.com/filinodz/ForeverCMS" target="_blank" rel="noopener">ForeverCMS</a> <?php echo htmlspecialchars(translate('footer_creator_by', 'by'), ENT_QUOTES, 'UTF-8'); ?> <a href="https://github.com/filinodz" target="_blank" rel="noopener">FilinoDZ</a></p>
+                <p class="footer-notice"><?php echo htmlspecialchars(translate('footer_educational_notice', 'Unofficial community project for educational use. Not affiliated with or endorsed by Blizzard Entertainment.'), ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
 
             <!-- Socials -->
@@ -233,7 +236,7 @@ if (file_exists($project_root . 'includes/config.settings.php')) {
 </button>
 
 <!-- Back to Top Script -->
-<script src="<?php echo $base_path; ?>assets/js/includes/footer.js?v=20261011-1"></script>
+<script src="<?php echo $base_path; ?>assets/js/includes/footer.js?v=20261015-1" defer></script>
 
 </body>
 </html>

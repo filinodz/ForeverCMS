@@ -1,5 +1,6 @@
 # Local configuration and secrets
 www/includes/config.secret.php
+www/includes/config.database.php
 *.secret.php
 .env
 .env.*

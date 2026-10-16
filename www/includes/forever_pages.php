@@ -62,9 +62,12 @@ function forever_pages_get($db,string $slug,string $locale): ?array
 
 function forever_pages_tokens(string $html): string
 {
-    global $forever_portal,$forever_launcher_url,$site_title_name,$social_links;
+    global $forever_portal,$forever_launcher_url,$site_title_name,$social_links,$forever_public_address,$forever_client_build,$forever_website_url,$site_url;
     $tokens=['realmlist'=>$forever_portal??'trinity.actual.battle.net','launcher_url'=>$forever_launcher_url??'','site_title'=>$site_title_name??'Forever','discord_url'=>$social_links['discord']??''];
-    foreach($tokens as $key=>$value) $html=str_replace('{{'.$key.'}}',htmlspecialchars($value,ENT_QUOTES,'UTF-8'),$html);
+    $public=(string)($forever_public_address??parse_url($site_url??'',PHP_URL_HOST)??'');
+    $ip=preg_match('/^[A-Za-z0-9.-]{1,253}$/D',$public)?gethostbyname($public):'';
+    $tokens+=['public_address'=>$public,'connection_ip'=>filter_var($ip,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)?$ip:'DNS unavailable — contact the server team','client_build'=>$forever_client_build??'70374','website_url'=>$forever_website_url??$site_url??'/','connection_kit_url'=>'/download/connection'];
+    foreach($tokens as $key=>$value) $html=str_ireplace(['{{'.$key.'}}',rawurlencode('{{'.$key.'}}')],htmlspecialchars((string)$value,ENT_QUOTES,'UTF-8'),$html);
     return $html;
 }
 
@@ -77,7 +80,7 @@ function forever_pages_boot(): void
     $page=forever_pages_get($site_db,$slug,$langCode??'en');
     if(!$page||!$page['enabled']||$page['published_html']===null) return;
     $doc='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/assets/css/tailwind.css"><link rel="stylesheet" href="/assets/css/forever-theme.css"><link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css"><style>body{margin:0;padding:0;color:#dbe1eb;background:transparent!important;font-family:Arial,sans-serif}body::before,body::after{display:none!important}img{max-width:100%}a{color:#e8ca70}'.$page['published_css'].'</style></head><body class="how_to_play">'.forever_pages_tokens($page['published_html']).'</body></html>';
-    $frame='<iframe class="forever-managed-page" title="'.htmlspecialchars($page['title'],ENT_QUOTES,'UTF-8').'" sandbox="allow-same-origin allow-top-navigation-by-user-activation" srcdoc="'.htmlspecialchars($doc,ENT_QUOTES,'UTF-8').'" style="width:100%;border:0;min-height:360px;display:block" onload="this.style.height=Math.max(100,this.contentDocument.documentElement.scrollHeight)+\'px\'"></iframe>';
+    $frame='<iframe class="forever-managed-page" title="'.htmlspecialchars($page['title'],ENT_QUOTES,'UTF-8').'" sandbox="allow-same-origin allow-top-navigation-by-user-activation allow-downloads" srcdoc="'.htmlspecialchars($doc,ENT_QUOTES,'UTF-8').'" style="width:100%;border:0;min-height:360px;display:block" onload="const frame=this,body=frame.contentDocument.body;const fit=()=>frame.style.height=Math.max(360,body.scrollHeight)+\'px\';fit();new ResizeObserver(fit).observe(body)"></iframe>';
     $replace=$catalog[$slug]['mode']==='replace';
     ob_start(static function($output) use($frame,$replace) {
         if($replace) return preg_replace_callback('~(<main\b[^>]*>).*?(</main>)~s',static fn($m)=>$m[1].$frame.$m[2],$output,1);
