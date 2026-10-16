@@ -1,4 +1,4 @@
-# ForeverCMS 1.6.0 — release candidate
+# ForeverCMS 1.6.0 — Armory inspection, live roster and standalone hosting
 
 - Refined realm cards and reading surfaces while keeping the Warcraft artwork.
 - Removed the repeated realmlist/address and copy button below each realm.
@@ -21,6 +21,28 @@ server configuration or client connection executable is included.
 
 Adaptation and design by **FilinoDZ**. Based on open-source **SahtoutCMS**.
 
-Before publishing: review screenshots, test installation on a fresh compatible
-ForeverCore database, and verify mail/HTTPS configuration on the intended host.
-Never package your production configuration, accounts, sessions, backups or dumps.
+## Downloads
+
+- **ForeverCMS-1.6.0-for-ForeverRepack.zip** — PHP included, folder picker and backed-up
+  website installation/update. Run `Install-ForeverCMS.bat`. The existing core and
+  launcher are preserved; a compatible ForeverCore installation is required.
+- **ForeverCMS-1.6.0-Standalone-Windows.zip** — PHP included. Run
+  `Install-Standalone.bat` to connect to existing compatible game databases without
+  ForeverLauncher. For Apache/nginx hosting, use `www/` as the public document root
+  and follow `docs/STANDALONE.md` and `docs/HOSTING.md`.
+- **ForeverCMS-1.6.0-SHA256SUMS.txt** — checksums of both archives.
+
+This is a CMS-only update. It does not bundle a game client, account database,
+core executable, certificate/private key or launcher. The original 1.5 authoring
+bridge (or a newer compatible implementation) remains required for world-authoring
+and exported item/talent features. No core downgrade is needed for this release.
+
+Existing published How to Play revisions remain unchanged on update. Use Page
+Studio's original-page option to adopt the new generic layout, or keep/edit your
+current guide. Back up your databases before installation. Do not reset the website
+database for an update. Configure your own server identity, SMTP and HTTPS.
+
+Verification includes PHP/JavaScript checks, Windows repack installer validation,
+fresh/repeated standalone installation against isolated database fixtures, and
+desktop/mobile UI checks. Missing exclusive 3D appearances remain a provider limit,
+not a claim of an exact in-game Skyborne customization replica.

@@ -29,7 +29,7 @@ configuration backups. It does not install a game launcher or reset game data.
 
 | Deployment | Entry point | What it changes |
 | --- | --- | --- |
-| ForeverLauncher / Repack | Packaged `installer/Install-ForeverCMS.bat`, or `Setup-CMS.bat` inside the repack's `cms/` folder | CMS integration with the existing Website service; use the compatible package and back up first. |
+| ForeverLauncher / Repack | `Install-ForeverCMS.bat` in the Repack release archive | Backed-up CMS integration with the existing Website service; existing core and launcher retained. |
 | Standalone Windows | `Install-Standalone.bat` | Website database and local CMS configuration only; no launcher/core replacement. |
 | Separate PHP host | [Standalone guide](docs/STANDALONE.md) and [hosting examples](docs/HOSTING.md) | Your PHP host connects to existing ForeverCore databases through a private network. |
 
@@ -54,35 +54,36 @@ configuration backups. It does not install a game launcher or reset game data.
 - English and French interface.
 - Clean distribution model: no player accounts, sessions or database dumps.
 
-## Optional repack integration
+## Repack installation / update
 
-For independent hosting, use **Install-Standalone.bat** and the guide above.
-The legacy repack installer is an alternative for a compatible packaged release:
+Download **ForeverCMS-1.6.0-for-ForeverRepack.zip** from Releases. This is a
+website-only update: it does not replace your existing launcher or core.
 
-1. Stop Forever Launcher and all running worldserver realms.
+1. Back up your databases, stop the Website service and close ForeverLauncher.
 2. Extract the complete ForeverCMS release.
-3. Run `installer/Install-ForeverCMS.bat`.
-4. Pass a custom location if auto-detection does not find the repack:
+3. Run `Install-ForeverCMS.bat` from the extracted archive and select your repack.
+4. For unattended folder selection, use the equivalent PowerShell command:
 
 ```powershell
-.\installer\Install-ForeverCMS.ps1 -RepackPath "D:\Path\To\ForeverRepack"
+.\Install-ForeverCMS.ps1 -RepackPath "D:\Path\To\ForeverRepack" -ReplaceExisting -SkipCoreUpdate -SkipLauncherUpdate
 ```
 
 5. Start **Database**, **Auth Server**, **World Server** and **Web Server** from
    Forever Launcher, then open `http://127.0.0.1:8080`.
 
-The standalone preview includes PHP but no game core or launcher. Only a complete
-repack-integration release contains the core payload expected by the legacy installer.
-The source repository excludes generated secrets, local logs, backups and PHP.
+Both 1.6.0 Windows archives include PHP but no game core or launcher. The source
+repository excludes generated secrets, local logs, backups and PHP. For separate
+hosting use **ForeverCMS-1.6.0-Standalone-Windows.zip** and the standalone guide.
 
 To update an existing installation, add `-ReplaceExisting`. Your current CMS and
 worldserver are backed up; private settings and game accounts are retained. Do
 not use `-ResetSiteDatabase` for a normal update.
 
-Version 1.5 includes a compatible worldserver for ForeverRepack 2026-10-09. If you
-maintain a custom ForeverCore build, use `-SkipCoreUpdate` and apply the patch in
-[`core`](./core), then rebuild your own server. The item and talent features need
-this bridge; installing only the PHP files is not sufficient.
+Version 1.5 supplied a compatible worldserver and its corresponding source. Version
+1.6.0 keeps that bridge as a prerequisite but does not downgrade/replace a newer
+core. If your ForeverCore build lacks it, see the optional patch in [`core`](./core)
+and rebuild your own server. Exported item/talent features need a compatible bridge;
+installing only the PHP files does not add missing core functionality.
 
 ## Page studio
 

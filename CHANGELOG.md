@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-10-16
+
 ### Added
 
 - Independent Windows configuration assistant for existing ForeverCore databases, without requiring ForeverLauncher.

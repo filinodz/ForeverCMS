@@ -1,5 +1,10 @@
 # ForeverCMS installer for Forever Launcher / Repack
 
+This document describes the legacy full-core package installer. **1.6.0 ships a
+website-only update that preserves the installed core and launcher**; follow
+[WEBSITE-RELEASE.md](WEBSITE-RELEASE.md) for that archive. Separate hosting is
+documented in [STANDALONE.md](../docs/STANDALONE.md).
+
 ForeverCMS is the local community portal built for ForeverRepack: Battle.net account management, news, public realm status, live player roster, Armory with 3D previews, voting, the shared ForeverCore shop and administration.
 
 ## Credits

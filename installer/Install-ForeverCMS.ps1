@@ -5,6 +5,7 @@ param(
     [switch]$ResetSiteDatabase,
     [switch]$SkipLauncherUpdate,
     [switch]$SkipCoreUpdate,
+    [switch]$SelectFolder,
     [switch]$DryRun
 )
 
@@ -21,6 +22,17 @@ function Stop-Install([string]$Text) { throw $Text }
 
 Write-Host 'Forever CMS installer for Forever Launcher/Repack' -ForegroundColor Yellow
 Write-Host 'Adaptation, integration and visual design by FilinoDZ.'
+
+if ($SelectFolder -and [string]::IsNullOrWhiteSpace($RepackPath)) {
+    Add-Type -AssemblyName System.Windows.Forms
+    $picker = New-Object System.Windows.Forms.FolderBrowserDialog
+    $picker.Description = 'Select your existing ForeverRepack folder (the folder containing ForeverLauncher.exe). Stop Website before updating.'
+    $picker.ShowNewFolderButton = $false
+    try {
+        if ($picker.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { Stop-Install 'Installation cancelled. No files were changed.' }
+        $RepackPath = $picker.SelectedPath
+    } finally { $picker.Dispose() }
+}
 
 if ([string]::IsNullOrWhiteSpace($RepackPath)) {
     $candidatePaths = [System.Collections.Generic.List[string]]::new()
@@ -49,7 +61,7 @@ if ([string]::IsNullOrWhiteSpace($RepackPath)) {
         Select-Object -First 1
 }
 
-if (-not (Test-Path -LiteralPath $RepackPath -PathType Container)) {
+if ([string]::IsNullOrWhiteSpace($RepackPath) -or -not (Test-Path -LiteralPath $RepackPath -PathType Container)) {
     Stop-Install "ForeverRepack was not detected. Pass the correct folder with -RepackPath or set FOREVER_REPACK_PATH."
 }
 

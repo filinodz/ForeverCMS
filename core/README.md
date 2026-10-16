@@ -16,8 +16,9 @@ No SQL hotfix tables are written. Custom world records are loaded before store
 indexing and announced through the normal client data protocol. The export uses
 the actual loaded DB2 records, not a guessed WotLK item_template schema.
 
-The release contains a matching Windows worldserver and full corresponding
-source in `ForeverCore-source-for-ForeverCMS-1.5.0.zip`. Keep your existing server
+The **1.5.0** release contains a matching Windows worldserver and full corresponding
+source in `ForeverCore-source-for-ForeverCMS-1.5.0.zip`. **1.6.0 is a website-only
+update and does not include or replace the core.** Keep your existing server
 configuration, data files and compatible runtime DLLs. Rebuild your own source
 if you maintain additional core changes instead of replacing that custom binary.
 
