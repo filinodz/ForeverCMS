@@ -1,4 +1,4 @@
-# ForeverCMS 1.6.0 — ForeverRepack website update
+# ForeverCMS 1.7.0 — ForeverRepack website update
 
 Made with love by **FilinoDZ**. Based on open-source **SahtoutCMS**; original
 license and credits are included in `payload/cms/`.

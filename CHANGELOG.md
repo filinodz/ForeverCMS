@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-25
+
 ### Added
 
 - Public `/map` page with 53 bundled map images, calibrated world/continent/zone navigation, zoom and touch panning.
@@ -22,8 +24,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Deployment
 
-- Source update only: existing private database, realm and site settings must be retained. No game database migration, launcher or core replacement is required for these features.
-- Map positions reflect the last character save, rather than instantaneous movement. Older 1.6.0 download archives remain unchanged.
+- New standalone Windows and ForeverRepack website update packages, with screenshot documentation and SHA-256 manifests. Existing private database, realm and site settings must be retained; no game database migration, launcher or core replacement is required.
+- Map positions reflect the last character save, rather than instantaneous movement. Version 1.7.0 packages include the map and Armory updates; older 1.6.0 archives remain unchanged.
 
 ## [1.6.0] - 2026-10-16
 

@@ -1,7 +1,8 @@
 # Live map and portable Armory appearances
 
-These updates are available in the source repository's `main` branch. The older
-1.6.0 Windows release archives do not contain them.
+These updates are included in [ForeverCMS 1.7.0](https://github.com/filinodz/ForeverCMS/releases/tag/v1.7.0),
+including the standalone Windows and ForeverRepack website packages. Older 1.6.0
+Windows archives do not contain them.
 
 ## Live world map
 

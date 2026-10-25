@@ -2,7 +2,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$OutputDirectory,
     [Parameter(Mandatory=$true)][string]$PhpRuntime,
-    [string]$Version='1.6.0'
+    [string]$Version='1.7.0'
 )
 $ErrorActionPreference='Stop'
 if($Version-notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version'}

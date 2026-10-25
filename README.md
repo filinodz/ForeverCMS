@@ -56,13 +56,31 @@ configuration backups. It does not install a game launcher or reset game data.
 - English and French interface.
 - Clean distribution model: no player accounts, sessions or database dumps.
 
+## Screenshots
+
+### Interactive world map
+
+Navigate the world, continents and zones, with realm selection, search, filters and Armory links.
+This capture shows an idle realm; online markers appear as characters connect.
+
+![Interactive world map](docs/screenshots/live-map.jpg)
+
+### Equipped Armory and enlarged inspection
+
+Stock equipment appearances work without the optional Creator export tables. The 3D viewer
+includes rotation, zoom, pause and a larger inspection view.
+
+![Equipped character Armory](docs/screenshots/armory.jpg)
+
+![Enlarged 3D character inspection](docs/screenshots/armory-inspection.jpg)
+
 ## Repack installation / update
 
-The live map and portable appearance updates are currently available on `main`.
-The older 1.6.0 release archives do not include them. See the
-[map, Armory and update guide](docs/MAP-AND-ARMORY.md) when updating from source.
+The live map and portable Armory appearances are included in **version 1.7.0**.
+Download the packages from the [latest release](https://github.com/filinodz/ForeverCMS/releases/tag/v1.7.0).
+See the [map, Armory and update guide](docs/MAP-AND-ARMORY.md) for configuration and upgrade instructions.
 
-Download **ForeverCMS-1.6.0-for-ForeverRepack.zip** from Releases. This is a
+Download **ForeverCMS-1.7.0-for-ForeverRepack.zip** from Releases. This is a
 website-only update: it does not replace your existing launcher or core.
 
 1. Back up your databases, stop the Website service and close ForeverLauncher.
@@ -77,16 +95,16 @@ website-only update: it does not replace your existing launcher or core.
 5. Start **Database**, **Auth Server**, **World Server** and **Web Server** from
    Forever Launcher, then open `http://127.0.0.1:8080`.
 
-Both 1.6.0 Windows archives include PHP but no game core or launcher. The source
+Both 1.7.0 Windows archives include PHP but no game core or launcher. The source
 repository excludes generated secrets, local logs, backups and PHP. For separate
-hosting use **ForeverCMS-1.6.0-Standalone-Windows.zip** and the standalone guide.
+hosting use **ForeverCMS-1.7.0-Standalone-Windows.zip** and the standalone guide.
 
 To update an existing installation, add `-ReplaceExisting`. Your current CMS and
 worldserver are backed up; private settings and game accounts are retained. Do
 not use `-ResetSiteDatabase` for a normal update.
 
 Version 1.5 supplied a compatible worldserver and its corresponding source. Version
-1.6.0 keeps that bridge as a prerequisite but does not downgrade/replace a newer
+1.7.0 keeps that bridge as a prerequisite but does not downgrade/replace a newer
 core. If your ForeverCore build lacks it, see the optional patch in [`core`](./core)
 and rebuild your own server. Exported item/talent features need a compatible bridge;
 installing only the PHP files does not add missing core functionality.
