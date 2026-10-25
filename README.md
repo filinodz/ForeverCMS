@@ -35,12 +35,14 @@ configuration backups. It does not install a game launcher or reset game data.
 
 ## Highlights
 
+- Interactive world map with continent/zone navigation, zoom, online character markers, realm selection, faction/name/bot filters and direct Armory links.
 - Account registration, login, activation and recovery workflows.
 - Multi-realm status with per-realm visibility controls, a live Players Online roster and direct Armory links.
 - Native High Order and Windshaper Skyborne faction counting and themed race icons.
 - Character directory and multi-realm search, separate from the PvP leaderboard.
 - Equipped 3D character viewer, actual Classic talent trees and saved ranks, Legacy builds, spellbook and skills with real client icons.
 - Enlarged 3D inspection with rotation, zoom, pause and camera reset; Classic armor metadata restores removed Retail helmet/shoulder appearances.
+- Portable equipped appearances: a bundled stock item catalogue renders gear without ForeverCreator export tables; installed server exports override stock metadata.
 - High Order / Windshaper model fallback verified against Forever client data, with explicit notices for unavailable exclusive customizations.
 - Responsive Players Online directory with combinable search, class/faction filters and separate human/bot counts.
 - News, downloads, guides, vote system and a premium shop synchronized with ForeverCore's in-game catalog.
@@ -55,6 +57,10 @@ configuration backups. It does not install a game launcher or reset game data.
 - Clean distribution model: no player accounts, sessions or database dumps.
 
 ## Repack installation / update
+
+The live map and portable appearance updates are currently available on `main`.
+The older 1.6.0 release archives do not include them. See the
+[map, Armory and update guide](docs/MAP-AND-ARMORY.md) when updating from source.
 
 Download **ForeverCMS-1.6.0-for-ForeverRepack.zip** from Releases. This is a
 website-only update: it does not replace your existing launcher or core.

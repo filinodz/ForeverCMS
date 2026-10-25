@@ -23,6 +23,10 @@ $show_points = true;
 $show_tokens = false;
 $show_currencies = $show_points || $show_tokens; // backward compatibility
 
+// Public map of last-saved online character positions. Staff accounts are hidden.
+$live_map_enabled = true;
+$live_map_show_bots = true;
+
 // Logo
 $site_logo = 'img/forever_logo.svg';
 

@@ -25,6 +25,7 @@ jobs:
           node --check www/assets/js/includes/header.js
           node --check www/assets/js/pages/character-viewer.js
           node --check www/assets/js/pages/players-online.js
+          node --check www/assets/js/pages/live-map.js
 
       - name: Check portable configuration and roster
         run: |
@@ -32,7 +33,10 @@ jobs:
           php tests/secret-config-test.php
           php tests/join-guide-test.php
           php tests/armory-roster-test.php
+          php tests/appearance-portability-test.php
+          php tests/live-map-api-test.php
           node tests/players-online-test.cjs
+          node tests/live-map-test.cjs
 
       - name: Check page sanitizer
         run: php tests/page_studio_test.php

@@ -7,6 +7,24 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Public `/map` page with 53 bundled map images, calibrated world/continent/zone navigation, zoom and touch panning.
+- Read-only `/map_api` feed of online character positions, refreshed by the browser every 20 seconds, with realm selection, faction/name/bot filters and Armory links.
+- Map settings `live_map_enabled` and `live_map_show_bots`; staff and deleted characters are excluded from the feed.
+- Bundled stock equipment appearance catalogue and optional client DB2/map artwork rebuild tools.
+
+### Fixed
+
+- Armory gear rendering no longer requires all ForeverCreator export/custom tables to exist; available server metadata overrides stock entries, with per-item fallback.
+- Viewer reports partial equipment appearances when the model provider serves placeholder textures, while retaining fullscreen inspection and verified race fallbacks.
+- Include the shared online-presence helper required by the existing Players Online page and the new map feed.
+
+### Deployment
+
+- Source update only: existing private database, realm and site settings must be retained. No game database migration, launcher or core replacement is required for these features.
+- Map positions reflect the last character save, rather than instantaneous movement. Older 1.6.0 download archives remain unchanged.
+
 ## [1.6.0] - 2026-10-16
 
 ### Added

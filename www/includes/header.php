@@ -723,6 +723,12 @@ $esc_logo = htmlspecialchars($site_logo ?? '', ENT_QUOTES, 'UTF-8');
                     <?php echo translate('nav_players_online', 'Players Online'); ?>
                 </a>
 
+                <?php if ($live_map_enabled ?? true): ?>
+                <a href="<?php echo $esc_base; ?>map" class="nav-link <?php echo $page_class === 'live-map' ? 'active' : ''; ?>">
+                    <?php echo ($langCode ?? 'en') === 'fr' ? 'Carte' : 'Map'; ?>
+                </a>
+                <?php endif; ?>
+
                 <a href="<?php echo $esc_base; ?>shop" class="nav-link <?php echo $page_class === 'shop' ? 'active' : ''; ?>">
                     <?php echo translate('nav_shop', 'Shop'); ?>
                 </a>

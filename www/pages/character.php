@@ -948,7 +948,7 @@ require_once $project_root . 'includes/header.php';
                     <script src="<?php echo $base_path; ?>assets/vendor/wow-model-viewer/jquery-3.7.1.min.js"></script>
                     <script src="<?php echo $base_path; ?>assets/vendor/wow-model-viewer/viewer.min.js"></script>
                     <script id="character-viewer-data" type="application/json"><?php echo json_encode($viewerConfig,JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_SLASHES); ?></script>
-                    <script src="<?php echo htmlspecialchars($base_path,ENT_QUOTES,'UTF-8'); ?>assets/js/pages/character-viewer.js?v=20261016-3" defer></script>
+                    <script src="<?php echo htmlspecialchars($base_path,ENT_QUOTES,'UTF-8'); ?>assets/js/pages/character-viewer.js?v=20261025-1" defer></script>
                     <div class="flex gap-2 w-full max-w-[350px]">
                         <?php foreach ([15, 16, 17] as $slot): ?>
                             <div class="slot weapon-slot flex-1 min-h-[55px] flex items-center justify-center<?= isset($items[$slot]) ? ' has-item' : '' ?>" 

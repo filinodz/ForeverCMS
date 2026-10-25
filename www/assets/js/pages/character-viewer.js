@@ -20,6 +20,9 @@
     frame.setAttribute('aria-busy', 'false');
     retry.disabled=false;
   }
+  function showPartial() {
+    assetNote.textContent=cfg.labels.partialShort;assetNote.title=cfg.labels.partial;assetNote.setAttribute('aria-label',cfg.labels.partial);assetNote.hidden=false;
+  }
   function resize() {
     if (!model?.renderer) return;
     const width = Math.max(1, stage.clientWidth), height = Math.max(1, stage.clientHeight);
@@ -96,9 +99,7 @@
       });
       window.WH = window.WH || {}; window.WH.debug = window.WH.debug || (() => {});
       jQuery(document).off('ajaxError.foreverCharacter').on('ajaxError.foreverCharacter',(_event,xhr,settings)=>{
-        if(xhr.status>=400&&String(settings.url).startsWith(cfg.contentPath+'meta/')){
-          assetNote.textContent=cfg.labels.partialShort;assetNote.title=cfg.labels.partial;assetNote.setAttribute('aria-label',cfg.labels.partial);assetNote.hidden=false;
-        }
+        if(xhr.status>=400&&String(settings.url).startsWith(cfg.contentPath+'meta/'))showPartial();
       });
       model = new ZamModelViewer({type:ZamModelViewer.WOW, contentPath:cfg.contentPath,
         container:jQuery(stage), hd:true, aspect:stage.clientWidth / Math.max(1,stage.clientHeight), cls:cfg.class,
@@ -109,6 +110,9 @@
         if (model?.method('isLoaded')) {
           clearInterval(timer); status.hidden = true; frame.setAttribute('aria-busy', 'false');retry.disabled=false;
           cfg.camera = {azimuth:model.renderer.azimuth,zenith:model.renderer.zenith}; resize();
+          // The asset gateway answers textures no origin serves with a tiny transparent PNG.
+          const placeholder=performance.getEntriesByType('resource').some(entry=>entry.name.includes(cfg.contentPath+'textures/')&&entry.encodedBodySize>0&&entry.encodedBodySize<200);
+          if(placeholder)showPartial();
         } else if (Date.now() - began > 45000) {clearInterval(timer); error(cfg.labels.failed);}
       }, 200);
     } catch (e) {if(current!==generation)return;console.warn('ForeverCMS character viewer:', e.message); error(cfg.labels.failed);}

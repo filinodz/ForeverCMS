@@ -2,6 +2,10 @@ const {readFileSync}=require('node:fs');
 const {runInNewContext}=require('node:vm');
 const {join}=require('node:path');
 const assert=require('node:assert/strict');
+// These files must be shipped together; the live page requires the presence helper.
+for (const file of ['pages/players_online.php','includes/online_presence.php','includes/online_roster_view.php','assets/css/players-online.css','assets/js/pages/players-online.js']) {
+    assert.ok(require('node:fs').existsSync(join(__dirname,'../www',file)), `Missing Players Online release dependency: ${file}`);
+}
 function element(extra={}){return {value:'',hidden:false,textContent:'',listeners:{},attrs:{},addEventListener(name,fn){this.listeners[name]=fn},setAttribute(k,v){this.attrs[k]=v},getAttribute(k){return this.attrs[k]},focus(){},...extra}}
 const fields=Object.fromEntries(['rosterSearch','rosterFaction','rosterClass','rosterCount','rosterNoResults','rosterClear','rosterRefresh'].map(x=>[x,element()]));
 fields.rosterFaction.value=fields.rosterClass.value='all';
